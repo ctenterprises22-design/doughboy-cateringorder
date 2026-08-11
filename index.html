@@ -266,6 +266,14 @@ body { max-width: 100%; overflow-x: hidden; padding: 0; }
   .qty-ctrl { opacity: 1 !important; pointer-events: auto !important; }
 }
 
+
+/* Tax exempt radio group */
+input[type="radio"] { cursor: pointer; }
+@media (max-width: 480px) {
+  #exempt-notice { font-size: .8rem; padding: 10px 12px; }
+  label input[type="radio"] { width: 20px; height: 20px; }
+}
+
 </style>
 </head>
 <body>
@@ -375,7 +383,37 @@ body { max-width: 100%; overflow-x: hidden; padding: 0; }
               <button class="qb" onclick="changeQty('a5h',1)">+</button>
             </div>
           </div>
-        </div>
+        
+  <div class="frow" style="margin-top:4px;">
+    <div class="fg">
+      <label>Sales Tax Status</label>
+      <div style="display:flex;align-items:center;gap:12px;margin-top:6px;">
+        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:.9rem;font-weight:600;color:var(--ch);">
+          <input type="radio" name="taxStatus" id="tax-taxable" value="taxable" checked
+            onchange="updateTaxStatus(this.value)"
+            style="width:18px;height:18px;accent-color:var(--mg);cursor:pointer;"/>
+          Taxable (10% sales tax applies)
+        </label>
+        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:.9rem;font-weight:600;color:var(--ch);">
+          <input type="radio" name="taxStatus" id="tax-exempt" value="exempt"
+            onchange="updateTaxStatus(this.value)"
+            style="width:18px;height:18px;accent-color:var(--mg);cursor:pointer;"/>
+          Tax Exempt
+        </label>
+      </div>
+    </div>
+  </div>
+  <div id="exempt-notice" style="display:none;background:#FFF8E1;border:1.5px solid var(--gold);border-radius:8px;padding:12px 14px;margin-top:10px;font-size:.84rem;color:var(--ch);line-height:1.6;">
+    <strong style="color:var(--gold);">&#x26A0; Tax Exemption Notice</strong><br/>
+    You have selected <strong>Tax Exempt</strong> status. Sales tax will not be applied to your order total.<br/><br/>
+    <strong>Please upload your valid Sales Tax Exemption Certificate</strong> along with your payment.<br/>
+    Your order cannot be processed as tax exempt without a valid exemption form on file.<br/><br/>
+    <span style="font-size:.78rem;color:var(--gray);font-style:italic;">
+      Accepted forms: ST-119, ST-120, or equivalent state-issued exemption certificate.
+    </span>
+  </div>
+
+</div>
 </div>
 
 <div class="pan-section">
@@ -1486,6 +1524,16 @@ function clearAll() {
   updateSummary();
 }
 
+
+let taxExempt = false;
+
+function updateTaxStatus(val) {
+  taxExempt = (val === 'exempt');
+  const notice = document.getElementById('exempt-notice');
+  if (notice) notice.style.display = taxExempt ? 'block' : 'none';
+  updateSummary();
+}
+
 function updateSummary() {
   const lines = Object.values(order);
   const empty = document.getElementById('sum-empty');
@@ -1509,10 +1557,11 @@ function updateSummary() {
       '</div></div>';
   }).join('');
   const sub = lines.reduce((s,o) => s + (o.item.price||0)*o.qty, 0);
-  const tax = sub * TAX;
+  const tax = taxExempt ? 0 : sub * TAX;
   const tot = sub + tax;
   document.getElementById('sub-v').textContent = '$'+sub.toFixed(2);
-  document.getElementById('tax-v').textContent = '$'+tax.toFixed(2);
+  document.getElementById('tax-v').textContent = taxExempt ? 'EXEMPT' : '$'+tax.toFixed(2);
+  document.querySelector('.srow:nth-child(2) span:first-child').textContent = taxExempt ? 'Sales Tax (Exempt)' : 'Sales Tax (10%)';
   document.getElementById('tot-v').textContent = '$'+tot.toFixed(2);
 }
 
@@ -1543,6 +1592,7 @@ async function submitToJotform(payload) {
   fd.append('submission[10]', payload.orderDetails);
   fd.append('submission[11]', payload.estimatedTotal);
   fd.append('submission[12]', payload.specialRequests || '');
+  fd.append('submission[10]', (payload.taxExempt ? '[TAX EXEMPT — Exemption certificate required] ' : '') + payload.orderDetails);
   const res  = await fetch('https://api.jotform.com/form/'+JOTFORM_FORM_ID+'/submissions', {method:'POST',body:fd});
   const json = await res.json();
   return (json.responseCode===200||json.responseCode===201) ? {success:true} : {success:false,message:json.message||'Unknown error'};
@@ -1574,6 +1624,7 @@ async function submitOrder() {
     const result = await submitToJotform({
       name,phone,email,date,time,guests,
       orderDetails: buildOrderDetails(),
+      taxExempt: taxExempt,
       estimatedTotal: '$'+total.toFixed(2)+' (incl. est. 10% tax)',
       specialRequests: notes,
     });
@@ -1584,15 +1635,16 @@ async function submitOrder() {
           '<span>' + o.item.name + pastaNote + (o.qty>1?' x'+o.qty:'') + '</span>' +
           '<span style="font-weight:700;color:#C8960C;">$' + (o.item.price*o.qty).toFixed(2) + '</span></div>';
       });
-      const payUrl = 'https://form.jotform.com/262226058516052?myProducts=' + total.toFixed(2) +
+      const payUrl = 'https://pci.jotform.com/form/262226058516052?myProducts=' + total.toFixed(2) +
         '&name=' + encodeURIComponent(name) + '&email=' + encodeURIComponent(email);
       document.getElementById('modal-msg').innerHTML =
         'Thank you, <strong>'+name+'</strong>! Your order has been received.<br>' +
-        'We will confirm within 24 hours &mdash; <strong>'+dateStr+'</strong>';
+        'We will confirm within 24 hours &mdash; <strong>'+dateStr+'</strong>' +
+        (taxExempt ? '<br><br><span style="background:#FFF8E1;border:1px solid #C8960C;border-radius:6px;padding:6px 10px;display:inline-block;margin-top:4px;font-size:.82rem;"><strong>&#x26A0; Tax Exempt Order:</strong> Please upload your Sales Tax Exemption Certificate with your payment. Your order cannot be finalized as tax exempt without a valid certificate on file.</span>' : '');
       document.getElementById('modal-order-summary').innerHTML =
         summaryLines.join('') || '<em>No items</em>';
       document.getElementById('modal-sub').textContent   = '$'+sub.toFixed(2);
-      document.getElementById('modal-tax').textContent   = '$'+tax.toFixed(2);
+      document.getElementById('modal-tax').textContent   = taxExempt ? 'EXEMPT' : '$'+tax.toFixed(2);
       document.getElementById('modal-total').textContent = '$'+total.toFixed(2);
       document.getElementById('pay-btn').href = payUrl;
       document.getElementById('modal').className = 'modal-ov open';
