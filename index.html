@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>DoughBoy Catering &mdash; 2026 Order Form</title>
+<title>DoughBoy Catering - 2026 Order Form</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
@@ -274,25 +274,26 @@ input[type="radio"] { cursor: pointer; }
   label input[type="radio"] { width: 20px; height: 20px; }
 }
 
+
+.bev-hdr{background:var(--blue);}
+.teal-hdr{background:var(--teal);}
+.pink-hdr{background:var(--pink);}
+.pasta-sel{display:none;padding:6px 18px 8px 50px;background:#F5FDF5;border-bottom:1px solid #E8F5E9;align-items:center;gap:8px;flex-wrap:wrap;}
+.pasta-sel label{font-size:.76rem;font-weight:700;color:var(--dg);}
+.pasta-sel select{border:1.5px solid var(--mg);border-radius:5px;padding:3px 8px;font-size:.78rem;font-family:inherit;color:var(--ch);background:#fff;}
 </style>
-</head>
-<body>
+</head><body>
 <header class="hdr">
   <h1>DoughBoy Catering</h1>
   <div class="tag">Deliciousness Done Right</div>
-  <div class="yr">&#x2756; 2026 CATERING MENU &mdash; ORDER FORM &#x2756;</div>
-  <div class="cb">
-    <span><strong>Phone:</strong> 917-334-9038</span>
-    <span><strong>Email:</strong> ctenterprises22@gmail.com</span>
-  </div>
+  <div class="yr">2026 CATERING MENU - ORDER FORM</div>
+  <div class="cb"><span><strong>Phone:</strong> 917-334-9038</span><span><strong>Email:</strong> ctenterprises22@gmail.com</span></div>
 </header>
 <div class="incl">INCLUDED WITH EVERY ORDER: Serving utensils &amp; setup of up to 5 platters at no additional charge</div>
-<div class="vn">&#x2605; Items marked with &#x2605; are fully vegan &middot; Vegetarian swaps available upon request &middot; All dietary accommodations available</div>
-
+<div class="vn">Items marked with a star are fully vegan. Vegetarian swaps available upon request.</div>
 <div class="wrap">
-
 <div class="cust">
-  <div class="sec-title">&#x1F4CB; Your Information</div>
+  <div class="sec-title">Your Information</div>
   <div class="frow">
     <div class="fg"><label>Name *</label><input type="text" id="cn" placeholder="Full name"/></div>
     <div class="fg"><label>Phone *</label><input type="tel" id="cp" placeholder="(000) 000-0000"/></div>
@@ -303,20 +304,96 @@ input[type="radio"] { cursor: pointer; }
     <div class="fg" style="flex:.6"><label>Event Time</label><input type="time" id="ct"/></div>
     <div class="fg"><label>Guest Count</label><input type="number" id="cg" placeholder="e.g. 25" min="1"/></div>
   </div>
-
+  <div class="frow" style="margin-top:4px;">
+    <div class="fg">
+      <label>Sales Tax Status</label>
+      <div style="display:flex;align-items:center;gap:12px;margin-top:6px;flex-wrap:wrap;">
+        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:.9rem;font-weight:600;">
+          <input type="radio" name="taxStatus" id="tax-taxable" value="taxable" checked onchange="updateTaxStatus(this.value)" style="width:18px;height:18px;accent-color:var(--mg);"/>
+          Taxable (6% sales tax applies)
+        </label>
+        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:.9rem;font-weight:600;">
+          <input type="radio" name="taxStatus" id="tax-exempt" value="exempt" onchange="updateTaxStatus(this.value)" style="width:18px;height:18px;accent-color:var(--mg);"/>
+          Tax Exempt
+        </label>
+      </div>
+    </div>
+  </div>
+  <div id="exempt-notice" style="display:none;background:#FFF8E1;border:1.5px solid var(--gold);border-radius:8px;padding:12px 14px;margin-top:10px;font-size:.84rem;line-height:1.6;">
+    <strong style="color:var(--gold);">Tax Exemption Notice</strong><br/>
+    You have selected Tax Exempt status. Sales tax will not be applied.<br/><br/>
+    Please upload your valid Sales Tax Exemption Certificate along with your payment.<br/>
+    <span style="font-size:.78rem;color:var(--gray);font-style:italic;">Accepted: ST-119, ST-120 or equivalent state-issued exemption certificate.</span>
+  </div>
   <div class="frow">
     <div class="fg"><label>Special Requests / Dietary Needs</label><textarea id="cn2" placeholder="Allergies, vegan options, substitutions, delivery notes..."></textarea></div>
   </div>
 </div>
-
-
+<div class="pan-section">
+  <div class="pan-hdr bev-hdr">
+    <div class="pan-hdr-left">
+      <div class="pan-icon">Beverages</div>
+      <div>
+        <div class="pan-title">BEVERAGES</div>
+        <div class="pan-serves">Available by the gallon</div>
+      </div>
+    </div>
+    <div class="pan-count" id="badge-bevs">0 selected</div>
+  </div>
+        <div class="item" id="row-rum1" onclick="toggleItem('rum1','bevs')">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Rum Punch - 1 Gallon</div>
+            <div class="idesc">House-made rum punch, serves approximately 10-12 guests.</div>
+          </div>
+          <div class="iright">
+            <div class="iprice">$50/gal</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('rum1',-1)">&#x2212;</button>
+              <div class="qd" id="qty-rum1">1</div>
+              <button class="qb" onclick="changeQty('rum1',1)">+</button>
+            </div>
+          </div>
+        </div>
+        <div class="item" id="row-rum5" onclick="toggleItem('rum5','bevs')">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Rum Punch - 5 Gallons</div>
+            <div class="idesc">House-made rum punch, serves approximately 50-60 guests.</div>
+          </div>
+          <div class="iright">
+            <div class="iprice">$200/5gal</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('rum5',-1)">&#x2212;</button>
+              <div class="qd" id="qty-rum5">1</div>
+              <button class="qb" onclick="changeQty('rum5',1)">+</button>
+            </div>
+          </div>
+        </div>
+        <div class="item" id="row-rum10" onclick="toggleItem('rum10','bevs')">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Rum Punch - 10 Gallons</div>
+            <div class="idesc">House-made rum punch, serves approximately 100-120 guests.</div>
+          </div>
+          <div class="iright">
+            <div class="iprice">$350/10gal</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('rum10',-1)">&#x2212;</button>
+              <div class="qd" id="qty-rum10">1</div>
+              <button class="qb" onclick="changeQty('rum10',1)">+</button>
+            </div>
+          </div>
+        </div>
+</div>
+<style>.bev-hdr{background:var(--blue);}</style>
 <div class="pan-section">
   <div class="pan-hdr half-hdr">
     <div class="pan-hdr-left">
-      <div class="pan-icon">&#x1F362;</div>
+      <div class="pan-icon">Appetizers</div>
       <div>
-        <div class="pan-title">APPETIZERS &mdash; Half Pan</div>
-        <div class="pan-serves">Serves 15&ndash;20</div>
+        <div class="pan-title">APPETIZERS - Half Pan</div>
+        <div class="pan-serves">Serves 15-20</div>
       </div>
     </div>
     <div class="pan-count" id="badge-app-half">0 selected</div>
@@ -326,12 +403,11 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Sweet & Spicy Meatballs</div>
             <div class="idesc">Beef or turkey meatballs simmered in signature red pepper jelly gravy.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$55</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('a1h',-1)">−</button>
+              <button class="qb" onclick="changeQty('a1h',-1)">&#x2212;</button>
               <div class="qd" id="qty-a1h">1</div>
               <button class="qb" onclick="changeQty('a1h',1)">+</button>
             </div>
@@ -342,12 +418,11 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Mac & Cheese Bites</div>
             <div class="idesc">Bite-sized cheesy baked macaroni bites.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$50</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('a2h',-1)">−</button>
+              <button class="qb" onclick="changeQty('a2h',-1)">&#x2212;</button>
               <div class="qd" id="qty-a2h">1</div>
               <button class="qb" onclick="changeQty('a2h',1)">+</button>
             </div>
@@ -358,12 +433,11 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Wingettes</div>
             <div class="idesc">Seasoned wings fried or baked, with blue cheese or ranch dip.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$70</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('a3h',-1)">−</button>
+              <button class="qb" onclick="changeQty('a3h',-1)">&#x2212;</button>
               <div class="qd" id="qty-a3h">1</div>
               <button class="qb" onclick="changeQty('a3h',1)">+</button>
             </div>
@@ -374,56 +448,24 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Marinated Drumettes</div>
             <div class="idesc">Seasoned leg pieces smothered in sweet & savory house glaze.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$85</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('a5h',-1)">−</button>
+              <button class="qb" onclick="changeQty('a5h',-1)">&#x2212;</button>
               <div class="qd" id="qty-a5h">1</div>
               <button class="qb" onclick="changeQty('a5h',1)">+</button>
             </div>
           </div>
-        
-  <div class="frow" style="margin-top:4px;">
-    <div class="fg">
-      <label>Sales Tax Status</label>
-      <div style="display:flex;align-items:center;gap:12px;margin-top:6px;">
-        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:.9rem;font-weight:600;color:var(--ch);">
-          <input type="radio" name="taxStatus" id="tax-taxable" value="taxable" checked
-            onchange="updateTaxStatus(this.value)"
-            style="width:18px;height:18px;accent-color:var(--mg);cursor:pointer;"/>
-          Taxable (10% sales tax applies)
-        </label>
-        <label style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:.9rem;font-weight:600;color:var(--ch);">
-          <input type="radio" name="taxStatus" id="tax-exempt" value="exempt"
-            onchange="updateTaxStatus(this.value)"
-            style="width:18px;height:18px;accent-color:var(--mg);cursor:pointer;"/>
-          Tax Exempt
-        </label>
-      </div>
-    </div>
-  </div>
-  <div id="exempt-notice" style="display:none;background:#FFF8E1;border:1.5px solid var(--gold);border-radius:8px;padding:12px 14px;margin-top:10px;font-size:.84rem;color:var(--ch);line-height:1.6;">
-    <strong style="color:var(--gold);">&#x26A0; Tax Exemption Notice</strong><br/>
-    You have selected <strong>Tax Exempt</strong> status. Sales tax will not be applied to your order total.<br/><br/>
-    <strong>Please upload your valid Sales Tax Exemption Certificate</strong> along with your payment.<br/>
-    Your order cannot be processed as tax exempt without a valid exemption form on file.<br/><br/>
-    <span style="font-size:.78rem;color:var(--gray);font-style:italic;">
-      Accepted forms: ST-119, ST-120, or equivalent state-issued exemption certificate.
-    </span>
-  </div>
-
+        </div>
 </div>
-</div>
-
 <div class="pan-section">
   <div class="pan-hdr full-hdr">
     <div class="pan-hdr-left">
-      <div class="pan-icon">&#x1F362;</div>
+      <div class="pan-icon">Appetizers</div>
       <div>
-        <div class="pan-title">APPETIZERS &mdash; Full Pan</div>
-        <div class="pan-serves">Serves 25&ndash;35</div>
+        <div class="pan-title">APPETIZERS - Full Pan</div>
+        <div class="pan-serves">Serves 25-35</div>
       </div>
     </div>
     <div class="pan-count" id="badge-app-full">0 selected</div>
@@ -433,12 +475,11 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Sweet & Spicy Meatballs</div>
             <div class="idesc">Beef or turkey meatballs simmered in signature red pepper jelly gravy.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$100</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('a1f',-1)">−</button>
+              <button class="qb" onclick="changeQty('a1f',-1)">&#x2212;</button>
               <div class="qd" id="qty-a1f">1</div>
               <button class="qb" onclick="changeQty('a1f',1)">+</button>
             </div>
@@ -449,12 +490,11 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Mac & Cheese Bites</div>
             <div class="idesc">Bite-sized cheesy baked macaroni bites.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$75</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('a2f',-1)">−</button>
+              <button class="qb" onclick="changeQty('a2f',-1)">&#x2212;</button>
               <div class="qd" id="qty-a2f">1</div>
               <button class="qb" onclick="changeQty('a2f',1)">+</button>
             </div>
@@ -465,12 +505,11 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Wingettes</div>
             <div class="idesc">Seasoned wings fried or baked, with blue cheese or ranch dip.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$110</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('a3f',-1)">−</button>
+              <button class="qb" onclick="changeQty('a3f',-1)">&#x2212;</button>
               <div class="qd" id="qty-a3f">1</div>
               <button class="qb" onclick="changeQty('a3f',1)">+</button>
             </div>
@@ -481,42 +520,38 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Marinated Drumettes</div>
             <div class="idesc">Seasoned leg pieces smothered in sweet & savory house glaze.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$150</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('a5f',-1)">−</button>
+              <button class="qb" onclick="changeQty('a5f',-1)">&#x2212;</button>
               <div class="qd" id="qty-a5f">1</div>
               <button class="qb" onclick="changeQty('a5f',1)">+</button>
             </div>
           </div>
         </div>
 </div>
-
 <div class="pan-section">
   <div class="pan-hdr doz-hdr">
     <div class="pan-hdr-left">
-      <div class="pan-icon">&#x1F362;</div>
+      <div class="pan-icon">Appetizers</div>
       <div>
-        <div class="pan-title">APPETIZERS &mdash; By the Dozen</div>
+        <div class="pan-title">APPETIZERS - By the Dozen</div>
         <div class="pan-serves">Per dozen pricing</div>
       </div>
     </div>
     <div class="pan-count" id="badge-app-doz">0 selected</div>
   </div>
-<div class="cat-label">Shrimp &amp; Salmon Sandwiches</div>
         <div class="item" id="row-a6da" onclick="toggleItem('a6da','app-doz')">
           <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="iinfo">
             <div class="iname">Shrimp Salad Mini Sandwiches</div>
             <div class="idesc">Creamy shrimp salad on mini croissants with shaved red onion.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$90/dz</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('a6da',-1)">−</button>
+              <button class="qb" onclick="changeQty('a6da',-1)">&#x2212;</button>
               <div class="qd" id="qty-a6da">1</div>
               <button class="qb" onclick="changeQty('a6da',1)">+</button>
             </div>
@@ -527,29 +562,26 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Salmon Salad Mini Sandwiches</div>
             <div class="idesc">Creamy salmon salad on mini croissants with shaved red onion.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$90/dz</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('a6db',-1)">−</button>
+              <button class="qb" onclick="changeQty('a6db',-1)">&#x2212;</button>
               <div class="qd" id="qty-a6db">1</div>
               <button class="qb" onclick="changeQty('a6db',1)">+</button>
             </div>
           </div>
         </div>
-<div class="cat-label">Pastellitos</div>
         <div class="item" id="row-a9a" onclick="toggleItem('a9a','app-doz')">
           <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="iinfo">
-            <div class="iname">Pastellitos — Cheese</div>
+            <div class="iname">Pastellitos - Cheese</div>
             <div class="idesc">Crispy savory pastry shells filled with cheese, fried golden.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$25/dz</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('a9a',-1)">−</button>
+              <button class="qb" onclick="changeQty('a9a',-1)">&#x2212;</button>
               <div class="qd" id="qty-a9a">1</div>
               <button class="qb" onclick="changeQty('a9a',1)">+</button>
             </div>
@@ -558,31 +590,28 @@ input[type="radio"] { cursor: pointer; }
         <div class="item" id="row-a9b" onclick="toggleItem('a9b','app-doz')">
           <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="iinfo">
-            <div class="iname">Pastellitos — Beef</div>
+            <div class="iname">Pastellitos - Beef</div>
             <div class="idesc">Crispy savory pastry shells filled with seasoned beef, fried golden.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$35/dz</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('a9b',-1)">−</button>
+              <button class="qb" onclick="changeQty('a9b',-1)">&#x2212;</button>
               <div class="qd" id="qty-a9b">1</div>
               <button class="qb" onclick="changeQty('a9b',1)">+</button>
             </div>
           </div>
         </div>
-<div class="cat-label">Cajun Corn &mdash; Off the Cob</div>
         <div class="item" id="row-a10a" onclick="toggleItem('a10a','app-doz')">
           <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="iinfo">
-            <div class="iname">Cajun Corn — Off the Cob (Half Pan, Serves 15–20)</div>
+            <div class="iname">Cajun Corn - Off the Cob (Half Pan)</div>
             <div class="idesc">Creamy cajun-seasoned corn served off the cob in a rich, velvety sauce.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$60 (half pan)</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('a10a',-1)">−</button>
+              <button class="qb" onclick="changeQty('a10a',-1)">&#x2212;</button>
               <div class="qd" id="qty-a10a">1</div>
               <button class="qb" onclick="changeQty('a10a',1)">+</button>
             </div>
@@ -591,27 +620,23 @@ input[type="radio"] { cursor: pointer; }
         <div class="item" id="row-a10b" onclick="toggleItem('a10b','app-doz')">
           <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="iinfo">
-            <div class="iname">Cajun Corn — Off the Cob (Full Pan, Serves 25–35)</div>
+            <div class="iname">Cajun Corn - Off the Cob (Full Pan)</div>
             <div class="idesc">Creamy cajun-seasoned corn served off the cob in a rich, velvety sauce.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$95 (full pan)</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('a10b',-1)">−</button>
+              <button class="qb" onclick="changeQty('a10b',-1)">&#x2212;</button>
               <div class="qd" id="qty-a10b">1</div>
               <button class="qb" onclick="changeQty('a10b',1)">+</button>
             </div>
           </div>
         </div>
-
-</div><div class="section-note">Shrimp/salmon sandwiches &amp; pastellitos priced per dozen. Cajun corn available by the half or full pan.</div>
-
-
+</div>
 <div class="pan-section">
   <div class="pan-hdr teal-hdr">
     <div class="pan-hdr-left">
-      <div class="pan-icon">&#x1F957;</div>
+      <div class="pan-icon">Soups</div>
       <div>
         <div class="pan-title">SOUPS &amp; SALADS</div>
         <div class="pan-serves">Priced per serving size</div>
@@ -622,14 +647,13 @@ input[type="radio"] { cursor: pointer; }
         <div class="item" id="row-s1" onclick="toggleItem('s1','sss')">
           <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="iinfo">
-            <div class="iname">Avocado Chicken Salad — Serves 15–20</div>
+            <div class="iname">Avocado Chicken Salad - Serves 15-20</div>
             <div class="idesc">Creamy chicken salad with diced avocado on sunflower bread. Available with tarragon or curried flavor.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$95</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('s1',-1)">−</button>
+              <button class="qb" onclick="changeQty('s1',-1)">&#x2212;</button>
               <div class="qd" id="qty-s1">1</div>
               <button class="qb" onclick="changeQty('s1',1)">+</button>
             </div>
@@ -638,14 +662,13 @@ input[type="radio"] { cursor: pointer; }
         <div class="item" id="row-s1f" onclick="toggleItem('s1f','sss')">
           <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="iinfo">
-            <div class="iname">Avocado Chicken Salad — Serves 25–35</div>
+            <div class="iname">Avocado Chicken Salad - Serves 25-35</div>
             <div class="idesc">Creamy chicken salad with diced avocado on sunflower bread. Available with tarragon or curried flavor.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$155</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('s1f',-1)">−</button>
+              <button class="qb" onclick="changeQty('s1f',-1)">&#x2212;</button>
               <div class="qd" id="qty-s1f">1</div>
               <button class="qb" onclick="changeQty('s1f',1)">+</button>
             </div>
@@ -654,14 +677,13 @@ input[type="radio"] { cursor: pointer; }
         <div class="item" id="row-s4" onclick="toggleItem('s4','sss')">
           <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="iinfo">
-            <div class="iname">Maryland Crab Soup — Serves 15–20</div>
+            <div class="iname">Maryland Crab Soup - Serves 15-20</div>
             <div class="idesc">Hearty Maryland crab with crab claws & lump crab meat, fresh mixed vegetables & a signature spice blend simmered in homemade stock.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$90</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('s4',-1)">−</button>
+              <button class="qb" onclick="changeQty('s4',-1)">&#x2212;</button>
               <div class="qd" id="qty-s4">1</div>
               <button class="qb" onclick="changeQty('s4',1)">+</button>
             </div>
@@ -670,14 +692,13 @@ input[type="radio"] { cursor: pointer; }
         <div class="item" id="row-s4f" onclick="toggleItem('s4f','sss')">
           <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="iinfo">
-            <div class="iname">Maryland Crab Soup — Serves 25–35</div>
+            <div class="iname">Maryland Crab Soup - Serves 25-35</div>
             <div class="idesc">Hearty Maryland crab with crab claws & lump crab meat, fresh mixed vegetables & a signature spice blend simmered in homemade stock.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$125</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('s4f',-1)">−</button>
+              <button class="qb" onclick="changeQty('s4f',-1)">&#x2212;</button>
               <div class="qd" id="qty-s4f">1</div>
               <button class="qb" onclick="changeQty('s4f',1)">+</button>
             </div>
@@ -685,15 +706,13 @@ input[type="radio"] { cursor: pointer; }
         </div>
 </div>
 <style>.teal-hdr{background:var(--teal);}</style>
-
-
 <div class="pan-section">
   <div class="pan-hdr half-hdr">
     <div class="pan-hdr-left">
-      <div class="pan-icon">&#x1F37D;</div>
+      <div class="pan-icon">Entrees</div>
       <div>
-        <div class="pan-title">ENTR&Eacute;ES &mdash; Half Pan</div>
-        <div class="pan-serves">Serves 15&ndash;20</div>
+        <div class="pan-title">ENTREES - Half Pan</div>
+        <div class="pan-serves">Serves 15-20</div>
       </div>
     </div>
     <div class="pan-count" id="badge-ent-half">0 selected</div>
@@ -703,12 +722,11 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Fried or Baked Chicken</div>
             <div class="idesc">Marinated white & dark meat chicken fried or baked to perfection. (~40 pcs)</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$95</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('e1h',-1)">−</button>
+              <button class="qb" onclick="changeQty('e1h',-1)">&#x2212;</button>
               <div class="qd" id="qty-e1h">1</div>
               <button class="qb" onclick="changeQty('e1h',1)">+</button>
             </div>
@@ -718,13 +736,12 @@ input[type="radio"] { cursor: pointer; }
           <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="iinfo">
             <div class="iname">Chicken Rasta Pasta</div>
-            <div class="idesc">Creamy jerk-seasoned pasta tossed with sautéed peppers & tender chicken.</div>
-            
+            <div class="idesc">Creamy jerk-seasoned pasta tossed with sauteed peppers & tender chicken.</div>
           </div>
           <div class="iright">
             <div class="iprice">$100</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('e2h',-1)">−</button>
+              <button class="qb" onclick="changeQty('e2h',-1)">&#x2212;</button>
               <div class="qd" id="qty-e2h">1</div>
               <button class="qb" onclick="changeQty('e2h',1)">+</button>
             </div>
@@ -735,12 +752,11 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Seafood Rasta Pasta</div>
             <div class="idesc">Creamy jerk-seasoned pasta with crab, shrimp & salmon.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$110</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('e3h',-1)">−</button>
+              <button class="qb" onclick="changeQty('e3h',-1)">&#x2212;</button>
               <div class="qd" id="qty-e3h">1</div>
               <button class="qb" onclick="changeQty('e3h',1)">+</button>
             </div>
@@ -751,12 +767,11 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Stewed Chicken</div>
             <div class="idesc">Slow-braised chicken in a rich, savory brown stew sauce.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$65</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('e4h',-1)">−</button>
+              <button class="qb" onclick="changeQty('e4h',-1)">&#x2212;</button>
               <div class="qd" id="qty-e4h">1</div>
               <button class="qb" onclick="changeQty('e4h',1)">+</button>
             </div>
@@ -767,12 +782,11 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Roast Pork Shoulder</div>
             <div class="idesc">Marinated pork shoulder slow-roasted for a perfectly tender & juicy result.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$80</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('e5h',-1)">−</button>
+              <button class="qb" onclick="changeQty('e5h',-1)">&#x2212;</button>
               <div class="qd" id="qty-e5h">1</div>
               <button class="qb" onclick="changeQty('e5h',1)">+</button>
             </div>
@@ -783,61 +797,56 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Curry Chicken</div>
             <div class="idesc">Caribbean-seasoned chicken with Trinidad curry powder, curried potatoes & chickpeas.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$90</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('e6h',-1)">−</button>
+              <button class="qb" onclick="changeQty('e6h',-1)">&#x2212;</button>
               <div class="qd" id="qty-e6h">1</div>
               <button class="qb" onclick="changeQty('e6h',1)">+</button>
             </div>
           </div>
         </div>
-        
         <div class="item" id="row-e8h" onclick="toggleItem('e8h','ent-half')">
           <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="iinfo">
             <div class="iname">Curry Shrimp</div>
             <div class="idesc">Caribbean-seasoned shrimp with Trinidad curry, potatoes & chickpeas.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$120</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('e8h',-1)">−</button>
+              <button class="qb" onclick="changeQty('e8h',-1)">&#x2212;</button>
               <div class="qd" id="qty-e8h">1</div>
               <button class="qb" onclick="changeQty('e8h',1)">+</button>
             </div>
           </div>
         </div>
-        
         <div class="item" id="row-e13h" onclick="toggleItem('e13h','ent-half')">
           <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="iinfo">
-            <div class="iname">Caribbean Cauliflower ★</div>
+            <div class="iname">Caribbean Cauliflower</div>
             <div class="idesc">Whole roasted cauliflower in signature jerk blend or Caribbean dry rub, served with mango salsa & coconut rice.</div>
-            <div class="ivegan">★ Vegan / Vegetarian option</div>
+            <div class="ivegan">&#x2605; Vegan / Vegetarian option</div>
           </div>
           <div class="iright">
             <div class="iprice">$65</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('e13h',-1)">−</button>
+              <button class="qb" onclick="changeQty('e13h',-1)">&#x2212;</button>
               <div class="qd" id="qty-e13h">1</div>
               <button class="qb" onclick="changeQty('e13h',1)">+</button>
             </div>
           </div>
         </div>
 </div>
-<div class="section-note">Crab Mac &amp; Cheese available in Full Pan only &mdash; see below.</div>
-
+<div class="section-note">Crab Mac &amp; Cheese available in Full Pan only.</div>
 <div class="pan-section">
   <div class="pan-hdr full-hdr">
     <div class="pan-hdr-left">
-      <div class="pan-icon">&#x1F37D;</div>
+      <div class="pan-icon">Entrees</div>
       <div>
-        <div class="pan-title">ENTR&Eacute;ES &mdash; Full Pan</div>
-        <div class="pan-serves">Serves 25&ndash;35</div>
+        <div class="pan-title">ENTREES - Full Pan</div>
+        <div class="pan-serves">Serves 25-35</div>
       </div>
     </div>
     <div class="pan-count" id="badge-ent-full">0 selected</div>
@@ -847,12 +856,11 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Fried or Baked Chicken</div>
             <div class="idesc">Marinated white & dark meat chicken fried or baked to perfection. (~80 pcs)</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$175</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('e1f',-1)">−</button>
+              <button class="qb" onclick="changeQty('e1f',-1)">&#x2212;</button>
               <div class="qd" id="qty-e1f">1</div>
               <button class="qb" onclick="changeQty('e1f',1)">+</button>
             </div>
@@ -862,13 +870,12 @@ input[type="radio"] { cursor: pointer; }
           <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="iinfo">
             <div class="iname">Chicken Rasta Pasta</div>
-            <div class="idesc">Creamy jerk-seasoned pasta tossed with sautéed peppers & tender chicken.</div>
-            
+            <div class="idesc">Creamy jerk-seasoned pasta tossed with sauteed peppers & tender chicken.</div>
           </div>
           <div class="iright">
             <div class="iprice">$120</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('e2f',-1)">−</button>
+              <button class="qb" onclick="changeQty('e2f',-1)">&#x2212;</button>
               <div class="qd" id="qty-e2f">1</div>
               <button class="qb" onclick="changeQty('e2f',1)">+</button>
             </div>
@@ -879,12 +886,11 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Seafood Rasta Pasta</div>
             <div class="idesc">Creamy jerk-seasoned pasta with crab, shrimp & salmon.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$175</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('e3f',-1)">−</button>
+              <button class="qb" onclick="changeQty('e3f',-1)">&#x2212;</button>
               <div class="qd" id="qty-e3f">1</div>
               <button class="qb" onclick="changeQty('e3f',1)">+</button>
             </div>
@@ -895,12 +901,11 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Stewed Chicken</div>
             <div class="idesc">Slow-braised chicken in a rich, savory brown stew sauce.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$110</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('e4f',-1)">−</button>
+              <button class="qb" onclick="changeQty('e4f',-1)">&#x2212;</button>
               <div class="qd" id="qty-e4f">1</div>
               <button class="qb" onclick="changeQty('e4f',1)">+</button>
             </div>
@@ -911,12 +916,11 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Roast Pork Shoulder</div>
             <div class="idesc">Marinated pork shoulder slow-roasted for a perfectly tender & juicy result.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$140</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('e5f',-1)">−</button>
+              <button class="qb" onclick="changeQty('e5f',-1)">&#x2212;</button>
               <div class="qd" id="qty-e5f">1</div>
               <button class="qb" onclick="changeQty('e5f',1)">+</button>
             </div>
@@ -927,46 +931,41 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Curry Chicken</div>
             <div class="idesc">Caribbean-seasoned chicken with Trinidad curry powder, curried potatoes & chickpeas.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$140</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('e6f',-1)">−</button>
+              <button class="qb" onclick="changeQty('e6f',-1)">&#x2212;</button>
               <div class="qd" id="qty-e6f">1</div>
               <button class="qb" onclick="changeQty('e6f',1)">+</button>
             </div>
           </div>
         </div>
-        
         <div class="item" id="row-e8f" onclick="toggleItem('e8f','ent-full')">
           <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="iinfo">
             <div class="iname">Curry Shrimp</div>
             <div class="idesc">Caribbean-seasoned shrimp with Trinidad curry, potatoes & chickpeas.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$185</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('e8f',-1)">−</button>
+              <button class="qb" onclick="changeQty('e8f',-1)">&#x2212;</button>
               <div class="qd" id="qty-e8f">1</div>
               <button class="qb" onclick="changeQty('e8f',1)">+</button>
             </div>
           </div>
         </div>
-        
         <div class="item" id="row-e12f" onclick="toggleItem('e12f','ent-full')">
           <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="iinfo">
             <div class="iname">Crab Mac & Cheese</div>
             <div class="idesc">Lump crab, aged cheddar & a blend of cheeses baked to creamy golden perfection using a pasta of your choice.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$140</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('e12f',-1)">−</button>
+              <button class="qb" onclick="changeQty('e12f',-1)">&#x2212;</button>
               <div class="qd" id="qty-e12f">1</div>
               <button class="qb" onclick="changeQty('e12f',1)">+</button>
             </div>
@@ -983,29 +982,27 @@ input[type="radio"] { cursor: pointer; }
         <div class="item" id="row-e13f" onclick="toggleItem('e13f','ent-full')">
           <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="iinfo">
-            <div class="iname">Caribbean Cauliflower ★</div>
+            <div class="iname">Caribbean Cauliflower</div>
             <div class="idesc">Whole roasted cauliflower in signature jerk blend or Caribbean dry rub, served with mango salsa & coconut rice.</div>
-            <div class="ivegan">★ Vegan / Vegetarian option</div>
+            <div class="ivegan">&#x2605; Vegan / Vegetarian option</div>
           </div>
           <div class="iright">
             <div class="iprice">$110</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('e13f',-1)">−</button>
+              <button class="qb" onclick="changeQty('e13f',-1)">&#x2212;</button>
               <div class="qd" id="qty-e13f">1</div>
               <button class="qb" onclick="changeQty('e13f',1)">+</button>
             </div>
           </div>
         </div>
 </div>
-
-
 <div class="pan-section">
   <div class="pan-hdr half-hdr">
     <div class="pan-hdr-left">
-      <div class="pan-icon">&#x1F33D;</div>
+      <div class="pan-icon">Sides</div>
       <div>
-        <div class="pan-title">SIDES &mdash; Half Pan</div>
-        <div class="pan-serves">Serves 15&ndash;20</div>
+        <div class="pan-title">SIDES - Half Pan</div>
+        <div class="pan-serves">Serves 15-20</div>
       </div>
     </div>
     <div class="pan-count" id="badge-sid-half">0 selected</div>
@@ -1015,12 +1012,11 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Collard Greens</div>
             <div class="idesc">Hand-picked greens slow-cooked in smoked turkey.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$65</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('si1h',-1)">−</button>
+              <button class="qb" onclick="changeQty('si1h',-1)">&#x2212;</button>
               <div class="qd" id="qty-si1h">1</div>
               <button class="qb" onclick="changeQty('si1h',1)">+</button>
             </div>
@@ -1031,29 +1027,26 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Green Beans</div>
             <div class="idesc">Cut green beans seasoned & simmered in smoked turkey.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$65</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('si2h',-1)">−</button>
+              <button class="qb" onclick="changeQty('si2h',-1)">&#x2212;</button>
               <div class="qd" id="qty-si2h">1</div>
               <button class="qb" onclick="changeQty('si2h',1)">+</button>
             </div>
           </div>
         </div>
-        
         <div class="item" id="row-si5h" onclick="toggleItem('si5h','sid-half')">
           <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="iinfo">
             <div class="iname">Peas & Rice</div>
             <div class="idesc">Seasoned peas and rice, Caribbean style.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$55</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('si5h',-1)">−</button>
+              <button class="qb" onclick="changeQty('si5h',-1)">&#x2212;</button>
               <div class="qd" id="qty-si5h">1</div>
               <button class="qb" onclick="changeQty('si5h',1)">+</button>
             </div>
@@ -1064,12 +1057,11 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Plain Rice</div>
             <div class="idesc">Steamed white rice.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$40</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('si6h',-1)">−</button>
+              <button class="qb" onclick="changeQty('si6h',-1)">&#x2212;</button>
               <div class="qd" id="qty-si6h">1</div>
               <button class="qb" onclick="changeQty('si6h',1)">+</button>
             </div>
@@ -1080,12 +1072,11 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Mac & Cheese</div>
             <div class="idesc">Aged cheddar & a blend of cheeses baked to creamy golden perfection using a pasta of your choice.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$65</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('si7h',-1)">−</button>
+              <button class="qb" onclick="changeQty('si7h',-1)">&#x2212;</button>
               <div class="qd" id="qty-si7h">1</div>
               <button class="qb" onclick="changeQty('si7h',1)">+</button>
             </div>
@@ -1099,33 +1090,30 @@ input[type="radio"] { cursor: pointer; }
             <option value="shells">Shells</option>
           </select>
         </div>
-        
-        
         <div class="item" id="row-si11h" onclick="toggleItem('si11h','sid-half')">
           <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="iinfo">
-            <div class="iname">Butternut Squash in Roasted Garlic Sauce ★</div>
+            <div class="iname">Butternut Squash in Roasted Garlic Sauce</div>
             <div class="idesc">Tender roasted butternut squash in a velvety roasted garlic sauce. Fully vegan.</div>
-            <div class="ivegan">★ Vegan / Vegetarian option</div>
+            <div class="ivegan">&#x2605; Vegan / Vegetarian option</div>
           </div>
           <div class="iright">
             <div class="iprice">$60</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('si11h',-1)">−</button>
+              <button class="qb" onclick="changeQty('si11h',-1)">&#x2212;</button>
               <div class="qd" id="qty-si11h">1</div>
               <button class="qb" onclick="changeQty('si11h',1)">+</button>
             </div>
           </div>
         </div>
 </div>
-
 <div class="pan-section">
   <div class="pan-hdr full-hdr">
     <div class="pan-hdr-left">
-      <div class="pan-icon">&#x1F33D;</div>
+      <div class="pan-icon">Sides</div>
       <div>
-        <div class="pan-title">SIDES &mdash; Full Pan</div>
-        <div class="pan-serves">Serves 25&ndash;35</div>
+        <div class="pan-title">SIDES - Full Pan</div>
+        <div class="pan-serves">Serves 25-35</div>
       </div>
     </div>
     <div class="pan-count" id="badge-sid-full">0 selected</div>
@@ -1135,12 +1123,11 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Collard Greens</div>
             <div class="idesc">Hand-picked greens slow-cooked in smoked turkey.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$90</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('si1f',-1)">−</button>
+              <button class="qb" onclick="changeQty('si1f',-1)">&#x2212;</button>
               <div class="qd" id="qty-si1f">1</div>
               <button class="qb" onclick="changeQty('si1f',1)">+</button>
             </div>
@@ -1151,29 +1138,26 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Green Beans</div>
             <div class="idesc">Cut green beans seasoned & simmered in smoked turkey.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$80</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('si2f',-1)">−</button>
+              <button class="qb" onclick="changeQty('si2f',-1)">&#x2212;</button>
               <div class="qd" id="qty-si2f">1</div>
               <button class="qb" onclick="changeQty('si2f',1)">+</button>
             </div>
           </div>
         </div>
-        
         <div class="item" id="row-si5f" onclick="toggleItem('si5f','sid-full')">
           <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="iinfo">
             <div class="iname">Peas & Rice</div>
             <div class="idesc">Seasoned peas and rice, Caribbean style.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$80</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('si5f',-1)">−</button>
+              <button class="qb" onclick="changeQty('si5f',-1)">&#x2212;</button>
               <div class="qd" id="qty-si5f">1</div>
               <button class="qb" onclick="changeQty('si5f',1)">+</button>
             </div>
@@ -1184,12 +1168,11 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Plain Rice</div>
             <div class="idesc">Steamed white rice.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$50</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('si6f',-1)">−</button>
+              <button class="qb" onclick="changeQty('si6f',-1)">&#x2212;</button>
               <div class="qd" id="qty-si6f">1</div>
               <button class="qb" onclick="changeQty('si6f',1)">+</button>
             </div>
@@ -1200,12 +1183,11 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Mac & Cheese</div>
             <div class="idesc">Aged cheddar & a blend of cheeses baked to creamy golden perfection using a pasta of your choice.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$100</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('si7f',-1)">−</button>
+              <button class="qb" onclick="changeQty('si7f',-1)">&#x2212;</button>
               <div class="qd" id="qty-si7f">1</div>
               <button class="qb" onclick="changeQty('si7f',1)">+</button>
             </div>
@@ -1219,32 +1201,29 @@ input[type="radio"] { cursor: pointer; }
             <option value="shells">Shells</option>
           </select>
         </div>
-        
-        
         <div class="item" id="row-si11f" onclick="toggleItem('si11f','sid-full')">
           <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="iinfo">
-            <div class="iname">Butternut Squash in Roasted Garlic Sauce ★</div>
+            <div class="iname">Butternut Squash in Roasted Garlic Sauce</div>
             <div class="idesc">Tender roasted butternut squash in a velvety roasted garlic sauce. Fully vegan.</div>
-            <div class="ivegan">★ Vegan / Vegetarian option</div>
+            <div class="ivegan">&#x2605; Vegan / Vegetarian option</div>
           </div>
           <div class="iright">
             <div class="iprice">$85</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('si11f',-1)">−</button>
+              <button class="qb" onclick="changeQty('si11f',-1)">&#x2212;</button>
               <div class="qd" id="qty-si11f">1</div>
               <button class="qb" onclick="changeQty('si11f',1)">+</button>
             </div>
           </div>
         </div>
 </div>
-
 <div class="pan-section">
   <div class="pan-hdr doz-hdr">
     <div class="pan-hdr-left">
-      <div class="pan-icon">&#x1F33D;</div>
+      <div class="pan-icon">Sides</div>
       <div>
-        <div class="pan-title">SIDES &mdash; By the Dozen</div>
+        <div class="pan-title">SIDES - By the Dozen</div>
         <div class="pan-serves">Per dozen</div>
       </div>
     </div>
@@ -1255,26 +1234,23 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Drop Biscuits</div>
             <div class="idesc">Golden, fluffy drop biscuits. Served with berry jelly or butter.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$28/dz</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('si9d',-1)">−</button>
+              <button class="qb" onclick="changeQty('si9d',-1)">&#x2212;</button>
               <div class="qd" id="qty-si9d">1</div>
               <button class="qb" onclick="changeQty('si9d',1)">+</button>
             </div>
           </div>
         </div>
 </div>
-
-
 <div class="pan-section">
   <div class="pan-hdr doz-hdr">
     <div class="pan-hdr-left">
-      <div class="pan-icon">&#x1F370;</div>
+      <div class="pan-icon">Desserts</div>
       <div>
-        <div class="pan-title">DESSERTS &mdash; By the Dozen</div>
+        <div class="pan-title">DESSERTS - By the Dozen</div>
         <div class="pan-serves">Per dozen</div>
       </div>
     </div>
@@ -1285,12 +1261,11 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Brownies</div>
             <div class="idesc">Fudgy chocolate squares.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$40/dz</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('d1d',-1)">−</button>
+              <button class="qb" onclick="changeQty('d1d',-1)">&#x2212;</button>
               <div class="qd" id="qty-d1d">1</div>
               <button class="qb" onclick="changeQty('d1d',1)">+</button>
             </div>
@@ -1301,12 +1276,11 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Assorted Cookies</div>
             <div class="idesc">Chocolate chip, oatmeal & toffee graham cracker cookies.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$35/dz</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('d2d',-1)">−</button>
+              <button class="qb" onclick="changeQty('d2d',-1)">&#x2212;</button>
               <div class="qd" id="qty-d2d">1</div>
               <button class="qb" onclick="changeQty('d2d',1)">+</button>
             </div>
@@ -1317,25 +1291,23 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Cheesecake Dessert Shooters</div>
             <div class="idesc">Layered graham cracker crust & fruit filling. Choose: cherry, strawberry, apple, or blueberry.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$40/dz</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('d6d',-1)">−</button>
+              <button class="qb" onclick="changeQty('d6d',-1)">&#x2212;</button>
               <div class="qd" id="qty-d6d">1</div>
               <button class="qb" onclick="changeQty('d6d',1)">+</button>
             </div>
           </div>
         </div>
 </div>
-
 <div class="pan-section">
   <div class="pan-hdr pink-hdr">
     <div class="pan-hdr-left">
-      <div class="pan-icon">&#x1F370;</div>
+      <div class="pan-icon">Desserts</div>
       <div>
-        <div class="pan-title">DESSERTS &mdash; Cakes &amp; Cobblers</div>
+        <div class="pan-title">DESSERTS - Cakes &amp; Cobblers</div>
         <div class="pan-serves">Per item</div>
       </div>
     </div>
@@ -1346,12 +1318,11 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">Golden Butter Pound Cake</div>
             <div class="idesc">A delicious and moist 10-inch round cake baked to perfection.</div>
-            
           </div>
           <div class="iright">
-            <div class="iprice">$50 (10" round)</div>
+            <div class="iprice">$50 (10 inch round)</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('d3o',-1)">−</button>
+              <button class="qb" onclick="changeQty('d3o',-1)">&#x2212;</button>
               <div class="qd" id="qty-d3o">1</div>
               <button class="qb" onclick="changeQty('d3o',1)">+</button>
             </div>
@@ -1362,12 +1333,11 @@ input[type="radio"] { cursor: pointer; }
           <div class="iinfo">
             <div class="iname">5 Flavor Cake</div>
             <div class="idesc">Hand-whipped 10-inch round cake infused with liqueur, vanilla & a special blend of spices.</div>
-            
           </div>
           <div class="iright">
-            <div class="iprice">$65 (10" round)</div>
+            <div class="iprice">$65 (10 inch round)</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('d4o',-1)">−</button>
+              <button class="qb" onclick="changeQty('d4o',-1)">&#x2212;</button>
               <div class="qd" id="qty-d4o">1</div>
               <button class="qb" onclick="changeQty('d4o',1)">+</button>
             </div>
@@ -1376,14 +1346,13 @@ input[type="radio"] { cursor: pointer; }
         <div class="item" id="row-d5a" onclick="toggleItem('d5a','des-oth')">
           <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="iinfo">
-            <div class="iname">Peach Cobbler — Half Pan</div>
+            <div class="iname">Peach Cobbler - Half Pan</div>
             <div class="idesc">Warm peach cobbler with bourbon glaze & drop biscuit topping.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$40/half pan</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('d5a',-1)">−</button>
+              <button class="qb" onclick="changeQty('d5a',-1)">&#x2212;</button>
               <div class="qd" id="qty-d5a">1</div>
               <button class="qb" onclick="changeQty('d5a',1)">+</button>
             </div>
@@ -1392,14 +1361,13 @@ input[type="radio"] { cursor: pointer; }
         <div class="item" id="row-d5b" onclick="toggleItem('d5b','des-oth')">
           <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="iinfo">
-            <div class="iname">Peach Cobbler — Full Pan</div>
+            <div class="iname">Peach Cobbler - Full Pan</div>
             <div class="idesc">Warm peach cobbler with bourbon glaze & drop biscuit topping.</div>
-            
           </div>
           <div class="iright">
             <div class="iprice">$70/full pan</div>
             <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('d5b',-1)">−</button>
+              <button class="qb" onclick="changeQty('d5b',-1)">&#x2212;</button>
               <div class="qd" id="qty-d5b">1</div>
               <button class="qb" onclick="changeQty('d5b',1)">+</button>
             </div>
@@ -1407,27 +1375,23 @@ input[type="radio"] { cursor: pointer; }
         </div>
 </div>
 <style>.pink-hdr{background:var(--pink);}</style>
-
-
 <div class="summary-card">
-  <div class="sum-hdr">&#x1F4CB; Order Summary</div>
+  <div class="sum-hdr">Order Summary</div>
   <div class="sum-body">
     <div class="sum-empty" id="sum-empty">No items yet. Click any item to add it.</div>
     <div id="sum-lines"></div>
     <div id="sum-totals" style="display:none">
       <hr class="sdiv"/>
       <div class="srow"><span>Subtotal</span><span id="sub-v">$0.00</span></div>
-      <div class="srow"><span>Sales Tax (10%)</span><span id="tax-v">$0.00</span></div>
+      <div class="srow"><span>Sales Tax (6%)</span><span id="tax-v">$0.00</span></div>
       <div class="srow total"><span>Estimated Total</span><span id="tot-v">$0.00</span></div>
-      <div class="tax-note">Tax is an estimate &middot; Final invoice provided upon confirmation</div>
+      <div class="tax-note">Tax is an estimate. Final invoice provided upon confirmation.</div>
     </div>
     <button class="sub-btn" id="sub-btn" onclick="submitOrder()" disabled>Submit Order Request</button>
     <button class="clr-btn" onclick="clearAll()">Clear All Selections</button>
   </div>
 </div>
-
 </div>
-
 <div class="modal-ov" id="modal">
   <div class="modal">
     <div class="modal-ic">&#x2705;</div>
@@ -1436,18 +1400,17 @@ input[type="radio"] { cursor: pointer; }
     <div id="modal-order-summary" style="background:#F7F4EE;border-radius:8px;padding:12px 14px;margin:12px 0;text-align:left;font-size:.82rem;max-height:200px;overflow-y:auto;line-height:1.6;"></div>
     <div style="background:#E8F5E9;border-radius:8px;padding:10px 14px;margin:8px 0 16px;">
       <div style="display:flex;justify-content:space-between;font-size:.84rem;color:#666;margin-bottom:3px;"><span>Subtotal</span><span id="modal-sub"></span></div>
-      <div style="display:flex;justify-content:space-between;font-size:.84rem;color:#666;margin-bottom:3px;"><span>Est. Tax (10%)</span><span id="modal-tax"></span></div>
+      <div style="display:flex;justify-content:space-between;font-size:.84rem;color:#666;margin-bottom:3px;"><span>Est. Tax (6%)</span><span id="modal-tax"></span></div>
       <div style="display:flex;justify-content:space-between;font-size:1rem;font-weight:700;color:#2D5016;border-top:2px solid #C8E6C9;padding-top:6px;margin-top:4px;"><span>Total Due</span><span id="modal-total"></span></div>
     </div>
-    <a id="pay-btn" href="#" target="_blank" style="display:block;width:100%;padding:13px;background:#2D5016;color:#fff;border:none;border-radius:8px;font-size:.95rem;font-weight:700;text-align:center;text-decoration:none;margin-bottom:10px;font-family:inherit;box-sizing:border-box;">💳 Proceed to Secure Payment</a>
-    
-    
+    <a id="pay-btn" href="#" target="_blank" style="display:block;width:100%;padding:13px;background:#2D5016;color:#fff;border:none;border-radius:8px;font-size:.95rem;font-weight:700;text-align:center;text-decoration:none;margin-bottom:10px;font-family:inherit;box-sizing:border-box;">Proceed to Secure Payment</a>
+    <p style="font-size:.72rem;color:#999;margin-top:10px;">Secure payment powered by Square. Questions? Call 917-334-9038</p>
   </div>
 </div>
 <script>
-const TAX = 0.10;
-const ITEMS = [{"id": "a1h", "name": "Sweet & Spicy Meatballs", "price": 55, "desc": "Beef or turkey meatballs simmered in signature red pepper jelly gravy."}, {"id": "a2h", "name": "Mac & Cheese Bites", "price": 50, "desc": "Bite-sized cheesy baked macaroni bites."}, {"id": "a3h", "name": "Wingettes", "price": 70, "desc": "Seasoned wings fried or baked, with blue cheese or ranch dip."}, {"id": "a5h", "name": "Marinated Drumettes", "price": 85, "desc": "Seasoned leg pieces smothered in sweet & savory house glaze."}, {"id": "a1f", "name": "Sweet & Spicy Meatballs", "price": 100, "desc": "Beef or turkey meatballs simmered in signature red pepper jelly gravy."}, {"id": "a2f", "name": "Mac & Cheese Bites", "price": 75, "desc": "Bite-sized cheesy baked macaroni bites."}, {"id": "a3f", "name": "Wingettes", "price": 110, "desc": "Seasoned wings fried or baked, with blue cheese or ranch dip."}, {"id": "a5f", "name": "Marinated Drumettes", "price": 150, "desc": "Seasoned leg pieces smothered in sweet & savory house glaze."}, {"id": "a6da", "name": "Shrimp Salad Mini Sandwiches", "price": 90, "desc": "Creamy shrimp salad on mini croissants with shaved red onion.", "priceLbl": "$90/dz"}, {"id": "a6db", "name": "Salmon Salad Mini Sandwiches", "price": 90, "desc": "Creamy salmon salad on mini croissants with shaved red onion.", "priceLbl": "$90/dz"}, {"id": "a9a", "name": "Pastellitos \u2014 Cheese", "price": 25, "desc": "Crispy savory pastry shells filled with cheese, fried golden.", "priceLbl": "$25/dz"}, {"id": "a9b", "name": "Pastellitos \u2014 Beef", "price": 35, "desc": "Crispy savory pastry shells filled with seasoned beef, fried golden.", "priceLbl": "$35/dz"}, {"id": "a10a", "name": "Cajun Corn \u2014 Off the Cob (Half Pan, Serves 15\u201320)", "price": 60, "desc": "Creamy cajun-seasoned corn served off the cob in a rich, velvety sauce.", "priceLbl": "$60 (half pan)"}, {"id": "a10b", "name": "Cajun Corn \u2014 Off the Cob (Full Pan, Serves 25\u201335)", "price": 95, "desc": "Creamy cajun-seasoned corn served off the cob in a rich, velvety sauce.", "priceLbl": "$95 (full pan)"}, {"id": "s1", "name": "Avocado Chicken Salad \u2014 Serves 15\u201320", "price": 95, "desc": "Creamy chicken salad with diced avocado on sunflower bread. Available with tarragon or curried flavor."}, {"id": "s1f", "name": "Avocado Chicken Salad \u2014 Serves 25\u201335", "price": 155, "desc": "Creamy chicken salad with diced avocado on sunflower bread. Available with tarragon or curried flavor."}, {"id": "s4", "name": "Maryland Crab Soup \u2014 Serves 15\u201320", "price": 90, "desc": "Hearty Maryland crab with crab claws & lump crab meat, fresh mixed vegetables & a signature spice blend simmered in homemade stock."}, {"id": "s4f", "name": "Maryland Crab Soup \u2014 Serves 25\u201335", "price": 125, "desc": "Hearty Maryland crab with crab claws & lump crab meat, fresh mixed vegetables & a signature spice blend simmered in homemade stock."}, {"id": "e1h", "name": "Fried or Baked Chicken", "price": 95, "desc": "Marinated white & dark meat chicken fried or baked to perfection. (~40 pcs)"}, {"id": "e2h", "name": "Chicken Rasta Pasta", "price": 100, "desc": "Creamy jerk-seasoned pasta tossed with saut\u00e9ed peppers & tender chicken."}, {"id": "e3h", "name": "Seafood Rasta Pasta", "price": 110, "desc": "Creamy jerk-seasoned pasta with crab, shrimp & salmon."}, {"id": "e4h", "name": "Stewed Chicken", "price": 65, "desc": "Slow-braised chicken in a rich, savory brown stew sauce."}, {"id": "e5h", "name": "Roast Pork Shoulder", "price": 80, "desc": "Marinated pork shoulder slow-roasted for a perfectly tender & juicy result."}, {"id": "e6h", "name": "Curry Chicken", "price": 90, "desc": "Caribbean-seasoned chicken with Trinidad curry powder, curried potatoes & chickpeas."}, {"id": "e8h", "name": "Curry Shrimp", "price": 120, "desc": "Caribbean-seasoned shrimp with Trinidad curry, potatoes & chickpeas."}, {"id": "e13h", "name": "Caribbean Cauliflower \u2605", "price": 65, "desc": "Whole roasted cauliflower in signature jerk blend or Caribbean dry rub, served with mango salsa & coconut rice.", "vegan": true}, {"id": "e1f", "name": "Fried or Baked Chicken", "price": 175, "desc": "Marinated white & dark meat chicken fried or baked to perfection. (~80 pcs)"}, {"id": "e2f", "name": "Chicken Rasta Pasta", "price": 120, "desc": "Creamy jerk-seasoned pasta tossed with saut\u00e9ed peppers & tender chicken."}, {"id": "e3f", "name": "Seafood Rasta Pasta", "price": 175, "desc": "Creamy jerk-seasoned pasta with crab, shrimp & salmon."}, {"id": "e4f", "name": "Stewed Chicken", "price": 110, "desc": "Slow-braised chicken in a rich, savory brown stew sauce."}, {"id": "e5f", "name": "Roast Pork Shoulder", "price": 140, "desc": "Marinated pork shoulder slow-roasted for a perfectly tender & juicy result."}, {"id": "e6f", "name": "Curry Chicken", "price": 140, "desc": "Caribbean-seasoned chicken with Trinidad curry powder, curried potatoes & chickpeas."}, {"id": "e8f", "name": "Curry Shrimp", "price": 185, "desc": "Caribbean-seasoned shrimp with Trinidad curry, potatoes & chickpeas."}, {"id": "e12f", "name": "Crab Mac & Cheese", "price": 140, "desc": "Lump crab, aged cheddar & a blend of cheeses baked to creamy golden perfection using a pasta of your choice.", "pasta": true}, {"id": "e13f", "name": "Caribbean Cauliflower \u2605", "price": 110, "desc": "Whole roasted cauliflower in signature jerk blend or Caribbean dry rub, served with mango salsa & coconut rice.", "vegan": true}, {"id": "si1h", "name": "Collard Greens", "price": 65, "desc": "Hand-picked greens slow-cooked in smoked turkey."}, {"id": "si2h", "name": "Green Beans", "price": 65, "desc": "Cut green beans seasoned & simmered in smoked turkey."}, {"id": "si5h", "name": "Peas & Rice", "price": 55, "desc": "Seasoned peas and rice, Caribbean style."}, {"id": "si6h", "name": "Plain Rice", "price": 40, "desc": "Steamed white rice."}, {"id": "si7h", "name": "Mac & Cheese", "price": 65, "desc": "Aged cheddar & a blend of cheeses baked to creamy golden perfection using a pasta of your choice.", "pasta": true}, {"id": "si11h", "name": "Butternut Squash in Roasted Garlic Sauce \u2605", "price": 60, "desc": "Tender roasted butternut squash in a velvety roasted garlic sauce. Fully vegan.", "vegan": true}, {"id": "si1f", "name": "Collard Greens", "price": 90, "desc": "Hand-picked greens slow-cooked in smoked turkey."}, {"id": "si2f", "name": "Green Beans", "price": 80, "desc": "Cut green beans seasoned & simmered in smoked turkey."}, {"id": "si5f", "name": "Peas & Rice", "price": 80, "desc": "Seasoned peas and rice, Caribbean style."}, {"id": "si6f", "name": "Plain Rice", "price": 50, "desc": "Steamed white rice."}, {"id": "si7f", "name": "Mac & Cheese", "price": 100, "desc": "Aged cheddar & a blend of cheeses baked to creamy golden perfection using a pasta of your choice.", "pasta": true}, {"id": "si11f", "name": "Butternut Squash in Roasted Garlic Sauce \u2605", "price": 85, "desc": "Tender roasted butternut squash in a velvety roasted garlic sauce. Fully vegan.", "vegan": true}, {"id": "si9d", "name": "Drop Biscuits", "price": 28, "desc": "Golden, fluffy drop biscuits. Served with berry jelly or butter.", "priceLbl": "$28/dz"}, {"id": "d1d", "name": "Brownies", "price": 40, "desc": "Fudgy chocolate squares.", "priceLbl": "$60 (half pan)"}, {"id": "d2d", "name": "Assorted Cookies", "price": 35, "desc": "Chocolate chip, oatmeal & toffee graham cracker cookies.", "priceLbl": "$35/dz"}, {"id": "d6d", "name": "Cheesecake Dessert Shooters", "price": 40, "desc": "Layered graham cracker crust & fruit filling. Choose: cherry, strawberry, apple, or blueberry.", "priceLbl": "$60 (half pan)"}, {"id": "d3o", "name": "Golden Butter Pound Cake", "price": 50, "desc": "A delicious and moist 10-inch round cake baked to perfection.", "priceLbl": "$50 (10\" round)"}, {"id": "d4o", "name": "5 Flavor Cake", "price": 65, "desc": "Hand-whipped 10-inch round cake infused with liqueur, vanilla & a special blend of spices.", "priceLbl": "$65 (10\" round)"}, {"id": "d5a", "name": "Peach Cobbler \u2014 Half Pan", "price": 40, "desc": "Warm peach cobbler with bourbon glaze & drop biscuit topping.", "priceLbl": "$40/half pan"}, {"id": "d5b", "name": "Peach Cobbler \u2014 Full Pan", "price": 70, "desc": "Warm peach cobbler with bourbon glaze & drop biscuit topping.", "priceLbl": "$70/full pan"}];
-const SECTIONS = {"app-half": ["a1h", "a2h", "a3h", "a5h"], "app-full": ["a1f", "a2f", "a3f", "a5f"], "app-doz": ["a6da", "a6db", "a9a", "a9b", "a10a", "a10b"], "sss": ["s1", "s1f", "s4", "s4f"], "ent-half": ["e1h", "e2h", "e3h", "e4h", "e5h", "e6h", "e8h", "e13h"], "ent-full": ["e1f", "e2f", "e3f", "e4f", "e5f", "e6f", "e8f", "e12f", "e13f"], "sid-half": ["si1h", "si2h", "si3h", "si5h", "si6h", "si7h", "si8h", "si11h"], "sid-full": ["si1f", "si2f", "si3f", "si5f", "si6f", "si7f", "si8f", "si11f"], "sid-doz": ["si9d"], "des-doz": ["d1d", "d2d", "d6d"], "des-oth": ["d3o", "d4o", "d5a", "d5b"]};
+const TAX = 0.06;
+const ITEMS = [{"id": "rum1", "name": "Rum Punch - 1 Gallon", "price": 50, "desc": "House-made rum punch, serves approximately 10-12 guests.", "priceLbl": "$50/gal", "maxQty": 4}, {"id": "rum5", "name": "Rum Punch - 5 Gallons", "price": 200, "desc": "House-made rum punch, serves approximately 50-60 guests.", "priceLbl": "$200/5gal", "maxQty": 3}, {"id": "rum10", "name": "Rum Punch - 10 Gallons", "price": 350, "desc": "House-made rum punch, serves approximately 100-120 guests.", "priceLbl": "$350/10gal", "maxQty": 3}, {"id": "a1h", "name": "Sweet & Spicy Meatballs", "price": 55, "desc": "Beef or turkey meatballs simmered in signature red pepper jelly gravy."}, {"id": "a2h", "name": "Mac & Cheese Bites", "price": 50, "desc": "Bite-sized cheesy baked macaroni bites."}, {"id": "a3h", "name": "Wingettes", "price": 70, "desc": "Seasoned wings fried or baked, with blue cheese or ranch dip."}, {"id": "a5h", "name": "Marinated Drumettes", "price": 85, "desc": "Seasoned leg pieces smothered in sweet & savory house glaze."}, {"id": "a1f", "name": "Sweet & Spicy Meatballs", "price": 100, "desc": "Beef or turkey meatballs simmered in signature red pepper jelly gravy."}, {"id": "a2f", "name": "Mac & Cheese Bites", "price": 75, "desc": "Bite-sized cheesy baked macaroni bites."}, {"id": "a3f", "name": "Wingettes", "price": 110, "desc": "Seasoned wings fried or baked, with blue cheese or ranch dip."}, {"id": "a5f", "name": "Marinated Drumettes", "price": 150, "desc": "Seasoned leg pieces smothered in sweet & savory house glaze."}, {"id": "a6da", "name": "Shrimp Salad Mini Sandwiches", "price": 90, "desc": "Creamy shrimp salad on mini croissants with shaved red onion.", "priceLbl": "$90/dz"}, {"id": "a6db", "name": "Salmon Salad Mini Sandwiches", "price": 90, "desc": "Creamy salmon salad on mini croissants with shaved red onion.", "priceLbl": "$90/dz"}, {"id": "a9a", "name": "Pastellitos - Cheese", "price": 25, "desc": "Crispy savory pastry shells filled with cheese, fried golden.", "priceLbl": "$25/dz"}, {"id": "a9b", "name": "Pastellitos - Beef", "price": 35, "desc": "Crispy savory pastry shells filled with seasoned beef, fried golden.", "priceLbl": "$35/dz"}, {"id": "a10a", "name": "Cajun Corn - Off the Cob (Half Pan)", "price": 60, "desc": "Creamy cajun-seasoned corn served off the cob in a rich, velvety sauce.", "priceLbl": "$60 (half pan)"}, {"id": "a10b", "name": "Cajun Corn - Off the Cob (Full Pan)", "price": 95, "desc": "Creamy cajun-seasoned corn served off the cob in a rich, velvety sauce.", "priceLbl": "$95 (full pan)"}, {"id": "s1", "name": "Avocado Chicken Salad - Serves 15-20", "price": 95, "desc": "Creamy chicken salad with diced avocado on sunflower bread. Available with tarragon or curried flavor."}, {"id": "s1f", "name": "Avocado Chicken Salad - Serves 25-35", "price": 155, "desc": "Creamy chicken salad with diced avocado on sunflower bread. Available with tarragon or curried flavor."}, {"id": "s4", "name": "Maryland Crab Soup - Serves 15-20", "price": 90, "desc": "Hearty Maryland crab with crab claws & lump crab meat, fresh mixed vegetables & a signature spice blend simmered in homemade stock."}, {"id": "s4f", "name": "Maryland Crab Soup - Serves 25-35", "price": 125, "desc": "Hearty Maryland crab with crab claws & lump crab meat, fresh mixed vegetables & a signature spice blend simmered in homemade stock."}, {"id": "e1h", "name": "Fried or Baked Chicken", "price": 95, "desc": "Marinated white & dark meat chicken fried or baked to perfection. (~40 pcs)"}, {"id": "e2h", "name": "Chicken Rasta Pasta", "price": 100, "desc": "Creamy jerk-seasoned pasta tossed with sauteed peppers & tender chicken."}, {"id": "e3h", "name": "Seafood Rasta Pasta", "price": 110, "desc": "Creamy jerk-seasoned pasta with crab, shrimp & salmon."}, {"id": "e4h", "name": "Stewed Chicken", "price": 65, "desc": "Slow-braised chicken in a rich, savory brown stew sauce."}, {"id": "e5h", "name": "Roast Pork Shoulder", "price": 80, "desc": "Marinated pork shoulder slow-roasted for a perfectly tender & juicy result."}, {"id": "e6h", "name": "Curry Chicken", "price": 90, "desc": "Caribbean-seasoned chicken with Trinidad curry powder, curried potatoes & chickpeas."}, {"id": "e8h", "name": "Curry Shrimp", "price": 120, "desc": "Caribbean-seasoned shrimp with Trinidad curry, potatoes & chickpeas."}, {"id": "e13h", "name": "Caribbean Cauliflower", "price": 65, "desc": "Whole roasted cauliflower in signature jerk blend or Caribbean dry rub, served with mango salsa & coconut rice.", "vegan": true}, {"id": "e1f", "name": "Fried or Baked Chicken", "price": 175, "desc": "Marinated white & dark meat chicken fried or baked to perfection. (~80 pcs)"}, {"id": "e2f", "name": "Chicken Rasta Pasta", "price": 120, "desc": "Creamy jerk-seasoned pasta tossed with sauteed peppers & tender chicken."}, {"id": "e3f", "name": "Seafood Rasta Pasta", "price": 175, "desc": "Creamy jerk-seasoned pasta with crab, shrimp & salmon."}, {"id": "e4f", "name": "Stewed Chicken", "price": 110, "desc": "Slow-braised chicken in a rich, savory brown stew sauce."}, {"id": "e5f", "name": "Roast Pork Shoulder", "price": 140, "desc": "Marinated pork shoulder slow-roasted for a perfectly tender & juicy result."}, {"id": "e6f", "name": "Curry Chicken", "price": 140, "desc": "Caribbean-seasoned chicken with Trinidad curry powder, curried potatoes & chickpeas."}, {"id": "e8f", "name": "Curry Shrimp", "price": 185, "desc": "Caribbean-seasoned shrimp with Trinidad curry, potatoes & chickpeas."}, {"id": "e12f", "name": "Crab Mac & Cheese", "price": 140, "desc": "Lump crab, aged cheddar & a blend of cheeses baked to creamy golden perfection using a pasta of your choice.", "pasta": true}, {"id": "e13f", "name": "Caribbean Cauliflower", "price": 110, "desc": "Whole roasted cauliflower in signature jerk blend or Caribbean dry rub, served with mango salsa & coconut rice.", "vegan": true}, {"id": "si1h", "name": "Collard Greens", "price": 65, "desc": "Hand-picked greens slow-cooked in smoked turkey."}, {"id": "si2h", "name": "Green Beans", "price": 65, "desc": "Cut green beans seasoned & simmered in smoked turkey."}, {"id": "si5h", "name": "Peas & Rice", "price": 55, "desc": "Seasoned peas and rice, Caribbean style."}, {"id": "si6h", "name": "Plain Rice", "price": 40, "desc": "Steamed white rice."}, {"id": "si7h", "name": "Mac & Cheese", "price": 65, "desc": "Aged cheddar & a blend of cheeses baked to creamy golden perfection using a pasta of your choice.", "pasta": true}, {"id": "si11h", "name": "Butternut Squash in Roasted Garlic Sauce", "price": 60, "desc": "Tender roasted butternut squash in a velvety roasted garlic sauce. Fully vegan.", "vegan": true}, {"id": "si1f", "name": "Collard Greens", "price": 90, "desc": "Hand-picked greens slow-cooked in smoked turkey."}, {"id": "si2f", "name": "Green Beans", "price": 80, "desc": "Cut green beans seasoned & simmered in smoked turkey."}, {"id": "si5f", "name": "Peas & Rice", "price": 80, "desc": "Seasoned peas and rice, Caribbean style."}, {"id": "si6f", "name": "Plain Rice", "price": 50, "desc": "Steamed white rice."}, {"id": "si7f", "name": "Mac & Cheese", "price": 100, "desc": "Aged cheddar & a blend of cheeses baked to creamy golden perfection using a pasta of your choice.", "pasta": true}, {"id": "si11f", "name": "Butternut Squash in Roasted Garlic Sauce", "price": 85, "desc": "Tender roasted butternut squash in a velvety roasted garlic sauce. Fully vegan.", "vegan": true}, {"id": "si9d", "name": "Drop Biscuits", "price": 28, "desc": "Golden, fluffy drop biscuits. Served with berry jelly or butter.", "priceLbl": "$28/dz"}, {"id": "d1d", "name": "Brownies", "price": 40, "desc": "Fudgy chocolate squares.", "priceLbl": "$40/dz"}, {"id": "d2d", "name": "Assorted Cookies", "price": 35, "desc": "Chocolate chip, oatmeal & toffee graham cracker cookies.", "priceLbl": "$35/dz"}, {"id": "d6d", "name": "Cheesecake Dessert Shooters", "price": 40, "desc": "Layered graham cracker crust & fruit filling. Choose: cherry, strawberry, apple, or blueberry.", "priceLbl": "$40/dz"}, {"id": "d3o", "name": "Golden Butter Pound Cake", "price": 50, "desc": "A delicious and moist 10-inch round cake baked to perfection.", "priceLbl": "$50 (10 inch round)"}, {"id": "d4o", "name": "5 Flavor Cake", "price": 65, "desc": "Hand-whipped 10-inch round cake infused with liqueur, vanilla & a special blend of spices.", "priceLbl": "$65 (10 inch round)"}, {"id": "d5a", "name": "Peach Cobbler - Half Pan", "price": 40, "desc": "Warm peach cobbler with bourbon glaze & drop biscuit topping.", "priceLbl": "$40/half pan"}, {"id": "d5b", "name": "Peach Cobbler - Full Pan", "price": 70, "desc": "Warm peach cobbler with bourbon glaze & drop biscuit topping.", "priceLbl": "$70/full pan"}];
+const SECTIONS = {"bevs": ["rum1", "rum5", "rum10"], "app-half": ["a1h", "a2h", "a3h", "a5h"], "app-full": ["a1f", "a2f", "a3f", "a5f"], "app-doz": ["a6da", "a6db", "a9a", "a9b", "a10a", "a10b"], "sss": ["s1", "s1f", "s4", "s4f"], "ent-half": ["e1h", "e2h", "e3h", "e4h", "e5h", "e6h", "e8h", "e13h"], "ent-full": ["e1f", "e2f", "e3f", "e4f", "e5f", "e6f", "e8f", "e12f", "e13f"], "sid-half": ["si1h", "si2h", "si5h", "si6h", "si7h", "si11h"], "sid-full": ["si1f", "si2f", "si5f", "si6f", "si7f", "si11f"], "sid-doz": ["si9d"], "des-doz": ["d1d", "d2d", "d6d"], "des-oth": ["d3o", "d4o", "d5a", "d5b"]};
 let order = {};
 
 function toggleItem(id, secKey) {
@@ -1480,6 +1443,13 @@ function changeQty(id, delta) {
     if (pd) pd.style.display = 'none';
     updateBadge(sk);
   } else {
+    // Enforce maxQty limit
+    const itemData = ITEMS.find(i => i.id === id);
+    const maxQty = itemData?.maxQty || 99;
+    if (nq > maxQty) {
+      alert('Maximum quantity for this item is ' + maxQty + '.');
+      return;
+    }
     order[id].qty = nq;
     const qd = document.getElementById('qty-'+id);
     if (qd) qd.textContent = nq;
@@ -1562,7 +1532,7 @@ function updateSummary() {
   const tot = sub + tax;
   document.getElementById('sub-v').textContent = '$'+sub.toFixed(2);
   document.getElementById('tax-v').textContent = taxExempt ? 'EXEMPT' : '$'+tax.toFixed(2);
-  document.querySelector('.srow:nth-child(2) span:first-child').textContent = taxExempt ? 'Sales Tax (Exempt)' : 'Sales Tax (10%)';
+  document.querySelector('.srow:nth-child(2) span:first-child').textContent = taxExempt ? 'Sales Tax (Exempt)' : 'Sales Tax (6%)';
   document.getElementById('tot-v').textContent = '$'+tot.toFixed(2);
 }
 
@@ -1627,7 +1597,7 @@ async function submitOrder() {
       name,phone,email,date,time,guests,
       orderDetails: buildOrderDetails(),
       taxExempt: taxExempt,
-      estimatedTotal: '$'+total.toFixed(2)+' (incl. est. 10% tax)',
+      estimatedTotal: '$'+total.toFixed(2)+' (incl. est. 6% tax)',
       specialRequests: notes,
     });
     if (result.success) {
@@ -1668,6 +1638,51 @@ async function submitOrder() {
     btn.disabled=false; btn.textContent='Submit Order Request';
   }
 }
+
+// ── Availability System ────────────────────────────────────────────────
+// Items marked unavailable are greyed out with "Unavailable" badge
+// Managed via admin panel (admin.html)
+let unavailableItems = JSON.parse(localStorage.getItem('db_unavailable') || '[]');
+
+function applyAvailability() {
+  ITEMS.forEach(item => {
+    const row = document.getElementById('row-'+item.id);
+    if (!row) return;
+    const isUnavail = unavailableItems.includes(item.id);
+    if (isUnavail) {
+      row.style.opacity = '0.45';
+      row.style.cursor  = 'not-allowed';
+      row.onclick = () => alert('Sorry, this item is currently unavailable.');
+      // Add unavailable badge if not already there
+      if (!row.querySelector('.unavail-badge')) {
+        const badge = document.createElement('div');
+        badge.className = 'unavail-badge';
+        badge.textContent = 'Unavailable';
+        badge.style.cssText = 'font-size:.7rem;font-weight:700;color:#fff;background:#C0392B;border-radius:10px;padding:2px 8px;margin-top:3px;display:inline-block;';
+        const iinfo = row.querySelector('.iinfo');
+        if (iinfo) iinfo.appendChild(badge);
+      }
+      // Remove from order if previously selected
+      if (order[item.id]) {
+        delete order[item.id];
+        row.className = 'item';
+        updateBadge(Object.values(SECTIONS).find(s => s.includes(item.id)) ? Object.keys(SECTIONS).find(k => SECTIONS[k].includes(item.id)) : '');
+        updateSummary();
+      }
+    } else {
+      row.style.opacity = '';
+      row.style.cursor  = '';
+      // Restore click handler
+      row.onclick = () => toggleItem(item.id, Object.keys(SECTIONS).find(k => SECTIONS[k].includes(item.id)));
+      // Remove unavailable badge
+      const badge = row.querySelector('.unavail-badge');
+      if (badge) badge.remove();
+    }
+  });
+}
+
+// Apply on load
+document.addEventListener('DOMContentLoaded', applyAvailability);
+
 </script>
-</body>
-</html>
+</body></html>
