@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>DoughBoy Concessions — Pool Catering Order Form</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --dg:#2D5016;--mg:#4A7C24;--lg:#8DB87A;--pg:#EAF4E0;
+  --gold:#C8960C;--gold-lt:#FFF8E1;--cream:#F7F4EE;--white:#fff;
+  --ch:#2C2C2C;--gray:#666;--lgray:#E8E8E8;
+  --orange:#E65100;--orange-bg:#FFF3E0;
+  --purple:#6A1B9A;--purple-bg:#F3E5F5;
+  --blue:#1565C0;--blue-bg:#E3F2FD;
+  --teal:#00695C;--teal-bg:#E0F2F1;
+  --red:#C0392B;--pink:#880E4F;
+  --r:10px;--sh:0 2px 12px rgba(0,0,0,.10);
+}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--cream);color:var(--ch);min-height:100vh;max-width:900px;margin:0 auto;}
+.hdr{background:var(--dg);padding:22px 24px 14px;text-align:center;}
+.hdr h1{font-family:Georgia,serif;font-size:1.8rem;font-weight:700;color:#fff;letter-spacing:.04em;margin-bottom:3px;}
+.hdr .tag{font-size:.78rem;color:var(--lg);letter-spacing:.16em;text-transform:uppercase;margin-bottom:6px;}
+.hdr .yr{font-size:.95rem;color:var(--gold);font-weight:700;margin-bottom:8px;}
+.hdr .cb{display:inline-flex;gap:18px;background:rgba(255,255,255,.08);border:1px solid var(--gold);border-radius:6px;padding:5px 14px;font-size:.78rem;color:var(--lg);}
+.hdr .cb strong{color:var(--gold);}
+.incl{background:var(--gold);text-align:center;padding:7px 16px;font-size:.81rem;color:#fff;font-weight:600;}
+.vn{background:#E8F5E9;border-left:4px solid var(--mg);padding:7px 16px;font-size:.78rem;color:var(--dg);text-align:center;}
+.wrap{padding:20px 16px 50px;}
+
+/* Customer info */
+.cust{background:#fff;border-radius:var(--r);box-shadow:var(--sh);padding:18px 20px 14px;margin-bottom:16px;}
+.sec-title{font-family:Georgia,serif;font-size:1rem;font-weight:700;color:var(--dg);border-bottom:2px solid var(--pg);padding-bottom:6px;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.frow{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;}
+.fg{display:flex;flex-direction:column;flex:1;min-width:140px;}
+.fg label{font-size:.71rem;font-weight:700;color:var(--gray);margin-bottom:3px;text-transform:uppercase;letter-spacing:.05em;}
+.fg input,.fg select,.fg textarea{border:1.5px solid var(--lgray);border-radius:6px;padding:7px 9px;font-size:.88rem;color:var(--ch);background:var(--cream);font-family:inherit;transition:border-color .2s;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--mg);background:#fff;}
+.fg textarea{resize:vertical;min-height:54px;}
+
+/* Pan / serving sections */
+.pan-section{background:#fff;border-radius:var(--r);box-shadow:var(--sh);margin-bottom:16px;overflow:hidden;}
+.pan-hdr{padding:10px 18px 9px;display:flex;align-items:center;justify-content:space-between;}
+.pan-hdr-left{display:flex;align-items:center;gap:10px;}
+.pan-icon{font-size:1.3rem;}
+.pan-title{font-family:Georgia,serif;font-size:1rem;font-weight:700;color:#fff;}
+.pan-serves{font-size:.74rem;color:rgba(255,255,255,.8);margin-top:1px;}
+.pan-count{background:rgba(255,255,255,.25);color:#fff;border-radius:10px;padding:2px 9px;font-size:.72rem;font-weight:700;}
+.half-hdr{background:var(--mg);}
+.full-hdr{background:var(--dg);}
+.doz-hdr{background:#8B6914;}
+.bev-hdr{background:var(--blue);}
+.byo-hdr{background:var(--orange);}
+.pool-hdr{background:var(--purple);}
+
+/* Category label inside pan section */
+.cat-label{background:#F8F8F8;border-top:1px solid #EEE;border-bottom:1px solid #EEE;padding:5px 18px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--gray);}
+
+/* Item rows */
+.item{display:grid;grid-template-columns:22px 1fr auto;align-items:center;gap:10px;padding:9px 18px;border-bottom:1px solid #F2F2F2;cursor:pointer;transition:background .12s;}
+.item:last-child{border-bottom:none;}
+.item:hover{background:var(--pg);}
+.item.sel{background:#E8F5E9;}
+.chk{width:20px;height:20px;border:2px solid var(--lg);border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:#fff;transition:all .15s;}
+.item.sel .chk{background:var(--mg);border-color:var(--mg);}
+.chk svg{display:none;}
+.item.sel .chk svg{display:block;}
+.iinfo{min-width:0;}
+.iname{font-weight:700;font-size:.87rem;color:var(--ch);margin-bottom:1px;}
+.idesc{font-size:.73rem;color:var(--gray);line-height:1.35;}
+.inote{font-size:.7rem;color:var(--orange);font-style:italic;margin-top:1px;}
+.ivegan{font-size:.69rem;color:var(--mg);font-weight:700;margin-top:1px;}
+.iright{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+.iprice{font-weight:700;font-size:.92rem;color:var(--gold);white-space:nowrap;}
+.qty-ctrl{display:flex;align-items:center;gap:3px;opacity:0;pointer-events:none;transition:opacity .15s;}
+.item.sel .qty-ctrl{opacity:1;pointer-events:auto;}
+.qb{width:23px;height:23px;border:1.5px solid var(--mg);border-radius:5px;background:#fff;color:var(--mg);font-size:.9rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.qb:hover{background:var(--mg);color:#fff;}
+.qd{min-width:18px;text-align:center;font-weight:700;font-size:.83rem;color:var(--dg);}
+
+/* Pasta selector */
+.pasta-sel{display:none;padding:6px 18px 8px 50px;background:#F5FDF5;border-bottom:1px solid #E8F5E9;}
+.item.sel + .pasta-sel{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.pasta-sel label{font-size:.76rem;font-weight:700;color:var(--dg);}
+.pasta-sel select{border:1.5px solid var(--mg);border-radius:5px;padding:3px 8px;font-size:.78rem;font-family:inherit;color:var(--ch);background:#fff;}
+
+/* Summary */
+.summary-card{background:#fff;border-radius:var(--r);box-shadow:var(--sh);margin-top:16px;overflow:hidden;}
+.sum-hdr{background:var(--dg);color:#fff;padding:12px 18px;font-family:Georgia,serif;font-size:.95rem;font-weight:700;}
+.sum-body{padding:12px 18px;}
+.sum-empty{text-align:center;color:var(--gray);font-size:.82rem;padding:14px 0;font-style:italic;}
+.sline{display:flex;justify-content:space-between;align-items:flex-start;padding:5px 0;border-bottom:1px solid #F5F5F5;gap:6px;}
+.sline:last-of-type{border-bottom:none;}
+.sline-name{font-size:.8rem;color:var(--ch);line-height:1.3;flex:1;}
+.sline-price{font-size:.84rem;font-weight:700;color:var(--gold);white-space:nowrap;}
+.rm{background:none;border:none;color:#bbb;cursor:pointer;font-size:.82rem;padding:0 2px;transition:color .15s;}
+.rm:hover{color:var(--red);}
+.sdiv{border:none;border-top:2px solid var(--pg);margin:8px 0;}
+.srow{display:flex;justify-content:space-between;padding:3px 0;font-size:.85rem;}
+.srow.total{font-size:1rem;font-weight:700;color:var(--dg);padding-top:7px;border-top:2px solid var(--dg);margin-top:3px;}
+.srow span:first-child{color:var(--gray);}
+.srow.total span{color:var(--dg);}
+.tax-note{font-size:.69rem;color:var(--gray);font-style:italic;margin-top:3px;text-align:right;}
+.sub-btn{width:100%;margin-top:14px;padding:12px;background:var(--dg);color:#fff;border:none;border-radius:8px;font-size:.92rem;font-weight:700;font-family:inherit;cursor:pointer;transition:background .2s;}
+.sub-btn:hover{background:var(--mg);}
+.sub-btn:disabled{background:#bbb;cursor:not-allowed;}
+.clr-btn{width:100%;margin-top:7px;padding:7px;background:transparent;color:var(--gray);border:1.5px solid var(--lgray);border-radius:8px;font-size:.79rem;font-family:inherit;cursor:pointer;transition:all .15s;}
+.clr-btn:hover{border-color:var(--red);color:var(--red);}
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:center;justify-content:center;}
+.modal-ov.open{display:flex;}
+.modal{background:#fff;border-radius:14px;padding:26px 22px;max-width:400px;width:90%;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.2);}
+.modal-ic{font-size:2.6rem;margin-bottom:8px;}
+.modal h2{font-family:Georgia,serif;color:var(--dg);margin-bottom:7px;}
+.modal p{color:var(--gray);font-size:.86rem;margin-bottom:16px;line-height:1.6;}
+.modal-cls{padding:9px 24px;background:var(--dg);color:#fff;border:none;border-radius:8px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit;}
+.modal-cls:hover{background:var(--mg);}
+.section-note{font-size:.73rem;color:var(--gray);padding:5px 18px 8px;font-style:italic;border-top:1px dashed #eee;}
+.section-note.vegan{color:var(--mg);}
+
+</style>
+</head>
+<body>
+<header class="hdr">
+  <h1>DoughBoy Concessions</h1>
+  <div class="tag">Deliciousness Done Right</div>
+  <div class="yr">✦ POOL &amp; CONCESSIONS CATERING — ORDER FORM ✦</div>
+  <div class="cb">
+    <span><strong>Phone:</strong> 917-334-9038</span>
+    <span><strong>Email:</strong> ctenterprises22@gmail.com</span>
+  </div>
+</header>
+<div class="incl">INCLUDED WITH EVERY ORDER: Serving utensils &amp; setup of up to 5 platters at no additional charge</div>
+
+<div class="wrap">
+
+<!-- Customer Info -->
+<div class="cust">
+  <div class="sec-title">📋 Your Information</div>
+  <div class="frow">
+    <div class="fg"><label>Name *</label><input type="text" id="cn" placeholder="Full name"/></div>
+    <div class="fg"><label>Phone *</label><input type="tel" id="cp" placeholder="(000) 000-0000"/></div>
+    <div class="fg"><label>Email</label><input type="email" id="ce" placeholder="your@email.com"/></div>
+  </div>
+  <div class="frow">
+    <div class="fg"><label>Event Date *</label><input type="date" id="cd"/></div>
+    <div class="fg" style="flex:.6"><label>Event Time</label><input type="time" id="ct"/></div>
+    <div class="fg"><label>Approx. Guest Count</label><input type="number" id="cg" placeholder="e.g. 25" min="1"/></div>
+  </div>
+  <div class="frow">
+    <div class="fg"><label>Special Requests / Dietary Needs</label><textarea id="cn2" placeholder="Allergies, substitutions, delivery notes…"></textarea></div>
+  </div>
+</div>
+
+<!-- ══ BUILD YOUR OWN ════════════════════════════════════════════════════ -->
+<div class="pan-section" style="overflow:hidden;border-radius:var(--r);box-shadow:var(--sh);margin-bottom:16px;">
+  <div class="pan-hdr" style="background:var(--dg);padding:10px 18px 9px;">
+    <div class="pan-hdr-left">
+      <div class="pan-icon">⭐</div>
+      <div><div class="pan-title">BUILD YOUR OWN PLATTER</div><div class="pan-serves">Mix &amp; match proteins · fries included · mozzarella stick upgrade available</div></div>
+    </div>
+  </div>
+</div>
+
+  <div class="pan-section">
+    <div class="pan-hdr byo-hdr" style="flex-direction:column;align-items:flex-start;gap:4px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;width:100%;">
+        <div class="pan-hdr-left">
+          <div class="pan-icon">⭐</div>
+          <div>
+            <div class="pan-title">BUILD YOUR OWN — 12 GUESTS</div>
+            <div class="pan-serves">Choose any 3 of 6 options · 1 side included</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="font-family:Georgia,serif;font-size:1.2rem;font-weight:700;color:#fff;">$195</div>
+          <button style="padding:4px 12px;border-radius:20px;border:2px solid #fff;background:transparent;color:#fff;font-weight:700;font-size:.75rem;cursor:pointer;font-family:inherit;"
+            onclick="toggleBYO(12)" id="byo12-btn">+ Add</button>
+        </div>
+      </div>
+    </div>
+    <div id="byo12-body" style="display:none;">
+      <div style="padding:8px 18px 4px;font-size:.76rem;color:var(--gray);font-style:italic;">
+        Select exactly 3 options below (upcharge items add to base price):
+      </div>
+      
+      <div class="item" id="byo12-opt-byo-hd" onclick="toggleBYOOpt(12,'byo-hd',0)">
+        <div class="chk" id="byo12-chk-byo-hd"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Hot Dogs</div>
+        </div>
+        <div class="iright">
+          <span style="font-size:.7rem;color:var(--mg);font-weight:700;"> Included</span>
+        </div>
+      </div>
+      <div class="item" id="byo12-opt-byo-bg" onclick="toggleBYOOpt(12,'byo-bg',0)">
+        <div class="chk" id="byo12-chk-byo-bg"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Burgers / Cheeseburgers</div>
+        </div>
+        <div class="iright">
+          <span style="font-size:.7rem;color:var(--mg);font-weight:700;"> Included</span>
+        </div>
+      </div>
+      <div class="item" id="byo12-opt-byo-ct" onclick="toggleBYOOpt(12,'byo-ct',0)">
+        <div class="chk" id="byo12-chk-byo-ct"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Chicken Tenders</div>
+        </div>
+        <div class="iright">
+          <span style="font-size:.7rem;color:var(--mg);font-weight:700;"> Included</span>
+        </div>
+      </div>
+      <div class="item" id="byo12-opt-byo-qv" onclick="toggleBYOOpt(12,'byo-qv',0)">
+        <div class="chk" id="byo12-chk-byo-qv"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Quesadillas — Cheese or Veggie</div>
+        </div>
+        <div class="iright">
+          <span style="font-size:.7rem;color:var(--mg);font-weight:700;"> Included</span>
+        </div>
+      </div>
+      <div class="item" id="byo12-opt-byo-qm" onclick="toggleBYOOpt(12,'byo-qm',12)">
+        <div class="chk" id="byo12-chk-byo-qm"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Quesadillas — Beef or Chicken</div>
+        </div>
+        <div class="iright">
+          <span style="font-size:.7rem;color:var(--red);font-weight:700;"> +$12</span>
+        </div>
+      </div>
+      <div class="item" id="byo12-opt-byo-ps" onclick="toggleBYOOpt(12,'byo-ps',12)">
+        <div class="chk" id="byo12-chk-byo-ps"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Veggie Pasta Salad <span style="font-weight:400;font-size:.76rem;color:var(--gray)">(½ foil pan, chilled)</span></div>
+        </div>
+        <div class="iright">
+          <span style="font-size:.7rem;color:var(--red);font-weight:700;"> +$12</span>
+        </div>
+      </div>
+      <div style="padding:5px 18px 4px;font-size:.76rem;color:var(--ch);border-top:1px dashed #eee;margin-top:4px;">
+        <strong>Included side:</strong> French Fries (½ foil pan)
+        &nbsp;&nbsp;
+        <label style="cursor:pointer;">
+          <input type="checkbox" id="byo12-mozz" onchange="updateBYOMozz(12)" style="margin-right:3px;"/>
+          Substitute Mozzarella Sticks <span style="color:var(--red);font-weight:700;">+$8</span>
+        </label>
+      </div>
+      <div id="byo12-status" style="padding:4px 18px 8px;font-size:.75rem;font-weight:700;color:var(--gray);">
+        0 of 3 options selected
+      </div>
+    </div>
+  </div>
+
+  <div class="pan-section">
+    <div class="pan-hdr pool-hdr" style="flex-direction:column;align-items:flex-start;gap:4px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;width:100%;">
+        <div class="pan-hdr-left">
+          <div class="pan-icon">⭐</div>
+          <div>
+            <div class="pan-title">BUILD YOUR OWN — 24 GUESTS</div>
+            <div class="pan-serves">Choose any 5 of 6 options · 1 side included</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="font-family:Georgia,serif;font-size:1.2rem;font-weight:700;color:#fff;">$410</div>
+          <button style="padding:4px 12px;border-radius:20px;border:2px solid #fff;background:transparent;color:#fff;font-weight:700;font-size:.75rem;cursor:pointer;font-family:inherit;"
+            onclick="toggleBYO(24)" id="byo24-btn">+ Add</button>
+        </div>
+      </div>
+    </div>
+    <div id="byo24-body" style="display:none;">
+      <div style="padding:8px 18px 4px;font-size:.76rem;color:var(--gray);font-style:italic;">
+        Select exactly 5 options below (upcharge items add to base price):
+      </div>
+      
+      <div class="item" id="byo24-opt-byo-hd" onclick="toggleBYOOpt(24,'byo-hd',0)">
+        <div class="chk" id="byo24-chk-byo-hd"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Hot Dogs</div>
+        </div>
+        <div class="iright">
+          <span style="font-size:.7rem;color:var(--mg);font-weight:700;"> Included</span>
+        </div>
+      </div>
+      <div class="item" id="byo24-opt-byo-bg" onclick="toggleBYOOpt(24,'byo-bg',0)">
+        <div class="chk" id="byo24-chk-byo-bg"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Burgers / Cheeseburgers</div>
+        </div>
+        <div class="iright">
+          <span style="font-size:.7rem;color:var(--mg);font-weight:700;"> Included</span>
+        </div>
+      </div>
+      <div class="item" id="byo24-opt-byo-ct" onclick="toggleBYOOpt(24,'byo-ct',0)">
+        <div class="chk" id="byo24-chk-byo-ct"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Chicken Tenders</div>
+        </div>
+        <div class="iright">
+          <span style="font-size:.7rem;color:var(--mg);font-weight:700;"> Included</span>
+        </div>
+      </div>
+      <div class="item" id="byo24-opt-byo-qv" onclick="toggleBYOOpt(24,'byo-qv',0)">
+        <div class="chk" id="byo24-chk-byo-qv"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Quesadillas — Cheese or Veggie</div>
+        </div>
+        <div class="iright">
+          <span style="font-size:.7rem;color:var(--mg);font-weight:700;"> Included</span>
+        </div>
+      </div>
+      <div class="item" id="byo24-opt-byo-qm" onclick="toggleBYOOpt(24,'byo-qm',20)">
+        <div class="chk" id="byo24-chk-byo-qm"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Quesadillas — Beef or Chicken</div>
+        </div>
+        <div class="iright">
+          <span style="font-size:.7rem;color:var(--red);font-weight:700;"> +$20</span>
+        </div>
+      </div>
+      <div class="item" id="byo24-opt-byo-ps" onclick="toggleBYOOpt(24,'byo-ps',20)">
+        <div class="chk" id="byo24-chk-byo-ps"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Veggie Pasta Salad <span style="font-weight:400;font-size:.76rem;color:var(--gray)">(Full foil pan, chilled)</span></div>
+        </div>
+        <div class="iright">
+          <span style="font-size:.7rem;color:var(--red);font-weight:700;"> +$20</span>
+        </div>
+      </div>
+      <div style="padding:5px 18px 4px;font-size:.76rem;color:var(--ch);border-top:1px dashed #eee;margin-top:4px;">
+        <strong>Included side:</strong> French Fries (full foil pan)
+        &nbsp;&nbsp;
+        <label style="cursor:pointer;">
+          <input type="checkbox" id="byo24-mozz" onchange="updateBYOMozz(24)" style="margin-right:3px;"/>
+          Substitute Mozzarella Sticks <span style="color:var(--red);font-weight:700;">+$12</span>
+        </label>
+      </div>
+      <div id="byo24-status" style="padding:4px 18px 8px;font-size:.75rem;font-weight:700;color:var(--gray);">
+        0 of 5 options selected
+      </div>
+    </div>
+  </div>
+<style>.byo-hdr{background:var(--orange);} .pool-hdr{background:var(--purple);}</style>
+<div class="section-note">Burger toppings: lettuce, tomato, grilled/raw onions, mayo &amp; mustard · Cheeseburger at no extra charge · +$10 bacon · Dipping sauces: BBQ, ranch, honey mustard &amp; mumbo sauce</div>
+
+<!-- ══ PLATTERS FOR 12 ════════════════════════════════════════════════════ -->
+
+  <div class="pan-section">
+    <div class="pan-hdr half-hdr">
+      <div class="pan-hdr-left">
+        <div class="pan-icon">🌿</div>
+        <div>
+          <div class="pan-title">INDIVIDUAL PLATTERS — 12 Guests</div>
+          <div class="pan-serves">Serves 12 guests (½ foil pan equivalent)</div>
+        </div>
+      </div>
+      <div class="pan-count" id="badge-plat12">0 selected</div>
+    </div>
+    
+    <div class="item" id="row-p12-hd" onclick="toggleItem('p12-hd','plat12')">
+      <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="iinfo">
+        <div class="iname">Hot Dog Platter</div>
+        <div class="idesc">All-beef hot dogs on buns · ketchup, mustard & relish included</div>
+        
+      </div>
+      <div class="iright">
+        <div class="iprice">$50</div>
+        <div class="qty-ctrl" onclick="event.stopPropagation()">
+          <button class="qb" onclick="changeQty('p12-hd',-1)">−</button>
+          <div class="qd" id="qty-p12-hd">1</div>
+          <button class="qb" onclick="changeQty('p12-hd',1)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item" id="row-p12-bg" onclick="toggleItem('p12-bg','plat12')">
+      <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="iinfo">
+        <div class="iname">Burger / Cheeseburger Platter</div>
+        <div class="idesc">Toppings: lettuce, tomato, grilled/raw onions, mayo & mustard · Cheeseburger at no extra charge · +$10 bacon</div>
+        
+      </div>
+      <div class="iright">
+        <div class="iprice">$62</div>
+        <div class="qty-ctrl" onclick="event.stopPropagation()">
+          <button class="qb" onclick="changeQty('p12-bg',-1)">−</button>
+          <div class="qd" id="qty-p12-bg">1</div>
+          <button class="qb" onclick="changeQty('p12-bg',1)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item" id="row-p12-ct" onclick="toggleItem('p12-ct','plat12')">
+      <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="iinfo">
+        <div class="iname">Chicken Tender Platter</div>
+        <div class="idesc">3 pcs per person · Dipping sauces: BBQ, ranch, honey mustard & mumbo sauce</div>
+        
+      </div>
+      <div class="iright">
+        <div class="iprice">$68</div>
+        <div class="qty-ctrl" onclick="event.stopPropagation()">
+          <button class="qb" onclick="changeQty('p12-ct',-1)">−</button>
+          <div class="qd" id="qty-p12-ct">1</div>
+          <button class="qb" onclick="changeQty('p12-ct',1)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item" id="row-p12-ff" onclick="toggleItem('p12-ff','plat12')">
+      <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="iinfo">
+        <div class="iname">French Fry Basket</div>
+        <div class="idesc">Served in a ½ foil pan · upgrade to Nacho Cheese Fries +$10</div>
+        
+      </div>
+      <div class="iright">
+        <div class="iprice">$44</div>
+        <div class="qty-ctrl" onclick="event.stopPropagation()">
+          <button class="qb" onclick="changeQty('p12-ff',-1)">−</button>
+          <div class="qd" id="qty-p12-ff">1</div>
+          <button class="qb" onclick="changeQty('p12-ff',1)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item" id="row-p12-ms" onclick="toggleItem('p12-ms','plat12')">
+      <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="iinfo">
+        <div class="iname">Mozzarella Stick Platter</div>
+        <div class="idesc">5 pcs per person · marinara dipping sauce</div>
+        
+      </div>
+      <div class="iright">
+        <div class="iprice">$52</div>
+        <div class="qty-ctrl" onclick="event.stopPropagation()">
+          <button class="qb" onclick="changeQty('p12-ms',-1)">−</button>
+          <div class="qd" id="qty-p12-ms">1</div>
+          <button class="qb" onclick="changeQty('p12-ms',1)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item" id="row-p12-nc" onclick="toggleItem('p12-nc','plat12')">
+      <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="iinfo">
+        <div class="iname">Nacho Cheese Fry Platter</div>
+        <div class="idesc">Crispy fries in a ½ foil pan · nacho cheese served on the side in a warmer</div>
+        
+      </div>
+      <div class="iright">
+        <div class="iprice">$56</div>
+        <div class="qty-ctrl" onclick="event.stopPropagation()">
+          <button class="qb" onclick="changeQty('p12-nc',-1)">−</button>
+          <div class="qd" id="qty-p12-nc">1</div>
+          <button class="qb" onclick="changeQty('p12-nc',1)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item" id="row-p12-qcv" onclick="toggleItem('p12-qcv','plat12')">
+      <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="iinfo">
+        <div class="iname">Quesadilla Platter — Cheese or Veggie</div>
+        <div class="idesc">Mix-and-match · Dipping sauces: BBQ, ranch, honey mustard & mumbo sauce</div>
+        
+      </div>
+      <div class="iright">
+        <div class="iprice">$64</div>
+        <div class="qty-ctrl" onclick="event.stopPropagation()">
+          <button class="qb" onclick="changeQty('p12-qcv',-1)">−</button>
+          <div class="qd" id="qty-p12-qcv">1</div>
+          <button class="qb" onclick="changeQty('p12-qcv',1)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item" id="row-p12-qbc" onclick="toggleItem('p12-qbc','plat12')">
+      <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="iinfo">
+        <div class="iname">Quesadilla Platter — Beef or Chicken</div>
+        <div class="idesc">Mix-and-match · Dipping sauces: BBQ, ranch, honey mustard & mumbo sauce</div>
+        
+      </div>
+      <div class="iright">
+        <div class="iprice">$76</div>
+        <div class="qty-ctrl" onclick="event.stopPropagation()">
+          <button class="qb" onclick="changeQty('p12-qbc',-1)">−</button>
+          <div class="qd" id="qty-p12-qbc">1</div>
+          <button class="qb" onclick="changeQty('p12-qbc',1)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item" id="row-p12-vps" onclick="toggleItem('p12-vps','plat12')">
+      <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="iinfo">
+        <div class="iname">Veggie Pasta Salad</div>
+        <div class="idesc">Bow tie pasta, chick peas, spinach, lettuce, onions & avocado · ½ foil pan, chilled · creamy house vinaigrette</div>
+        <div class="inote">Can be made vegan upon request</div>
+      </div>
+      <div class="iright">
+        <div class="iprice">$48</div>
+        <div class="qty-ctrl" onclick="event.stopPropagation()">
+          <button class="qb" onclick="changeQty('p12-vps',-1)">−</button>
+          <div class="qd" id="qty-p12-vps">1</div>
+          <button class="qb" onclick="changeQty('p12-vps',1)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="section-note">Fry basket = ½ foil pan · +$10 bacon per burger · Nacho cheese served on the side in a warmer</div>
+
+<!-- ══ PLATTERS FOR 24 ════════════════════════════════════════════════════ -->
+
+  <div class="pan-section">
+    <div class="pan-hdr full-hdr">
+      <div class="pan-hdr-left">
+        <div class="pan-icon">🌾</div>
+        <div>
+          <div class="pan-title">INDIVIDUAL PLATTERS — 24 Guests</div>
+          <div class="pan-serves">Serves 24 guests (full foil pan equivalent)</div>
+        </div>
+      </div>
+      <div class="pan-count" id="badge-plat24">0 selected</div>
+    </div>
+    
+    <div class="item" id="row-p24-hd" onclick="toggleItem('p24-hd','plat24')">
+      <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="iinfo">
+        <div class="iname">Hot Dog Platter</div>
+        <div class="idesc">All-beef hot dogs on buns · full condiment station</div>
+        
+      </div>
+      <div class="iright">
+        <div class="iprice">$96</div>
+        <div class="qty-ctrl" onclick="event.stopPropagation()">
+          <button class="qb" onclick="changeQty('p24-hd',-1)">−</button>
+          <div class="qd" id="qty-p24-hd">1</div>
+          <button class="qb" onclick="changeQty('p24-hd',1)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item" id="row-p24-bg" onclick="toggleItem('p24-bg','plat24')">
+      <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="iinfo">
+        <div class="iname">Burger / Cheeseburger Platter</div>
+        <div class="idesc">Toppings: lettuce, tomato, grilled/raw onions, mayo & mustard · Cheeseburger at no extra charge · +$10 bacon</div>
+        
+      </div>
+      <div class="iright">
+        <div class="iprice">$120</div>
+        <div class="qty-ctrl" onclick="event.stopPropagation()">
+          <button class="qb" onclick="changeQty('p24-bg',-1)">−</button>
+          <div class="qd" id="qty-p24-bg">1</div>
+          <button class="qb" onclick="changeQty('p24-bg',1)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item" id="row-p24-ct" onclick="toggleItem('p24-ct','plat24')">
+      <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="iinfo">
+        <div class="iname">Chicken Tender Platter</div>
+        <div class="idesc">3 pcs per person · Dipping sauces: BBQ, ranch, honey mustard & mumbo sauce</div>
+        
+      </div>
+      <div class="iright">
+        <div class="iprice">$132</div>
+        <div class="qty-ctrl" onclick="event.stopPropagation()">
+          <button class="qb" onclick="changeQty('p24-ct',-1)">−</button>
+          <div class="qd" id="qty-p24-ct">1</div>
+          <button class="qb" onclick="changeQty('p24-ct',1)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item" id="row-p24-ff" onclick="toggleItem('p24-ff','plat24')">
+      <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="iinfo">
+        <div class="iname">French Fry Basket</div>
+        <div class="idesc">Served in a full foil pan · upgrade to Nacho Cheese Fries +$20</div>
+        
+      </div>
+      <div class="iright">
+        <div class="iprice">$84</div>
+        <div class="qty-ctrl" onclick="event.stopPropagation()">
+          <button class="qb" onclick="changeQty('p24-ff',-1)">−</button>
+          <div class="qd" id="qty-p24-ff">1</div>
+          <button class="qb" onclick="changeQty('p24-ff',1)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item" id="row-p24-ms" onclick="toggleItem('p24-ms','plat24')">
+      <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="iinfo">
+        <div class="iname">Mozzarella Stick Platter</div>
+        <div class="idesc">5 pcs per person · marinara & ranch dipping sauces</div>
+        
+      </div>
+      <div class="iright">
+        <div class="iprice">$100</div>
+        <div class="qty-ctrl" onclick="event.stopPropagation()">
+          <button class="qb" onclick="changeQty('p24-ms',-1)">−</button>
+          <div class="qd" id="qty-p24-ms">1</div>
+          <button class="qb" onclick="changeQty('p24-ms',1)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item" id="row-p24-nc" onclick="toggleItem('p24-nc','plat24')">
+      <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="iinfo">
+        <div class="iname">Nacho Cheese Fry Platter</div>
+        <div class="idesc">Crispy fries in a full foil pan · nacho cheese served on the side in a warmer</div>
+        
+      </div>
+      <div class="iright">
+        <div class="iprice">$108</div>
+        <div class="qty-ctrl" onclick="event.stopPropagation()">
+          <button class="qb" onclick="changeQty('p24-nc',-1)">−</button>
+          <div class="qd" id="qty-p24-nc">1</div>
+          <button class="qb" onclick="changeQty('p24-nc',1)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item" id="row-p24-qcv" onclick="toggleItem('p24-qcv','plat24')">
+      <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="iinfo">
+        <div class="iname">Quesadilla Platter — Cheese or Veggie</div>
+        <div class="idesc">Mix-and-match · Dipping sauces: BBQ, ranch, honey mustard & mumbo sauce</div>
+        
+      </div>
+      <div class="iright">
+        <div class="iprice">$124</div>
+        <div class="qty-ctrl" onclick="event.stopPropagation()">
+          <button class="qb" onclick="changeQty('p24-qcv',-1)">−</button>
+          <div class="qd" id="qty-p24-qcv">1</div>
+          <button class="qb" onclick="changeQty('p24-qcv',1)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item" id="row-p24-qbc" onclick="toggleItem('p24-qbc','plat24')">
+      <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="iinfo">
+        <div class="iname">Quesadilla Platter — Beef or Chicken</div>
+        <div class="idesc">Mix-and-match · Dipping sauces: BBQ, ranch, honey mustard & mumbo sauce</div>
+        
+      </div>
+      <div class="iright">
+        <div class="iprice">$144</div>
+        <div class="qty-ctrl" onclick="event.stopPropagation()">
+          <button class="qb" onclick="changeQty('p24-qbc',-1)">−</button>
+          <div class="qd" id="qty-p24-qbc">1</div>
+          <button class="qb" onclick="changeQty('p24-qbc',1)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item" id="row-p24-vps" onclick="toggleItem('p24-vps','plat24')">
+      <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="iinfo">
+        <div class="iname">Veggie Pasta Salad</div>
+        <div class="idesc">Bow tie pasta, chick peas, spinach, lettuce, onions & avocado · full foil pan, chilled · creamy house vinaigrette</div>
+        <div class="inote">Can be made vegan upon request</div>
+      </div>
+      <div class="iright">
+        <div class="iprice">$90</div>
+        <div class="qty-ctrl" onclick="event.stopPropagation()">
+          <button class="qb" onclick="changeQty('p24-vps',-1)">−</button>
+          <div class="qd" id="qty-p24-vps">1</div>
+          <button class="qb" onclick="changeQty('p24-vps',1)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="section-note">Fry basket = full foil pan · +$10 bacon per burger · Nacho cheese served on the side in a warmer</div>
+
+<!-- ══ BEVERAGES ══════════════════════════════════════════════════════════ -->
+
+  <div class="pan-section">
+    <div class="pan-hdr bev-hdr">
+      <div class="pan-hdr-left">
+        <div class="pan-icon">🥤</div>
+        <div>
+          <div class="pan-title">BEVERAGE PACKAGES</div>
+          <div class="pan-serves">Add drinks to complete your order</div>
+        </div>
+      </div>
+      <div class="pan-count" id="badge-bevs">0 selected</div>
+    </div>
+    
+    <div class="item" id="row-bv12s" onclick="toggleItem('bv12s','bevs')">
+      <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="iinfo">
+        <div class="iname">Beverage Package — 12 Guests</div>
+        <div class="idesc">Water, juice pouches & assorted sodas (Coke, Sprite, Fanta, Coke Zero, Ginger Ale)</div>
+        
+      </div>
+      <div class="iright">
+        <div class="iprice">$28</div>
+        <div class="qty-ctrl" onclick="event.stopPropagation()">
+          <button class="qb" onclick="changeQty('bv12s',-1)">−</button>
+          <div class="qd" id="qty-bv12s">1</div>
+          <button class="qb" onclick="changeQty('bv12s',1)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item" id="row-bv12p" onclick="toggleItem('bv12p','bevs')">
+      <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="iinfo">
+        <div class="iname">Premium Beverages — 12 Guests</div>
+        <div class="idesc">All standard + Gatorade (Glacier Freeze, Cool Blue, Fruit Punch) & Iced Tea/Lemonade</div>
+        
+      </div>
+      <div class="iright">
+        <div class="iprice">$46</div>
+        <div class="qty-ctrl" onclick="event.stopPropagation()">
+          <button class="qb" onclick="changeQty('bv12p',-1)">−</button>
+          <div class="qd" id="qty-bv12p">1</div>
+          <button class="qb" onclick="changeQty('bv12p',1)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item" id="row-bv24s" onclick="toggleItem('bv24s','bevs')">
+      <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="iinfo">
+        <div class="iname">Beverage Package — 24 Guests</div>
+        <div class="idesc">Water, juice pouches & assorted sodas (Coke, Sprite, Fanta, Coke Zero, Ginger Ale)</div>
+        
+      </div>
+      <div class="iright">
+        <div class="iprice">$52</div>
+        <div class="qty-ctrl" onclick="event.stopPropagation()">
+          <button class="qb" onclick="changeQty('bv24s',-1)">−</button>
+          <div class="qd" id="qty-bv24s">1</div>
+          <button class="qb" onclick="changeQty('bv24s',1)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="item" id="row-bv24p" onclick="toggleItem('bv24p','bevs')">
+      <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="iinfo">
+        <div class="iname">Premium Beverages — 24 Guests</div>
+        <div class="idesc">All standard + Gatorade (Glacier Freeze, Cool Blue, Fruit Punch) & Iced Tea/Lemonade</div>
+        
+      </div>
+      <div class="iright">
+        <div class="iprice">$88</div>
+        <div class="qty-ctrl" onclick="event.stopPropagation()">
+          <button class="qb" onclick="changeQty('bv24p',-1)">−</button>
+          <div class="qd" id="qty-bv24p">1</div>
+          <button class="qb" onclick="changeQty('bv24p',1)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- ══ ORDER SUMMARY ═════════════════════════════════════════════════════ -->
+<div class="summary-card">
+  <div class="sum-hdr">📋 Order Summary</div>
+  <div class="sum-body">
+    <div class="sum-empty" id="sum-empty">No items yet. Click any item to add it.</div>
+    <div id="sum-lines"></div>
+    <div id="sum-totals" style="display:none">
+      <hr class="sdiv"/>
+      <div class="srow"><span>Subtotal</span><span id="sub-v">$0.00</span></div>
+      <div class="srow"><span>Sales Tax (10%)</span><span id="tax-v">$0.00</span></div>
+      <div class="srow total"><span>Estimated Total</span><span id="tot-v">$0.00</span></div>
+      <div class="tax-note">Tax is an estimate · Final invoice provided upon confirmation</div>
+    </div>
+    <button class="sub-btn" id="sub-btn" onclick="submitOrder()" disabled>Submit Order Request</button>
+    <button class="clr-btn" onclick="clearAll()">Clear All Selections</button>
+  </div>
+</div>
+
+</div><!-- wrap -->
+
+<div class="modal-ov" id="modal">
+  <div class="modal">
+    <div class="modal-ic">✅</div>
+    <h2>Request Received!</h2>
+    <p id="modal-msg"></p>
+    <button class="modal-cls" onclick="document.getElementById('modal').className='modal-ov'">Done</button>
+  </div>
+</div>
+
+<script>
+const TAX = 0.10;
+const ITEMS = [{"id":"p12-hd","name":"Hot Dog Platter","price":50,"desc":"All-beef hot dogs on buns · ketchup, mustard & relish included"},{"id":"p12-bg","name":"Burger / Cheeseburger Platter","price":62,"desc":"Toppings: lettuce, tomato, grilled/raw onions, mayo & mustard · Cheeseburger at no extra charge · +$10 bacon"},{"id":"p12-ct","name":"Chicken Tender Platter","price":68,"desc":"3 pcs per person · Dipping sauces: BBQ, ranch, honey mustard & mumbo sauce"},{"id":"p12-ff","name":"French Fry Basket","price":44,"desc":"Served in a ½ foil pan · upgrade to Nacho Cheese Fries +$10"},{"id":"p12-ms","name":"Mozzarella Stick Platter","price":52,"desc":"5 pcs per person · marinara dipping sauce"},{"id":"p12-nc","name":"Nacho Cheese Fry Platter","price":56,"desc":"Crispy fries in a ½ foil pan · nacho cheese served on the side in a warmer"},{"id":"p12-qcv","name":"Quesadilla Platter — Cheese or Veggie","price":64,"desc":"Mix-and-match · Dipping sauces: BBQ, ranch, honey mustard & mumbo sauce"},{"id":"p12-qbc","name":"Quesadilla Platter — Beef or Chicken","price":76,"desc":"Mix-and-match · Dipping sauces: BBQ, ranch, honey mustard & mumbo sauce"},{"id":"p12-vps","name":"Veggie Pasta Salad","price":48,"desc":"Bow tie pasta, chick peas, spinach, lettuce, onions & avocado · ½ foil pan, chilled · creamy house vinaigrette","note":"Can be made vegan upon request"},{"id":"p24-hd","name":"Hot Dog Platter","price":96,"desc":"All-beef hot dogs on buns · full condiment station"},{"id":"p24-bg","name":"Burger / Cheeseburger Platter","price":120,"desc":"Toppings: lettuce, tomato, grilled/raw onions, mayo & mustard · Cheeseburger at no extra charge · +$10 bacon"},{"id":"p24-ct","name":"Chicken Tender Platter","price":132,"desc":"3 pcs per person · Dipping sauces: BBQ, ranch, honey mustard & mumbo sauce"},{"id":"p24-ff","name":"French Fry Basket","price":84,"desc":"Served in a full foil pan · upgrade to Nacho Cheese Fries +$20"},{"id":"p24-ms","name":"Mozzarella Stick Platter","price":100,"desc":"5 pcs per person · marinara & ranch dipping sauces"},{"id":"p24-nc","name":"Nacho Cheese Fry Platter","price":108,"desc":"Crispy fries in a full foil pan · nacho cheese served on the side in a warmer"},{"id":"p24-qcv","name":"Quesadilla Platter — Cheese or Veggie","price":124,"desc":"Mix-and-match · Dipping sauces: BBQ, ranch, honey mustard & mumbo sauce"},{"id":"p24-qbc","name":"Quesadilla Platter — Beef or Chicken","price":144,"desc":"Mix-and-match · Dipping sauces: BBQ, ranch, honey mustard & mumbo sauce"},{"id":"p24-vps","name":"Veggie Pasta Salad","price":90,"desc":"Bow tie pasta, chick peas, spinach, lettuce, onions & avocado · full foil pan, chilled · creamy house vinaigrette","note":"Can be made vegan upon request"},{"id":"bv12s","name":"Beverage Package — 12 Guests","price":28,"desc":"Water, juice pouches & assorted sodas (Coke, Sprite, Fanta, Coke Zero, Ginger Ale)"},{"id":"bv12p","name":"Premium Beverages — 12 Guests","price":46,"desc":"All standard + Gatorade (Glacier Freeze, Cool Blue, Fruit Punch) & Iced Tea/Lemonade"},{"id":"bv24s","name":"Beverage Package — 24 Guests","price":52,"desc":"Water, juice pouches & assorted sodas (Coke, Sprite, Fanta, Coke Zero, Ginger Ale)"},{"id":"bv24p","name":"Premium Beverages — 24 Guests","price":88,"desc":"All standard + Gatorade (Glacier Freeze, Cool Blue, Fruit Punch) & Iced Tea/Lemonade"},{"id":"sn-chips","name":"Chips (snack bag)","price":2,"desc":"Assorted variety snack bags"},{"id":"sn-popcorn","name":"Popcorn","price":2,"desc":"Individual popcorn bags"}];
+const BYO_OPTS = [{"id":"byo-hd","name":"Hot Dogs","upcharge12":0,"upcharge24":0},{"id":"byo-bg","name":"Burgers / Cheeseburgers","upcharge12":0,"upcharge24":0},{"id":"byo-ct","name":"Chicken Tenders","upcharge12":0,"upcharge24":0},{"id":"byo-qv","name":"Quesadillas — Cheese or Veggie","upcharge12":0,"upcharge24":0},{"id":"byo-qm","name":"Quesadillas — Beef or Chicken","upcharge12":12,"upcharge24":20},{"id":"byo-ps","name":"Veggie Pasta Salad","upcharge12":12,"upcharge24":20,"note12":"½ foil pan, chilled","note24":"Full foil pan, chilled"}];
+let order = {};
+let byo12Active=false, byo24Active=false;
+let byo12Choices=new Map(), byo24Choices=new Map(); // id -> upcharge
+let byo12Mozz=false, byo24Mozz=false;
+const BYO12_BASE=195, BYO24_BASE=410;
+const BYO12_LIMIT=3, BYO24_LIMIT=5;
+const BYO12_MOZZ=8, BYO24_MOZZ=12;
+
+const SECTIONS = {
+  'plat12': ["p12-hd","p12-bg","p12-ct","p12-ff","p12-ms","p12-nc","p12-qcv","p12-qbc","p12-vps"],
+  'plat24': ["p24-hd","p24-bg","p24-ct","p24-ff","p24-ms","p24-nc","p24-qcv","p24-qbc","p24-vps"],
+  'bevs': ["bv12s","bv12p","bv24s","bv24p"],
+  'snacks': ["sn-chips","sn-popcorn"],
+};
+
+function toggleItem(id, secKey) {
+  const item = ITEMS.find(i => i.id===id);
+  if (!item) return;
+  const row = document.getElementById('row-'+id);
+  if (order[id]) { delete order[id]; row.className='item'; }
+  else { order[id]={item,qty:1,secKey}; row.className='item sel'; }
+  updateBadge(secKey);
+  updateSummary();
+}
+
+function changeQty(id, delta) {
+  if (!order[id]) return;
+  const nq = order[id].qty + delta;
+  if (nq < 1) {
+    const sk = order[id].secKey;
+    delete order[id];
+    const row = document.getElementById('row-'+id);
+    if (row) row.className='item';
+    const qd = document.getElementById('qty-'+id);
+    if (qd) qd.textContent=1;
+    updateBadge(sk);
+  } else {
+    order[id].qty=nq;
+    const qd = document.getElementById('qty-'+id);
+    if (qd) qd.textContent=nq;
+  }
+  updateSummary();
+}
+
+function updateBadge(secKey) {
+  const badge = document.getElementById('badge-'+secKey);
+  if (!badge) return;
+  const sel = Object.values(order).filter(o=>o.secKey===secKey).length;
+  badge.textContent = sel===0 ? '0 selected' : sel+' selected';
+}
+
+function toggleBYO(guests) {
+  if (guests===12) {
+    byo12Active=!byo12Active;
+    document.getElementById('byo12-body').style.display=byo12Active?'block':'none';
+    document.getElementById('byo12-btn').textContent=byo12Active?'− Remove':'+ Add';
+    if (!byo12Active) { byo12Choices.clear(); byo12Mozz=false; document.getElementById('byo12-mozz').checked=false; resetBYOUI(12); }
+  } else {
+    byo24Active=!byo24Active;
+    document.getElementById('byo24-body').style.display=byo24Active?'block':'none';
+    document.getElementById('byo24-btn').textContent=byo24Active?'− Remove':'+ Add';
+    if (!byo24Active) { byo24Choices.clear(); byo24Mozz=false; document.getElementById('byo24-mozz').checked=false; resetBYOUI(24); }
+  }
+  updateSummary();
+}
+
+function resetBYOUI(guests) {
+  BYO_OPTS.forEach(o => {
+    const row = document.getElementById('byo'+guests+'-opt-'+o.id);
+    const chk = document.getElementById('byo'+guests+'-chk-'+o.id);
+    if (row) row.className='item';
+    if (chk) { chk.style.background=''; chk.style.borderColor=''; chk.querySelectorAll('svg').forEach(s=>s.style.display='none'); }
+  });
+  const st = document.getElementById('byo'+guests+'-status');
+  if (st) st.textContent='0 of '+(guests===12?BYO12_LIMIT:BYO24_LIMIT)+' options selected';
+}
+
+function toggleBYOOpt(guests, optId, upcharge) {
+  const choices = guests===12 ? byo12Choices : byo24Choices;
+  const limit = guests===12 ? BYO12_LIMIT : BYO24_LIMIT;
+  const row = document.getElementById('byo'+guests+'-opt-'+optId);
+  const chk = document.getElementById('byo'+guests+'-chk-'+optId);
+  if (choices.has(optId)) {
+    choices.delete(optId);
+    if (row) row.className='item';
+  } else {
+    if (choices.size >= limit) return;
+    choices.set(optId, upcharge);
+    if (row) row.className='item sel';
+  }
+  const st = document.getElementById('byo'+guests+'-status');
+  const rem = limit - choices.size;
+  if (st) {
+    if (rem > 0) { st.style.color='var(--red)'; st.textContent=choices.size+' of '+limit+' selected — choose '+rem+' more'; }
+    else { st.style.color='var(--mg)'; st.textContent='✓ Selection complete! ('+limit+' of '+limit+' chosen)'; }
+  }
+  updateSummary();
+}
+
+function updateBYOMozz(guests) {
+  if (guests===12) byo12Mozz=document.getElementById('byo12-mozz').checked;
+  else byo24Mozz=document.getElementById('byo24-mozz').checked;
+  updateSummary();
+}
+
+function removeItem(id) {
+  if (!order[id]) return;
+  const sk = order[id].secKey;
+  delete order[id];
+  const row = document.getElementById('row-'+id);
+  if (row) row.className='item';
+  const qd = document.getElementById('qty-'+id);
+  if (qd) qd.textContent=1;
+  updateBadge(sk);
+  updateSummary();
+}
+
+function clearAll() {
+  order={};
+  byo12Active=false; byo24Active=false;
+  byo12Choices.clear(); byo24Choices.clear();
+  byo12Mozz=false; byo24Mozz=false;
+  document.querySelectorAll('.item.sel').forEach(r=>r.className='item');
+  document.querySelectorAll('.qd').forEach(q=>q.textContent=1);
+  ['12','24'].forEach(g=>{
+    const body=document.getElementById('byo'+g+'-body');
+    const btn=document.getElementById('byo'+g+'-btn');
+    const mozz=document.getElementById('byo'+g+'-mozz');
+    if(body)body.style.display='none';
+    if(btn)btn.textContent='+ Add';
+    if(mozz)mozz.checked=false;
+    resetBYOUI(parseInt(g));
+  });
+  document.querySelectorAll('.pan-count').forEach(b=>b.textContent='0 selected');
+  updateSummary();
+}
+
+function updateSummary() {
+  const lines = [];
+
+  if (byo12Active) {
+    let total = BYO12_BASE;
+    byo12Choices.forEach((up,id) => total += up);
+    if (byo12Mozz) total += BYO12_MOZZ;
+    const names = [...byo12Choices.keys()].map(id=>BYO_OPTS.find(o=>o.id===id)?.name).filter(Boolean);
+    const complete = byo12Choices.size===BYO12_LIMIT;
+    lines.push({label:'BYO Platter – 12 Guests'+(complete?'':' ⚠ ('+byo12Choices.size+'/'+BYO12_LIMIT+' chosen)'),
+      sub:names.join(', ')+(byo12Mozz?' + Mozz Sticks':''), price:total, incomplete:!complete, removeFn:'toggleBYO(12)'});
+  }
+  if (byo24Active) {
+    let total = BYO24_BASE;
+    byo24Choices.forEach((up,id) => total += up);
+    if (byo24Mozz) total += BYO24_MOZZ;
+    const names = [...byo24Choices.keys()].map(id=>BYO_OPTS.find(o=>o.id===id)?.name).filter(Boolean);
+    const complete = byo24Choices.size===BYO24_LIMIT;
+    lines.push({label:'BYO Platter – 24 Guests'+(complete?'':' ⚠ ('+byo24Choices.size+'/'+BYO24_LIMIT+' chosen)'),
+      sub:names.join(', ')+(byo24Mozz?' + Mozz Sticks':''), price:total, incomplete:!complete, removeFn:'toggleBYO(24)'});
+  }
+
+  Object.values(order).forEach(({item,qty}) => {
+    lines.push({label:item.name, price:item.price*qty, qty, incomplete:false, removeFn:"removeItem('"+item.id+"')"});
+  });
+
+  const empty=document.getElementById('sum-empty');
+  const linesEl=document.getElementById('sum-lines');
+  const totalsEl=document.getElementById('sum-totals');
+  const subBtn=document.getElementById('sub-btn');
+
+  if (lines.length===0) { empty.style.display='block'; linesEl.innerHTML=''; totalsEl.style.display='none'; subBtn.disabled=true; return; }
+  empty.style.display='none'; totalsEl.style.display='block';
+  const hasIncomplete = lines.some(l=>l.incomplete);
+  subBtn.disabled=hasIncomplete;
+
+  linesEl.innerHTML = lines.map(l =>
+    '<div class="sline">' +
+    '<div class="sline-name">'+(l.incomplete?'<span style="color:var(--red);font-size:.69rem;">⚠ incomplete &nbsp;</span>':'')+l.label+
+    (l.sub?'<div style="font-size:.71rem;color:var(--gray)">'+l.sub+'</div>':'')+
+    (l.qty>1?'<div style="font-size:.71rem;color:var(--gray)">× '+l.qty+'</div>':'')+
+    '</div>' +
+    '<div style="display:flex;align-items:center;gap:3px">' +
+    '<span class="sline-price">$'+l.price.toFixed(2)+'</span>' +
+    '<button class="rm" onclick="'+l.removeFn+'" title="Remove">✕</button>' +
+    '</div></div>'
+  ).join('');
+
+  const sub = lines.reduce((s,l)=>s+l.price,0);
+  const tax = sub*TAX;
+  document.getElementById('sub-v').textContent='$'+sub.toFixed(2);
+  document.getElementById('tax-v').textContent='$'+tax.toFixed(2);
+  document.getElementById('tot-v').textContent='$'+(sub+tax).toFixed(2);
+}
+
+const JOTFORM_FORM_ID = '262225152989060';
+const JOTFORM_API_KEY = '56152613d531347830f3aaccf8462e2d';
+
+async function submitToJotform(payload) {
+  const fd = new FormData();
+  fd.append('apiKey', JOTFORM_API_KEY);
+  const parts = payload.name.trim().split(' ');
+  fd.append('submission[3][first]', parts[0] || '');
+  fd.append('submission[3][last]',  parts.slice(1).join(' ') || '');
+  fd.append('submission[4][full]',  payload.phone);
+  fd.append('submission[5]',        payload.email);
+  if (payload.date) {
+    const [yr,mo,dy] = payload.date.split('-');
+    fd.append('submission[6][month]', mo);
+    fd.append('submission[6][day]',   dy);
+    fd.append('submission[6][year]',  yr);
+  }
+  if (payload.time) {
+    const [h,m] = payload.time.split(':');
+    const hr = parseInt(h);
+    fd.append('submission[7][timeInput]', (hr%12||12)+':'+m);
+    fd.append('submission[7][ampm]',      hr>=12?'PM':'AM');
+  }
+  fd.append('submission[8]',  payload.guests || '');
+  fd.append('submission[10]', payload.orderDetails);
+  fd.append('submission[11]', payload.estimatedTotal);
+  fd.append('submission[12]', payload.specialRequests || '');
+  const res  = await fetch('https://api.jotform.com/form/'+JOTFORM_FORM_ID+'/submissions', { method:'POST', body:fd });
+  const json = await res.json();
+  return (json.responseCode === 200 || json.responseCode === 201)
+    ? { success:true } : { success:false, message: json.message||'Unknown error' };
+}
+
+function buildOrderDetails() {
+  const lines = [];
+  // BYO lines
+  if (byo12Active) {
+    let total = BYO12_BASE;
+    const names = [];
+    byo12Choices.forEach((up,id) => { total+=up; const o=BYO_OPTS.find(x=>x.id===id); if(o) names.push(o.name+(up>0?' (+$'+up+')'':'')); });
+    if (byo12Mozz) total += BYO12_MOZZ;
+    lines.push('• BYO Platter – 12 Guests: '+names.join(', ')+(byo12Mozz?' + Mozz Sticks (+$'+BYO12_MOZZ+')'':'')+' — $'+total.toFixed(2));
+  }
+  if (byo24Active) {
+    let total = BYO24_BASE;
+    const names = [];
+    byo24Choices.forEach((up,id) => { total+=up; const o=BYO_OPTS.find(x=>x.id===id); if(o) names.push(o.name+(up>0?' (+$'+up+')'':'')); });
+    if (byo24Mozz) total += BYO24_MOZZ;
+    lines.push('• BYO Platter – 24 Guests: '+names.join(', ')+(byo24Mozz?' + Mozz Sticks (+$'+BYO24_MOZZ+')'':'')+' — $'+total.toFixed(2));
+  }
+  // Regular items
+  Object.values(order).forEach(o => {
+    lines.push('• '+o.item.name+(o.qty>1?' x'+o.qty:'')+' — $'+(o.item.price*o.qty).toFixed(2));
+  });
+  return lines.length ? lines.join('\n') : 'No items selected';
+}
+
+async function submitOrder() {
+  const name  = document.getElementById('cn').value.trim();
+  const phone = document.getElementById('cp').value.trim();
+  const email = document.getElementById('ce').value.trim();
+  const date  = document.getElementById('cd').value;
+  const time  = document.getElementById('ct').value;
+  const guests= document.getElementById('cg').value;
+  const notes = document.getElementById('cn2').value.trim();
+
+  if (!name||!phone){ alert('Please enter your name and phone number before submitting.'); return; }
+
+  const btn = document.getElementById('sub-btn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  // Calculate totals
+  let sub = Object.values(order).reduce((s,o)=>s+o.item.price*o.qty,0);
+  if (byo12Active){ sub+=BYO12_BASE; byo12Choices.forEach(up=>sub+=up); if(byo12Mozz) sub+=BYO12_MOZZ; }
+  if (byo24Active){ sub+=BYO24_BASE; byo24Choices.forEach(up=>sub+=up); if(byo24Mozz) sub+=BYO24_MOZZ; }
+  const tax    = sub * TAX;
+  const total  = sub + tax;
+  const totStr = '$'+total.toFixed(2)+' (incl. est. 10% tax)';
+  const dateStr= date?new Date(date+'T12:00').toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}):'date TBD';
+
+  try {
+    const result = await submitToJotform({
+      name, phone, email, date, time, guests,
+      orderDetails:    buildOrderDetails(),
+      estimatedTotal:  totStr,
+      specialRequests: notes,
+    });
+    if (result.success) {
+      document.getElementById('modal-msg').innerHTML=
+        'Thank you, <strong>'+name+'</strong>! Your catering request for <strong>'+dateStr+'</strong> has been received.<br><br>'+
+        'We will contact you at <strong>'+phone+'</strong> within 24 hours to confirm your order and arrange payment details.<br><br>'+
+        '<strong>DoughBoy Concessions</strong><br>917-334-9038 · ctenterprises22@gmail.com';
+      document.getElementById('modal').className='modal-ov open';
+    } else {
+      alert('There was a problem submitting your order: '+result.message+'. Please call us at 917-334-9038.');
+      btn.disabled=false; btn.textContent='Submit Order Request';
+    }
+  } catch(err) {
+    alert('Connection error. Please call us at 917-334-9038 or email ctenterprises22@gmail.com.');
+    btn.disabled=false; btn.textContent='Submit Order Request';
+  }
+}
+</script>
+</body>
+</html>
