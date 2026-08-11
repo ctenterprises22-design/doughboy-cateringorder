@@ -1,0 +1,2465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>DoughBoy Catering — 2026 Order Form</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --dg:#2D5016;--mg:#4A7C24;--lg:#8DB87A;--pg:#EAF4E0;
+  --gold:#C8960C;--gold-lt:#FFF8E1;--cream:#F7F4EE;--white:#fff;
+  --ch:#2C2C2C;--gray:#666;--lgray:#E8E8E8;
+  --orange:#E65100;--orange-bg:#FFF3E0;
+  --purple:#6A1B9A;--purple-bg:#F3E5F5;
+  --blue:#1565C0;--blue-bg:#E3F2FD;
+  --teal:#00695C;--teal-bg:#E0F2F1;
+  --red:#C0392B;--pink:#880E4F;
+  --r:10px;--sh:0 2px 12px rgba(0,0,0,.10);
+}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--cream);color:var(--ch);min-height:100vh;max-width:900px;margin:0 auto;}
+.hdr{background:var(--dg);padding:22px 24px 14px;text-align:center;}
+.hdr h1{font-family:Georgia,serif;font-size:1.8rem;font-weight:700;color:#fff;letter-spacing:.04em;margin-bottom:3px;}
+.hdr .tag{font-size:.78rem;color:var(--lg);letter-spacing:.16em;text-transform:uppercase;margin-bottom:6px;}
+.hdr .yr{font-size:.95rem;color:var(--gold);font-weight:700;margin-bottom:8px;}
+.hdr .cb{display:inline-flex;gap:18px;background:rgba(255,255,255,.08);border:1px solid var(--gold);border-radius:6px;padding:5px 14px;font-size:.78rem;color:var(--lg);}
+.hdr .cb strong{color:var(--gold);}
+.incl{background:var(--gold);text-align:center;padding:7px 16px;font-size:.81rem;color:#fff;font-weight:600;}
+.vn{background:#E8F5E9;border-left:4px solid var(--mg);padding:7px 16px;font-size:.78rem;color:var(--dg);text-align:center;}
+.wrap{padding:20px 16px 50px;}
+
+/* Customer info */
+.cust{background:#fff;border-radius:var(--r);box-shadow:var(--sh);padding:18px 20px 14px;margin-bottom:16px;}
+.sec-title{font-family:Georgia,serif;font-size:1rem;font-weight:700;color:var(--dg);border-bottom:2px solid var(--pg);padding-bottom:6px;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.frow{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;}
+.fg{display:flex;flex-direction:column;flex:1;min-width:140px;}
+.fg label{font-size:.71rem;font-weight:700;color:var(--gray);margin-bottom:3px;text-transform:uppercase;letter-spacing:.05em;}
+.fg input,.fg select,.fg textarea{border:1.5px solid var(--lgray);border-radius:6px;padding:7px 9px;font-size:.88rem;color:var(--ch);background:var(--cream);font-family:inherit;transition:border-color .2s;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--mg);background:#fff;}
+.fg textarea{resize:vertical;min-height:54px;}
+
+/* Pan / serving sections */
+.pan-section{background:#fff;border-radius:var(--r);box-shadow:var(--sh);margin-bottom:16px;overflow:hidden;}
+.pan-hdr{padding:10px 18px 9px;display:flex;align-items:center;justify-content:space-between;}
+.pan-hdr-left{display:flex;align-items:center;gap:10px;}
+.pan-icon{font-size:1.3rem;}
+.pan-title{font-family:Georgia,serif;font-size:1rem;font-weight:700;color:#fff;}
+.pan-serves{font-size:.74rem;color:rgba(255,255,255,.8);margin-top:1px;}
+.pan-count{background:rgba(255,255,255,.25);color:#fff;border-radius:10px;padding:2px 9px;font-size:.72rem;font-weight:700;}
+.half-hdr{background:var(--mg);}
+.full-hdr{background:var(--dg);}
+.doz-hdr{background:#8B6914;}
+.bev-hdr{background:var(--blue);}
+.byo-hdr{background:var(--orange);}
+.pool-hdr{background:var(--purple);}
+
+/* Category label inside pan section */
+.cat-label{background:#F8F8F8;border-top:1px solid #EEE;border-bottom:1px solid #EEE;padding:5px 18px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--gray);}
+
+/* Item rows */
+.item{display:grid;grid-template-columns:22px 1fr auto;align-items:center;gap:10px;padding:9px 18px;border-bottom:1px solid #F2F2F2;cursor:pointer;transition:background .12s;}
+.item:last-child{border-bottom:none;}
+.item:hover{background:var(--pg);}
+.item.sel{background:#E8F5E9;}
+.chk{width:20px;height:20px;border:2px solid var(--lg);border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:#fff;transition:all .15s;}
+.item.sel .chk{background:var(--mg);border-color:var(--mg);}
+.chk svg{display:none;}
+.item.sel .chk svg{display:block;}
+.iinfo{min-width:0;}
+.iname{font-weight:700;font-size:.87rem;color:var(--ch);margin-bottom:1px;}
+.idesc{font-size:.73rem;color:var(--gray);line-height:1.35;}
+.inote{font-size:.7rem;color:var(--orange);font-style:italic;margin-top:1px;}
+.ivegan{font-size:.69rem;color:var(--mg);font-weight:700;margin-top:1px;}
+.iright{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+.iprice{font-weight:700;font-size:.92rem;color:var(--gold);white-space:nowrap;}
+.qty-ctrl{display:flex;align-items:center;gap:3px;opacity:0;pointer-events:none;transition:opacity .15s;}
+.item.sel .qty-ctrl{opacity:1;pointer-events:auto;}
+.qb{width:23px;height:23px;border:1.5px solid var(--mg);border-radius:5px;background:#fff;color:var(--mg);font-size:.9rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.qb:hover{background:var(--mg);color:#fff;}
+.qd{min-width:18px;text-align:center;font-weight:700;font-size:.83rem;color:var(--dg);}
+
+/* Pasta selector */
+.pasta-sel{display:none;padding:6px 18px 8px 50px;background:#F5FDF5;border-bottom:1px solid #E8F5E9;}
+.item.sel + .pasta-sel{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.pasta-sel label{font-size:.76rem;font-weight:700;color:var(--dg);}
+.pasta-sel select{border:1.5px solid var(--mg);border-radius:5px;padding:3px 8px;font-size:.78rem;font-family:inherit;color:var(--ch);background:#fff;}
+
+/* Summary */
+.summary-card{background:#fff;border-radius:var(--r);box-shadow:var(--sh);margin-top:16px;overflow:hidden;}
+.sum-hdr{background:var(--dg);color:#fff;padding:12px 18px;font-family:Georgia,serif;font-size:.95rem;font-weight:700;}
+.sum-body{padding:12px 18px;}
+.sum-empty{text-align:center;color:var(--gray);font-size:.82rem;padding:14px 0;font-style:italic;}
+.sline{display:flex;justify-content:space-between;align-items:flex-start;padding:5px 0;border-bottom:1px solid #F5F5F5;gap:6px;}
+.sline:last-of-type{border-bottom:none;}
+.sline-name{font-size:.8rem;color:var(--ch);line-height:1.3;flex:1;}
+.sline-price{font-size:.84rem;font-weight:700;color:var(--gold);white-space:nowrap;}
+.rm{background:none;border:none;color:#bbb;cursor:pointer;font-size:.82rem;padding:0 2px;transition:color .15s;}
+.rm:hover{color:var(--red);}
+.sdiv{border:none;border-top:2px solid var(--pg);margin:8px 0;}
+.srow{display:flex;justify-content:space-between;padding:3px 0;font-size:.85rem;}
+.srow.total{font-size:1rem;font-weight:700;color:var(--dg);padding-top:7px;border-top:2px solid var(--dg);margin-top:3px;}
+.srow span:first-child{color:var(--gray);}
+.srow.total span{color:var(--dg);}
+.tax-note{font-size:.69rem;color:var(--gray);font-style:italic;margin-top:3px;text-align:right;}
+.sub-btn{width:100%;margin-top:14px;padding:12px;background:var(--dg);color:#fff;border:none;border-radius:8px;font-size:.92rem;font-weight:700;font-family:inherit;cursor:pointer;transition:background .2s;}
+.sub-btn:hover{background:var(--mg);}
+.sub-btn:disabled{background:#bbb;cursor:not-allowed;}
+.clr-btn{width:100%;margin-top:7px;padding:7px;background:transparent;color:var(--gray);border:1.5px solid var(--lgray);border-radius:8px;font-size:.79rem;font-family:inherit;cursor:pointer;transition:all .15s;}
+.clr-btn:hover{border-color:var(--red);color:var(--red);}
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:center;justify-content:center;}
+.modal-ov.open{display:flex;}
+.modal{background:#fff;border-radius:14px;padding:26px 22px;max-width:400px;width:90%;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.2);}
+.modal-ic{font-size:2.6rem;margin-bottom:8px;}
+.modal h2{font-family:Georgia,serif;color:var(--dg);margin-bottom:7px;}
+.modal p{color:var(--gray);font-size:.86rem;margin-bottom:16px;line-height:1.6;}
+.modal-cls{padding:9px 24px;background:var(--dg);color:#fff;border:none;border-radius:8px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit;}
+.modal-cls:hover{background:var(--mg);}
+.section-note{font-size:.73rem;color:var(--gray);padding:5px 18px 8px;font-style:italic;border-top:1px dashed #eee;}
+.section-note.vegan{color:var(--mg);}
+
+.pasta-sel{display:none;padding:6px 18px 8px 50px;background:#F5FDF5;border-bottom:1px solid #E8F5E9;align-items:center;gap:8px;flex-wrap:wrap;}
+.pasta-sel label{font-size:.76rem;font-weight:700;color:var(--dg);}
+.pasta-sel select{border:1.5px solid var(--mg);border-radius:5px;padding:3px 8px;font-size:.78rem;font-family:inherit;color:var(--ch);background:#fff;}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <h1>DoughBoy Catering</h1>
+  <div class="tag">Deliciousness Done Right</div>
+  <div class="yr">✦ 2026 CATERING MENU — ORDER FORM ✦</div>
+  <div class="cb">
+    <span><strong>Phone:</strong> 917-334-9038</span>
+    <span><strong>Email:</strong> ctenterprises22@gmail.com</span>
+  </div>
+</header>
+<div class="incl">INCLUDED WITH EVERY ORDER: Serving utensils &amp; setup of up to 5 platters at no additional charge</div>
+<div class="vn">★ Items marked with ★ are fully vegan as listed · Vegetarian swaps noted in descriptions · All dietary accommodations available upon request</div>
+
+<div class="wrap">
+
+<!-- Customer Info -->
+<div class="cust">
+  <div class="sec-title">📋 Your Information</div>
+  <div class="frow">
+    <div class="fg"><label>Name *</label><input type="text" id="cn" placeholder="Full name"/></div>
+    <div class="fg"><label>Phone *</label><input type="tel" id="cp" placeholder="(000) 000-0000"/></div>
+    <div class="fg"><label>Email</label><input type="email" id="ce" placeholder="your@email.com"/></div>
+  </div>
+  <div class="frow">
+    <div class="fg"><label>Event Date *</label><input type="date" id="cd"/></div>
+    <div class="fg" style="flex:.6"><label>Event Time</label><input type="time" id="ct"/></div>
+    <div class="fg"><label>Approx. Guest Count</label><input type="number" id="cg" placeholder="e.g. 25" min="1"/></div>
+  </div>
+  <div class="frow">
+    <div class="fg"><label>Special Requests / Dietary Needs</label><textarea id="cn2" placeholder="Allergies, vegan options, substitutions, delivery notes…"></textarea></div>
+  </div>
+</div>
+
+<!-- ══ APPETIZERS ══════════════════════════════════════════════════════ -->
+
+    <div class="pan-section">
+      <div class="pan-hdr half-hdr">
+        <div class="pan-hdr-left">
+          <div class="pan-icon">🍢</div>
+          <div>
+            <div class="pan-title">APPETIZERS — Half Pan</div>
+            <div class="pan-serves">Serves 15–20</div>
+          </div>
+        </div>
+        <div class="pan-count" id="badge-app-half">0 selected</div>
+      </div>
+      
+      <div class="item" id="row-a1h"
+           onclick=" toggleItem('a1h','app-half')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Sweet & Spicy Meatballs</div>
+          <div class="idesc">Beef or turkey meatballs simmered in signature red pepper jelly gravy.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$55</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('a1h',-1)">−</button>
+            <div class="qd" id="qty-a1h">1</div>
+            <button class="qb" onclick="changeQty('a1h',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-a2h"
+           onclick=" toggleItem('a2h','app-half')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Mac & Cheese Bites</div>
+          <div class="idesc">Bite-sized cheesy baked macaroni bites.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$50</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('a2h',-1)">−</button>
+            <div class="qd" id="qty-a2h">1</div>
+            <button class="qb" onclick="changeQty('a2h',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-a3h"
+           onclick=" toggleItem('a3h','app-half')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Wingettes</div>
+          <div class="idesc">Seasoned wings fried or baked, with blue cheese or ranch dip.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$70</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('a3h',-1)">−</button>
+            <div class="qd" id="qty-a3h">1</div>
+            <button class="qb" onclick="changeQty('a3h',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-a5h"
+           onclick=" toggleItem('a5h','app-half')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Marinated Drumettes</div>
+          <div class="idesc">Seasoned leg pieces smothered in sweet & savory house glaze.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$85</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('a5h',-1)">−</button>
+            <div class="qd" id="qty-a5h">1</div>
+            <button class="qb" onclick="changeQty('a5h',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-a7h"
+           onclick=" toggleItem('a7h','app-half')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Spinach Crab Dip</div>
+          <div class="idesc">Cheesy crab and spinach dip served with baguette slices.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$55</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('a7h',-1)">−</button>
+            <div class="qd" id="qty-a7h">1</div>
+            <button class="qb" onclick="changeQty('a7h',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-a11h"
+           onclick=" toggleItem('a11h','app-half')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Sweet Potato & Black Bean Sliders ★</div>
+          <div class="idesc">Spiced sweet potato & black bean patties with avocado crema & pickled jalapeño. Vegetarian: add pepper jack cheese.</div>
+          
+          <div class="ivegan">★ Vegan / Vegetarian option</div>
+        </div>
+        <div class="iright">
+          <div class="iprice">$70</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('a11h',-1)">−</button>
+            <div class="qd" id="qty-a11h">1</div>
+            <button class="qb" onclick="changeQty('a11h',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+    </div>
+
+    <div class="pan-section">
+      <div class="pan-hdr full-hdr">
+        <div class="pan-hdr-left">
+          <div class="pan-icon">🍢</div>
+          <div>
+            <div class="pan-title">APPETIZERS — Full Pan</div>
+            <div class="pan-serves">Serves 25–35</div>
+          </div>
+        </div>
+        <div class="pan-count" id="badge-app-full">0 selected</div>
+      </div>
+      
+      <div class="item" id="row-a1f"
+           onclick=" toggleItem('a1f','app-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Sweet & Spicy Meatballs</div>
+          <div class="idesc">Beef or turkey meatballs simmered in signature red pepper jelly gravy.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$100</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('a1f',-1)">−</button>
+            <div class="qd" id="qty-a1f">1</div>
+            <button class="qb" onclick="changeQty('a1f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-a2f"
+           onclick=" toggleItem('a2f','app-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Mac & Cheese Bites</div>
+          <div class="idesc">Bite-sized cheesy baked macaroni bites.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$75</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('a2f',-1)">−</button>
+            <div class="qd" id="qty-a2f">1</div>
+            <button class="qb" onclick="changeQty('a2f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-a3f"
+           onclick=" toggleItem('a3f','app-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Wingettes</div>
+          <div class="idesc">Seasoned wings fried or baked, with blue cheese or ranch dip.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$110</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('a3f',-1)">−</button>
+            <div class="qd" id="qty-a3f">1</div>
+            <button class="qb" onclick="changeQty('a3f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-a5f"
+           onclick=" toggleItem('a5f','app-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Marinated Drumettes</div>
+          <div class="idesc">Seasoned leg pieces smothered in sweet & savory house glaze.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$150</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('a5f',-1)">−</button>
+            <div class="qd" id="qty-a5f">1</div>
+            <button class="qb" onclick="changeQty('a5f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-a7f"
+           onclick=" toggleItem('a7f','app-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Spinach Crab Dip</div>
+          <div class="idesc">Cheesy crab and spinach dip served with baguette slices.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$95</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('a7f',-1)">−</button>
+            <div class="qd" id="qty-a7f">1</div>
+            <button class="qb" onclick="changeQty('a7f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-a11f"
+           onclick=" toggleItem('a11f','app-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Sweet Potato & Black Bean Sliders ★</div>
+          <div class="idesc">Spiced sweet potato & black bean patties with avocado crema & pickled jalapeño. Vegetarian: add pepper jack cheese.</div>
+          
+          <div class="ivegan">★ Vegan / Vegetarian option</div>
+        </div>
+        <div class="iright">
+          <div class="iprice">$115</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('a11f',-1)">−</button>
+            <div class="qd" id="qty-a11f">1</div>
+            <button class="qb" onclick="changeQty('a11f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+    </div>
+
+    <div class="pan-section">
+      <div class="pan-hdr doz-hdr">
+        <div class="pan-hdr-left">
+          <div class="pan-icon">🍢</div>
+          <div>
+            <div class="pan-title">APPETIZERS — By the Dozen</div>
+            <div class="pan-serves">Per dozen pricing</div>
+          </div>
+        </div>
+        <div class="pan-count" id="badge-app-doz">0 selected</div>
+      </div>
+      
+    <div class="cat-label">Sliders & Mini Sandwiches</div>
+    
+        <div class="item" id="row-a4d"
+             onclick=" toggleItem('a4d','app-doz')"
+             style="">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Doughboy Delicious Brown Sliders</div>
+            <div class="idesc">Turkey or ham & gruyère on warm soft buns with shaved onion, pimentos & signature slider glaze. Per dozen.</div>
+            
+            
+          </div>
+          <div class="iright">
+            <div class="iprice">$85/dz</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('a4d',-1)">−</button>
+              <div class="qd" id="qty-a4d">1</div>
+              <button class="qb" onclick="changeQty('a4d',1)">+</button>
+            </div>
+          </div>
+        </div>
+        
+      
+        <div class="item" id="row-a6da"
+             onclick=" toggleItem('a6da','app-doz')"
+             style="">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Shrimp Salad Mini Sandwiches</div>
+            <div class="idesc">Creamy shrimp salad on mini croissants with shaved red onion. Per dozen.</div>
+            
+            
+          </div>
+          <div class="iright">
+            <div class="iprice">$90/dz</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('a6da',-1)">−</button>
+              <div class="qd" id="qty-a6da">1</div>
+              <button class="qb" onclick="changeQty('a6da',1)">+</button>
+            </div>
+          </div>
+        </div>
+        
+      
+        <div class="item" id="row-a6db"
+             onclick=" toggleItem('a6db','app-doz')"
+             style="">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Salmon Salad Mini Sandwiches</div>
+            <div class="idesc">Creamy salmon salad on mini croissants with shaved red onion. Per dozen.</div>
+            
+            
+          </div>
+          <div class="iright">
+            <div class="iprice">$90/dz</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('a6db',-1)">−</button>
+              <div class="qd" id="qty-a6db">1</div>
+              <button class="qb" onclick="changeQty('a6db',1)">+</button>
+            </div>
+          </div>
+        </div>
+        
+      
+  
+    <div class="cat-label">Crab Cake Balls</div>
+    
+        <div class="item" id="row-a8da"
+             onclick=" toggleItem('a8da','app-doz')"
+             style="">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Crab Cake Balls (1.5 oz) — 2 dz</div>
+            <div class="idesc">Bite-sized lump crab cakes, perfectly seasoned.</div>
+            
+            
+          </div>
+          <div class="iright">
+            <div class="iprice">$50/2dz</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('a8da',-1)">−</button>
+              <div class="qd" id="qty-a8da">1</div>
+              <button class="qb" onclick="changeQty('a8da',1)">+</button>
+            </div>
+          </div>
+        </div>
+        
+      
+        <div class="item" id="row-a8db"
+             onclick=" toggleItem('a8db','app-doz')"
+             style="">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Crab Cake Balls (1.5 oz) — 4 dz</div>
+            <div class="idesc">Bite-sized lump crab cakes, perfectly seasoned.</div>
+            
+            
+          </div>
+          <div class="iright">
+            <div class="iprice">$90/4dz</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('a8db',-1)">−</button>
+              <div class="qd" id="qty-a8db">1</div>
+              <button class="qb" onclick="changeQty('a8db',1)">+</button>
+            </div>
+          </div>
+        </div>
+        
+      
+  
+    <div class="cat-label">Pastellitos</div>
+    
+        <div class="item" id="row-a9a"
+             onclick=" toggleItem('a9a','app-doz')"
+             style="">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Pastellitos — Cheese</div>
+            <div class="idesc">Crispy savory pastry shells filled with cheese, fried to golden perfection.</div>
+            
+            
+          </div>
+          <div class="iright">
+            <div class="iprice">$25/dz</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('a9a',-1)">−</button>
+              <div class="qd" id="qty-a9a">1</div>
+              <button class="qb" onclick="changeQty('a9a',1)">+</button>
+            </div>
+          </div>
+        </div>
+        
+      
+        <div class="item" id="row-a9b"
+             onclick=" toggleItem('a9b','app-doz')"
+             style="">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Pastellitos — Beef</div>
+            <div class="idesc">Crispy savory pastry shells filled with seasoned beef, fried to golden perfection.</div>
+            
+            
+          </div>
+          <div class="iright">
+            <div class="iprice">$35/dz</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('a9b',-1)">−</button>
+              <div class="qd" id="qty-a9b">1</div>
+              <button class="qb" onclick="changeQty('a9b',1)">+</button>
+            </div>
+          </div>
+        </div>
+        
+      
+  
+    <div class="cat-label">Street Corn</div>
+    
+        <div class="item" id="row-a10a"
+             onclick=" toggleItem('a10a','app-doz')"
+             style="">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Street Corn — 1 dozen</div>
+            <div class="idesc">Corn on the cob with creamy garlic sauce, cotija cheese & chili powder.</div>
+            
+            
+          </div>
+          <div class="iright">
+            <div class="iprice">$40/dz</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('a10a',-1)">−</button>
+              <div class="qd" id="qty-a10a">1</div>
+              <button class="qb" onclick="changeQty('a10a',1)">+</button>
+            </div>
+          </div>
+        </div>
+        
+      
+        <div class="item" id="row-a10b"
+             onclick=" toggleItem('a10b','app-doz')"
+             style="">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Street Corn — 2 dozen</div>
+            <div class="idesc">Corn on the cob with creamy garlic sauce, cotija cheese & chili powder.</div>
+            
+            
+          </div>
+          <div class="iright">
+            <div class="iprice">$75/2dz</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('a10b',-1)">−</button>
+              <div class="qd" id="qty-a10b">1</div>
+              <button class="qb" onclick="changeQty('a10b',1)">+</button>
+            </div>
+          </div>
+        </div>
+        
+      
+  
+    <div class="cat-label">Sweet Potato & Black Bean Sliders ★</div>
+    
+        <div class="item" id="row-a11d"
+             onclick=" toggleItem('a11d','app-doz')"
+             style="">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Sweet Potato & Black Bean Sliders ★ — 1 dz</div>
+            <div class="idesc">Spiced sweet potato & black bean patties with avocado crema & pickled jalapeño.</div>
+            
+            <div class="ivegan">★ Vegan / Vegetarian option</div>
+          </div>
+          <div class="iright">
+            <div class="iprice">$70/dz</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('a11d',-1)">−</button>
+              <div class="qd" id="qty-a11d">1</div>
+              <button class="qb" onclick="changeQty('a11d',1)">+</button>
+            </div>
+          </div>
+        </div>
+        
+      
+        <div class="item" id="row-a11e"
+             onclick=" toggleItem('a11e','app-doz')"
+             style="">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Sweet Potato & Black Bean Sliders ★ — 2 dz</div>
+            <div class="idesc">Spiced sweet potato & black bean patties with avocado crema & pickled jalapeño.</div>
+            
+            <div class="ivegan">★ Vegan / Vegetarian option</div>
+          </div>
+          <div class="iright">
+            <div class="iprice">$125/2dz</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('a11e',-1)">−</button>
+              <div class="qd" id="qty-a11e">1</div>
+              <button class="qb" onclick="changeQty('a11e',1)">+</button>
+            </div>
+          </div>
+        </div>
+        
+      
+  
+    </div>
+
+<!-- ══ SOUPS, SALADS & SANDWICHES ══════════════════════════════════════ -->
+
+    <div class="pan-section">
+      <div class="pan-hdr teal-hdr">
+        <div class="pan-hdr-left">
+          <div class="pan-icon">🥗</div>
+          <div>
+            <div class="pan-title">SOUPS, SALADS & SANDWICHES</div>
+            <div class="pan-serves">Soups & salads priced per serving size · Sandwiches priced per dozen</div>
+          </div>
+        </div>
+        <div class="pan-count" id="badge-sss">0 selected</div>
+      </div>
+      
+    <div class="cat-label">Soups & Salads — Serves 15–20</div>
+    
+        <div class="item" id="row-s1"
+             onclick=" toggleItem('s1','sss')"
+             style="">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Avocado Chicken Salad — Serves 15–20</div>
+            <div class="idesc">Creamy chicken salad with diced avocado on sunflower bread. Available with tarragon or curried flavor.</div>
+            
+            
+          </div>
+          <div class="iright">
+            <div class="iprice">$95</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('s1',-1)">−</button>
+              <div class="qd" id="qty-s1">1</div>
+              <button class="qb" onclick="changeQty('s1',1)">+</button>
+            </div>
+          </div>
+        </div>
+        
+      
+        <div class="item" id="row-s4"
+             onclick=" toggleItem('s4','sss')"
+             style="">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Maryland Crab Soup — Serves 15–20</div>
+            <div class="idesc">Hearty Maryland crab with crab claws & lump crab meat, fresh mixed vegetables & a signature spice blend simmered in homemade stock.</div>
+            
+            
+          </div>
+          <div class="iright">
+            <div class="iprice">$90</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('s4',-1)">−</button>
+              <div class="qd" id="qty-s4">1</div>
+              <button class="qb" onclick="changeQty('s4',1)">+</button>
+            </div>
+          </div>
+        </div>
+        
+      
+        <div class="item" id="row-s5a"
+             onclick=" toggleItem('s5a','sss')"
+             style="">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Turkey Chili — Serves 15–20</div>
+            <div class="idesc">Turkey, red beans, tomatoes & southwest spices slow-cooked to perfection. Served with tortilla scoops & sour cream. Ask about Vegan Chili!</div>
+            <div class="inote">Cornbread add-on available +$20</div>
+            
+          </div>
+          <div class="iright">
+            <div class="iprice">$115</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('s5a',-1)">−</button>
+              <div class="qd" id="qty-s5a">1</div>
+              <button class="qb" onclick="changeQty('s5a',1)">+</button>
+            </div>
+          </div>
+        </div>
+        
+      
+        <div class="item" id="row-s5b"
+             onclick=" toggleItem('s5b','sss')"
+             style="">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Beef Chili — Serves 15–20</div>
+            <div class="idesc">Beef, red beans, tomatoes & southwest spices slow-cooked to perfection. Served with tortilla scoops & sour cream.</div>
+            <div class="inote">Cornbread add-on available +$20</div>
+            
+          </div>
+          <div class="iright">
+            <div class="iprice">$130</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('s5b',-1)">−</button>
+              <div class="qd" id="qty-s5b">1</div>
+              <button class="qb" onclick="changeQty('s5b',1)">+</button>
+            </div>
+          </div>
+        </div>
+        
+      
+        <div class="item" id="row-s6"
+             onclick=" toggleItem('s6','sss')"
+             style="">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Coconut Lentil Soup ★ — Serves 15–20</div>
+            <div class="idesc">Red lentils in coconut milk with garlic, ginger & warming spices. Served with warm flatbread. Vegetarian: add Greek yogurt.</div>
+            
+            <div class="ivegan">★ Vegan / Vegetarian option</div>
+          </div>
+          <div class="iright">
+            <div class="iprice">$60</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('s6',-1)">−</button>
+              <div class="qd" id="qty-s6">1</div>
+              <button class="qb" onclick="changeQty('s6',1)">+</button>
+            </div>
+          </div>
+        </div>
+        
+      
+  
+    <div class="cat-label">Soups & Salads — Serves 25–35</div>
+    
+        <div class="item" id="row-s1f"
+             onclick=" toggleItem('s1f','sss')"
+             style="">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Avocado Chicken Salad — Serves 25–35</div>
+            <div class="idesc">Creamy chicken salad with diced avocado on sunflower bread. Available with tarragon or curried flavor.</div>
+            
+            
+          </div>
+          <div class="iright">
+            <div class="iprice">$155</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('s1f',-1)">−</button>
+              <div class="qd" id="qty-s1f">1</div>
+              <button class="qb" onclick="changeQty('s1f',1)">+</button>
+            </div>
+          </div>
+        </div>
+        
+      
+        <div class="item" id="row-s4f"
+             onclick=" toggleItem('s4f','sss')"
+             style="">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Maryland Crab Soup — Serves 25–35</div>
+            <div class="idesc">Hearty Maryland crab with crab claws & lump crab meat, fresh mixed vegetables & a signature spice blend simmered in homemade stock.</div>
+            
+            
+          </div>
+          <div class="iright">
+            <div class="iprice">$125</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('s4f',-1)">−</button>
+              <div class="qd" id="qty-s4f">1</div>
+              <button class="qb" onclick="changeQty('s4f',1)">+</button>
+            </div>
+          </div>
+        </div>
+        
+      
+        <div class="item" id="row-s5af"
+             onclick=" toggleItem('s5af','sss')"
+             style="">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Turkey Chili — Serves 25–35</div>
+            <div class="idesc">Turkey, red beans, tomatoes & southwest spices slow-cooked to perfection. Served with tortilla scoops & sour cream. Ask about Vegan Chili!</div>
+            <div class="inote">Cornbread add-on available +$20</div>
+            
+          </div>
+          <div class="iright">
+            <div class="iprice">$150</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('s5af',-1)">−</button>
+              <div class="qd" id="qty-s5af">1</div>
+              <button class="qb" onclick="changeQty('s5af',1)">+</button>
+            </div>
+          </div>
+        </div>
+        
+      
+        <div class="item" id="row-s5bf"
+             onclick=" toggleItem('s5bf','sss')"
+             style="">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Beef Chili — Serves 25–35</div>
+            <div class="idesc">Beef, red beans, tomatoes & southwest spices slow-cooked to perfection. Served with tortilla scoops & sour cream.</div>
+            <div class="inote">Cornbread add-on available +$20</div>
+            
+          </div>
+          <div class="iright">
+            <div class="iprice">$165</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('s5bf',-1)">−</button>
+              <div class="qd" id="qty-s5bf">1</div>
+              <button class="qb" onclick="changeQty('s5bf',1)">+</button>
+            </div>
+          </div>
+        </div>
+        
+      
+        <div class="item" id="row-s6f"
+             onclick=" toggleItem('s6f','sss')"
+             style="">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Coconut Lentil Soup ★ — Serves 25–35</div>
+            <div class="idesc">Red lentils in coconut milk with garlic, ginger & warming spices. Served with warm flatbread. Vegetarian: add Greek yogurt.</div>
+            
+            <div class="ivegan">★ Vegan / Vegetarian option</div>
+          </div>
+          <div class="iright">
+            <div class="iprice">$90</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('s6f',-1)">−</button>
+              <div class="qd" id="qty-s6f">1</div>
+              <button class="qb" onclick="changeQty('s6f',1)">+</button>
+            </div>
+          </div>
+        </div>
+        
+      
+  
+    <div class="cat-label">Sandwiches — By the Dozen</div>
+    
+        <div class="item" id="row-s2da"
+             onclick=" toggleItem('s2da','sss')"
+             style="">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Flank Steak & Spinach Sandwich — 1 dz</div>
+            <div class="idesc">Seared & slow-cooked flank steak, baby spinach & garlic mustard on a sub roll.</div>
+            
+            
+          </div>
+          <div class="iright">
+            <div class="iprice">$130/dz</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('s2da',-1)">−</button>
+              <div class="qd" id="qty-s2da">1</div>
+              <button class="qb" onclick="changeQty('s2da',1)">+</button>
+            </div>
+          </div>
+        </div>
+        
+      
+        <div class="item" id="row-s2db"
+             onclick=" toggleItem('s2db','sss')"
+             style="">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Flank Steak & Spinach Sandwich — 2 dz</div>
+            <div class="idesc">Seared & slow-cooked flank steak, baby spinach & garlic mustard on a sub roll.</div>
+            
+            
+          </div>
+          <div class="iright">
+            <div class="iprice">$190/2dz</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('s2db',-1)">−</button>
+              <div class="qd" id="qty-s2db">1</div>
+              <button class="qb" onclick="changeQty('s2db',1)">+</button>
+            </div>
+          </div>
+        </div>
+        
+      
+        <div class="item" id="row-s3da"
+             onclick=" toggleItem('s3da','sss')"
+             style="">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Roast Pork Sandwich — 1 dz</div>
+            <div class="idesc">Doughboy signature slow-roasted pork with pickled red onions & fresh cucumber.</div>
+            
+            
+          </div>
+          <div class="iright">
+            <div class="iprice">$115/dz</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('s3da',-1)">−</button>
+              <div class="qd" id="qty-s3da">1</div>
+              <button class="qb" onclick="changeQty('s3da',1)">+</button>
+            </div>
+          </div>
+        </div>
+        
+      
+        <div class="item" id="row-s3db"
+             onclick=" toggleItem('s3db','sss')"
+             style="">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Roast Pork Sandwich — 2 dz</div>
+            <div class="idesc">Doughboy signature slow-roasted pork with pickled red onions & fresh cucumber.</div>
+            
+            
+          </div>
+          <div class="iright">
+            <div class="iprice">$160/2dz</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('s3db',-1)">−</button>
+              <div class="qd" id="qty-s3db">1</div>
+              <button class="qb" onclick="changeQty('s3db',1)">+</button>
+            </div>
+          </div>
+        </div>
+        
+      
+  
+    </div>
+<style>.teal-hdr{background:var(--teal);}</style>
+
+<!-- ══ ENTREES ══════════════════════════════════════════════════════════ -->
+
+    <div class="pan-section">
+      <div class="pan-hdr half-hdr">
+        <div class="pan-hdr-left">
+          <div class="pan-icon">🍽</div>
+          <div>
+            <div class="pan-title">ENTRÉES — Half Pan</div>
+            <div class="pan-serves">Serves 15–20</div>
+          </div>
+        </div>
+        <div class="pan-count" id="badge-ent-half">0 selected</div>
+      </div>
+      
+      <div class="item" id="row-e1h"
+           onclick=" toggleItem('e1h','ent-half')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Fried or Baked Chicken</div>
+          <div class="idesc">Marinated white & dark meat chicken fried or baked to perfection. (~40 pcs)</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$95</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('e1h',-1)">−</button>
+            <div class="qd" id="qty-e1h">1</div>
+            <button class="qb" onclick="changeQty('e1h',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-e2h"
+           onclick=" toggleItem('e2h','ent-half')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Chicken Rasta Pasta</div>
+          <div class="idesc">Creamy jerk-seasoned pasta tossed with sautéed peppers & tender chicken.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$100</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('e2h',-1)">−</button>
+            <div class="qd" id="qty-e2h">1</div>
+            <button class="qb" onclick="changeQty('e2h',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-e3h"
+           onclick=" toggleItem('e3h','ent-half')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Seafood Rasta Pasta</div>
+          <div class="idesc">Creamy jerk-seasoned pasta with crab, shrimp & salmon.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$110</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('e3h',-1)">−</button>
+            <div class="qd" id="qty-e3h">1</div>
+            <button class="qb" onclick="changeQty('e3h',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-e4h"
+           onclick=" toggleItem('e4h','ent-half')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Stewed Chicken</div>
+          <div class="idesc">Slow-braised chicken in a rich, savory brown stew sauce.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$65</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('e4h',-1)">−</button>
+            <div class="qd" id="qty-e4h">1</div>
+            <button class="qb" onclick="changeQty('e4h',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-e5h"
+           onclick=" toggleItem('e5h','ent-half')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Roast Pork Shoulder</div>
+          <div class="idesc">Marinated pork shoulder slow-roasted for a perfectly tender & juicy result.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$80</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('e5h',-1)">−</button>
+            <div class="qd" id="qty-e5h">1</div>
+            <button class="qb" onclick="changeQty('e5h',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-e6h"
+           onclick=" toggleItem('e6h','ent-half')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Curry Chicken</div>
+          <div class="idesc">Caribbean-seasoned chicken with Trinidad curry powder, curried potatoes & chickpeas. Available with house pepper sauce.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$90</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('e6h',-1)">−</button>
+            <div class="qd" id="qty-e6h">1</div>
+            <button class="qb" onclick="changeQty('e6h',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-e7h"
+           onclick=" toggleItem('e7h','ent-half')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Curry Beef</div>
+          <div class="idesc">Caribbean-seasoned beef with Trinidad curry, potatoes & chickpeas.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$110</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('e7h',-1)">−</button>
+            <div class="qd" id="qty-e7h">1</div>
+            <button class="qb" onclick="changeQty('e7h',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-e8h"
+           onclick=" toggleItem('e8h','ent-half')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Curry Shrimp</div>
+          <div class="idesc">Caribbean-seasoned shrimp with Trinidad curry, potatoes & chickpeas.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$120</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('e8h',-1)">−</button>
+            <div class="qd" id="qty-e8h">1</div>
+            <button class="qb" onclick="changeQty('e8h',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-e9h"
+           onclick=" toggleItem('e9h','ent-half')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Pepper Steak</div>
+          <div class="idesc">Tender strips of steak braised with bell peppers & onions in a savory sauce.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$95</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('e9h',-1)">−</button>
+            <div class="qd" id="qty-e9h">1</div>
+            <button class="qb" onclick="changeQty('e9h',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-e10h"
+           onclick=" toggleItem('e10h','ent-half')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Stewed or BBQ Short Ribs</div>
+          <div class="idesc">Short ribs marinated 24 hours in custom spice blend, then stewed or grilled low and slow.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$155</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('e10h',-1)">−</button>
+            <div class="qd" id="qty-e10h">1</div>
+            <button class="qb" onclick="changeQty('e10h',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-e11h"
+           onclick=" toggleItem('e11h','ent-half')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Fried Fish</div>
+          <div class="idesc">Seasoned & battered whiting with house-made tartar sauce. (~40 pcs)</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$75</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('e11h',-1)">−</button>
+            <div class="qd" id="qty-e11h">1</div>
+            <button class="qb" onclick="changeQty('e11h',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-e13h"
+           onclick=" toggleItem('e13h','ent-half')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Caribbean Cauliflower ★</div>
+          <div class="idesc">Whole roasted cauliflower in signature jerk blend or Caribbean dry rub, charred to perfection. Served with mango salsa & coconut rice. Vegetarian: honey-lime glaze.</div>
+          
+          <div class="ivegan">★ Vegan / Vegetarian option</div>
+        </div>
+        <div class="iright">
+          <div class="iprice">$65</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('e13h',-1)">−</button>
+            <div class="qd" id="qty-e13h">1</div>
+            <button class="qb" onclick="changeQty('e13h',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+    </div>
+<div class="section-note">Crab Mac & Cheese available in Full Pan only — see Full Pan section below.</div>
+
+    <div class="pan-section">
+      <div class="pan-hdr full-hdr">
+        <div class="pan-hdr-left">
+          <div class="pan-icon">🍽</div>
+          <div>
+            <div class="pan-title">ENTRÉES — Full Pan</div>
+            <div class="pan-serves">Serves 25–35</div>
+          </div>
+        </div>
+        <div class="pan-count" id="badge-ent-full">0 selected</div>
+      </div>
+      
+      <div class="item" id="row-e1f"
+           onclick=" toggleItem('e1f','ent-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Fried or Baked Chicken</div>
+          <div class="idesc">Marinated white & dark meat chicken fried or baked to perfection. (~80 pcs)</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$175</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('e1f',-1)">−</button>
+            <div class="qd" id="qty-e1f">1</div>
+            <button class="qb" onclick="changeQty('e1f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-e2f"
+           onclick=" toggleItem('e2f','ent-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Chicken Rasta Pasta</div>
+          <div class="idesc">Creamy jerk-seasoned pasta tossed with sautéed peppers & tender chicken.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$120</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('e2f',-1)">−</button>
+            <div class="qd" id="qty-e2f">1</div>
+            <button class="qb" onclick="changeQty('e2f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-e3f"
+           onclick=" toggleItem('e3f','ent-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Seafood Rasta Pasta</div>
+          <div class="idesc">Creamy jerk-seasoned pasta with crab, shrimp & salmon.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$175</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('e3f',-1)">−</button>
+            <div class="qd" id="qty-e3f">1</div>
+            <button class="qb" onclick="changeQty('e3f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-e4f"
+           onclick=" toggleItem('e4f','ent-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Stewed Chicken</div>
+          <div class="idesc">Slow-braised chicken in a rich, savory brown stew sauce.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$110</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('e4f',-1)">−</button>
+            <div class="qd" id="qty-e4f">1</div>
+            <button class="qb" onclick="changeQty('e4f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-e5f"
+           onclick=" toggleItem('e5f','ent-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Roast Pork Shoulder</div>
+          <div class="idesc">Marinated pork shoulder slow-roasted for a perfectly tender & juicy result.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$140</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('e5f',-1)">−</button>
+            <div class="qd" id="qty-e5f">1</div>
+            <button class="qb" onclick="changeQty('e5f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-e6f"
+           onclick=" toggleItem('e6f','ent-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Curry Chicken</div>
+          <div class="idesc">Caribbean-seasoned chicken with Trinidad curry powder, curried potatoes & chickpeas. Available with house pepper sauce.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$140</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('e6f',-1)">−</button>
+            <div class="qd" id="qty-e6f">1</div>
+            <button class="qb" onclick="changeQty('e6f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-e7f"
+           onclick=" toggleItem('e7f','ent-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Curry Beef</div>
+          <div class="idesc">Caribbean-seasoned beef with Trinidad curry, potatoes & chickpeas.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$160</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('e7f',-1)">−</button>
+            <div class="qd" id="qty-e7f">1</div>
+            <button class="qb" onclick="changeQty('e7f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-e8f"
+           onclick=" toggleItem('e8f','ent-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Curry Shrimp</div>
+          <div class="idesc">Caribbean-seasoned shrimp with Trinidad curry, potatoes & chickpeas.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$185</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('e8f',-1)">−</button>
+            <div class="qd" id="qty-e8f">1</div>
+            <button class="qb" onclick="changeQty('e8f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-e9f"
+           onclick=" toggleItem('e9f','ent-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Pepper Steak</div>
+          <div class="idesc">Tender strips of steak braised with bell peppers & onions in a savory sauce.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$165</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('e9f',-1)">−</button>
+            <div class="qd" id="qty-e9f">1</div>
+            <button class="qb" onclick="changeQty('e9f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-e10f"
+           onclick=" toggleItem('e10f','ent-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Stewed or BBQ Short Ribs</div>
+          <div class="idesc">Short ribs marinated 24 hours in custom spice blend, then stewed or grilled low and slow.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$245</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('e10f',-1)">−</button>
+            <div class="qd" id="qty-e10f">1</div>
+            <button class="qb" onclick="changeQty('e10f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-e11f"
+           onclick=" toggleItem('e11f','ent-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Fried Fish</div>
+          <div class="idesc">Seasoned & battered whiting with house-made tartar sauce. (~80 pcs)</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$130</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('e11f',-1)">−</button>
+            <div class="qd" id="qty-e11f">1</div>
+            <button class="qb" onclick="changeQty('e11f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-e12f"
+           onclick=" toggleItem('e12f','ent-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Crab Mac & Cheese</div>
+          <div class="idesc">Lump crab, aged cheddar & a blend of cheeses baked to creamy golden perfection using a pasta of your choice.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$140</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('e12f',-1)">−</button>
+            <div class="qd" id="qty-e12f">1</div>
+            <button class="qb" onclick="changeQty('e12f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="pasta-sel" id="pasta-e12f">
+        <label>Pasta choice:</label>
+        <select id="pastatype-e12f" onchange="updatePasta('e12f')">
+          <option value="elbow">Elbow Macaroni</option>
+          <option value="bowtie">Bowtie Pasta</option>
+          <option value="shells">Shells</option>
+        </select>
+      </div>
+    
+      <div class="item" id="row-e13f"
+           onclick=" toggleItem('e13f','ent-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Caribbean Cauliflower ★</div>
+          <div class="idesc">Whole roasted cauliflower in signature jerk blend or Caribbean dry rub, charred to perfection. Served with mango salsa & coconut rice. Vegetarian: honey-lime glaze.</div>
+          
+          <div class="ivegan">★ Vegan / Vegetarian option</div>
+        </div>
+        <div class="iright">
+          <div class="iprice">$110</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('e13f',-1)">−</button>
+            <div class="qd" id="qty-e13f">1</div>
+            <button class="qb" onclick="changeQty('e13f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+    </div>
+
+<!-- ══ SIDES ════════════════════════════════════════════════════════════ -->
+
+    <div class="pan-section">
+      <div class="pan-hdr half-hdr">
+        <div class="pan-hdr-left">
+          <div class="pan-icon">🌽</div>
+          <div>
+            <div class="pan-title">SIDES — Half Pan</div>
+            <div class="pan-serves">Serves 15–20</div>
+          </div>
+        </div>
+        <div class="pan-count" id="badge-sid-half">0 selected</div>
+      </div>
+      
+      <div class="item" id="row-si1h"
+           onclick=" toggleItem('si1h','sid-half')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Collard Greens</div>
+          <div class="idesc">Hand-picked greens slow-cooked in smoked turkey.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$65</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('si1h',-1)">−</button>
+            <div class="qd" id="qty-si1h">1</div>
+            <button class="qb" onclick="changeQty('si1h',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-si2h"
+           onclick=" toggleItem('si2h','sid-half')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Green Beans</div>
+          <div class="idesc">Cut green beans seasoned & simmered in smoked turkey.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$65</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('si2h',-1)">−</button>
+            <div class="qd" id="qty-si2h">1</div>
+            <button class="qb" onclick="changeQty('si2h',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-si3h"
+           onclick=" toggleItem('si3h','sid-half')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Succotash</div>
+          <div class="idesc">Sweet corn, lima beans & cherry tomatoes in a light seasoning and broth.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$60</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('si3h',-1)">−</button>
+            <div class="qd" id="qty-si3h">1</div>
+            <button class="qb" onclick="changeQty('si3h',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-si5h"
+           onclick=" toggleItem('si5h','sid-half')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Peas & Rice</div>
+          <div class="idesc">Seasoned peas and rice, Caribbean style.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$55</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('si5h',-1)">−</button>
+            <div class="qd" id="qty-si5h">1</div>
+            <button class="qb" onclick="changeQty('si5h',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-si6h"
+           onclick=" toggleItem('si6h','sid-half')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Plain Rice</div>
+          <div class="idesc">Steamed white rice.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$40</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('si6h',-1)">−</button>
+            <div class="qd" id="qty-si6h">1</div>
+            <button class="qb" onclick="changeQty('si6h',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-si7h"
+           onclick=" toggleItem('si7h','sid-half')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Mac & Cheese</div>
+          <div class="idesc">Aged cheddar & a blend of cheeses baked to creamy golden perfection using a pasta of your choice.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$65</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('si7h',-1)">−</button>
+            <div class="qd" id="qty-si7h">1</div>
+            <button class="qb" onclick="changeQty('si7h',1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="pasta-sel" id="pasta-si7h">
+        <label>Pasta choice:</label>
+        <select id="pastatype-si7h" onchange="updatePasta('si7h')">
+          <option value="elbow">Elbow Macaroni</option>
+          <option value="bowtie">Bowtie Pasta</option>
+          <option value="shells">Shells</option>
+        </select>
+      </div>
+    
+      <div class="item" id="row-si8h"
+           onclick=" toggleItem('si8h','sid-half')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Potato Salad</div>
+          <div class="idesc">Classic creamy potato salad.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$60</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('si8h',-1)">−</button>
+            <div class="qd" id="qty-si8h">1</div>
+            <button class="qb" onclick="changeQty('si8h',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-si10h"
+           onclick=" toggleItem('si10h','sid-half')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Roasted Veggie & Grain Bowl ★</div>
+          <div class="idesc">Quinoa & farro with roasted seasonal vegetables, chickpeas & lemon-turmeric drizzle. Vegetarian: top with feta & creamy dressing.</div>
+          
+          <div class="ivegan">★ Vegan / Vegetarian option</div>
+        </div>
+        <div class="iright">
+          <div class="iprice">$65</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('si10h',-1)">−</button>
+            <div class="qd" id="qty-si10h">1</div>
+            <button class="qb" onclick="changeQty('si10h',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-si11h"
+           onclick=" toggleItem('si11h','sid-half')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Butternut Squash in Roasted Garlic Sauce ★</div>
+          <div class="idesc">Tender roasted butternut squash in a velvety roasted garlic sauce. Fully vegan.</div>
+          
+          <div class="ivegan">★ Vegan / Vegetarian option</div>
+        </div>
+        <div class="iright">
+          <div class="iprice">$60</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('si11h',-1)">−</button>
+            <div class="qd" id="qty-si11h">1</div>
+            <button class="qb" onclick="changeQty('si11h',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+    </div>
+
+    <div class="pan-section">
+      <div class="pan-hdr full-hdr">
+        <div class="pan-hdr-left">
+          <div class="pan-icon">🌽</div>
+          <div>
+            <div class="pan-title">SIDES — Full Pan</div>
+            <div class="pan-serves">Serves 25–35</div>
+          </div>
+        </div>
+        <div class="pan-count" id="badge-sid-full">0 selected</div>
+      </div>
+      
+      <div class="item" id="row-si1f"
+           onclick=" toggleItem('si1f','sid-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Collard Greens</div>
+          <div class="idesc">Hand-picked greens slow-cooked in smoked turkey.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$90</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('si1f',-1)">−</button>
+            <div class="qd" id="qty-si1f">1</div>
+            <button class="qb" onclick="changeQty('si1f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-si2f"
+           onclick=" toggleItem('si2f','sid-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Green Beans</div>
+          <div class="idesc">Cut green beans seasoned & simmered in smoked turkey.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$80</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('si2f',-1)">−</button>
+            <div class="qd" id="qty-si2f">1</div>
+            <button class="qb" onclick="changeQty('si2f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-si3f"
+           onclick=" toggleItem('si3f','sid-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Succotash</div>
+          <div class="idesc">Sweet corn, lima beans & cherry tomatoes in a light seasoning and broth.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$75</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('si3f',-1)">−</button>
+            <div class="qd" id="qty-si3f">1</div>
+            <button class="qb" onclick="changeQty('si3f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-si5f"
+           onclick=" toggleItem('si5f','sid-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Peas & Rice</div>
+          <div class="idesc">Seasoned peas and rice, Caribbean style.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$80</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('si5f',-1)">−</button>
+            <div class="qd" id="qty-si5f">1</div>
+            <button class="qb" onclick="changeQty('si5f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-si6f"
+           onclick=" toggleItem('si6f','sid-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Plain Rice</div>
+          <div class="idesc">Steamed white rice.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$50</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('si6f',-1)">−</button>
+            <div class="qd" id="qty-si6f">1</div>
+            <button class="qb" onclick="changeQty('si6f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-si7f"
+           onclick=" toggleItem('si7f','sid-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Mac & Cheese</div>
+          <div class="idesc">Aged cheddar & a blend of cheeses baked to creamy golden perfection using a pasta of your choice.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$100</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('si7f',-1)">−</button>
+            <div class="qd" id="qty-si7f">1</div>
+            <button class="qb" onclick="changeQty('si7f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="pasta-sel" id="pasta-si7f">
+        <label>Pasta choice:</label>
+        <select id="pastatype-si7f" onchange="updatePasta('si7f')">
+          <option value="elbow">Elbow Macaroni</option>
+          <option value="bowtie">Bowtie Pasta</option>
+          <option value="shells">Shells</option>
+        </select>
+      </div>
+    
+      <div class="item" id="row-si8f"
+           onclick=" toggleItem('si8f','sid-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Potato Salad</div>
+          <div class="idesc">Classic creamy potato salad.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$90</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('si8f',-1)">−</button>
+            <div class="qd" id="qty-si8f">1</div>
+            <button class="qb" onclick="changeQty('si8f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-si10f"
+           onclick=" toggleItem('si10f','sid-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Roasted Veggie & Grain Bowl ★</div>
+          <div class="idesc">Quinoa & farro with roasted seasonal vegetables, chickpeas & lemon-turmeric drizzle. Vegetarian: top with feta & creamy dressing.</div>
+          
+          <div class="ivegan">★ Vegan / Vegetarian option</div>
+        </div>
+        <div class="iright">
+          <div class="iprice">$95</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('si10f',-1)">−</button>
+            <div class="qd" id="qty-si10f">1</div>
+            <button class="qb" onclick="changeQty('si10f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-si11f"
+           onclick=" toggleItem('si11f','sid-full')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Butternut Squash in Roasted Garlic Sauce ★</div>
+          <div class="idesc">Tender roasted butternut squash in a velvety roasted garlic sauce. Fully vegan.</div>
+          
+          <div class="ivegan">★ Vegan / Vegetarian option</div>
+        </div>
+        <div class="iright">
+          <div class="iprice">$85</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('si11f',-1)">−</button>
+            <div class="qd" id="qty-si11f">1</div>
+            <button class="qb" onclick="changeQty('si11f',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+    </div>
+
+    <div class="pan-section">
+      <div class="pan-hdr doz-hdr">
+        <div class="pan-hdr-left">
+          <div class="pan-icon">🌽</div>
+          <div>
+            <div class="pan-title">SIDES — By the Dozen</div>
+            <div class="pan-serves">Per dozen pricing</div>
+          </div>
+        </div>
+        <div class="pan-count" id="badge-sid-doz">0 selected</div>
+      </div>
+      
+      <div class="item" id="row-si9d"
+           onclick=" toggleItem('si9d','sid-doz')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Drop Biscuits</div>
+          <div class="idesc">Golden, fluffy drop biscuits. Served with berry jelly or butter.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$28/dz</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('si9d',-1)">−</button>
+            <div class="qd" id="qty-si9d">1</div>
+            <button class="qb" onclick="changeQty('si9d',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+    </div>
+
+<!-- ══ DESSERTS ══════════════════════════════════════════════════════════ -->
+
+    <div class="pan-section">
+      <div class="pan-hdr doz-hdr">
+        <div class="pan-hdr-left">
+          <div class="pan-icon">🍰</div>
+          <div>
+            <div class="pan-title">DESSERTS — By the Dozen</div>
+            <div class="pan-serves">Per dozen pricing</div>
+          </div>
+        </div>
+        <div class="pan-count" id="badge-des-doz">0 selected</div>
+      </div>
+      
+      <div class="item" id="row-d1d"
+           onclick=" toggleItem('d1d','des-doz')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Brownies</div>
+          <div class="idesc">Fudgy chocolate squares of utter delight.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$40/dz</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('d1d',-1)">−</button>
+            <div class="qd" id="qty-d1d">1</div>
+            <button class="qb" onclick="changeQty('d1d',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-d2d"
+           onclick=" toggleItem('d2d','des-doz')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Assorted Cookies</div>
+          <div class="idesc">Chocolate chip, oatmeal & toffee graham cracker cookies.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$35/dz</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('d2d',-1)">−</button>
+            <div class="qd" id="qty-d2d">1</div>
+            <button class="qb" onclick="changeQty('d2d',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-d6d"
+           onclick=" toggleItem('d6d','des-doz')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Cheesecake Dessert Shooters</div>
+          <div class="idesc">Layered graham cracker crust & fruit filling. Choose: cherry, strawberry, apple, or blueberry.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$40/dz</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('d6d',-1)">−</button>
+            <div class="qd" id="qty-d6d">1</div>
+            <button class="qb" onclick="changeQty('d6d',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+    </div>
+
+    <div class="pan-section">
+      <div class="pan-hdr pink-hdr">
+        <div class="pan-hdr-left">
+          <div class="pan-icon">🍰</div>
+          <div>
+            <div class="pan-title">DESSERTS — Cakes & Cobblers</div>
+            <div class="pan-serves">Per item pricing</div>
+          </div>
+        </div>
+        <div class="pan-count" id="badge-des-oth">0 selected</div>
+      </div>
+      
+      <div class="item" id="row-d3o"
+           onclick=" toggleItem('d3o','des-oth')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Golden Butter Pound Cake</div>
+          <div class="idesc">A delicious and moist 10-inch round cake baked to perfection.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$50 (10" round)</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('d3o',-1)">−</button>
+            <div class="qd" id="qty-d3o">1</div>
+            <button class="qb" onclick="changeQty('d3o',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-d4o"
+           onclick=" toggleItem('d4o','des-oth')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">5 Flavor Cake</div>
+          <div class="idesc">Hand-whipped 10-inch round cake infused with liqueur, vanilla & a special blend of spices for a flavorful, moist cake.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$65 (10" round)</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('d4o',-1)">−</button>
+            <div class="qd" id="qty-d4o">1</div>
+            <button class="qb" onclick="changeQty('d4o',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-d5a"
+           onclick=" toggleItem('d5a','des-oth')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Peach Cobbler — Half Pan</div>
+          <div class="idesc">Warm peach cobbler with bourbon glaze & drop biscuit topping.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$40/half pan</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('d5a',-1)">−</button>
+            <div class="qd" id="qty-d5a">1</div>
+            <button class="qb" onclick="changeQty('d5a',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+      <div class="item" id="row-d5b"
+           onclick=" toggleItem('d5b','des-oth')"
+           style="">
+        <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="iinfo">
+          <div class="iname">Peach Cobbler — Full Pan</div>
+          <div class="idesc">Warm peach cobbler with bourbon glaze & drop biscuit topping.</div>
+          
+          
+        </div>
+        <div class="iright">
+          <div class="iprice">$70/full pan</div>
+          <div class="qty-ctrl" onclick="event.stopPropagation()">
+            <button class="qb" onclick="changeQty('d5b',-1)">−</button>
+            <div class="qd" id="qty-d5b">1</div>
+            <button class="qb" onclick="changeQty('d5b',1)">+</button>
+          </div>
+        </div>
+      </div>
+      
+    
+    </div>
+<style>.pink-hdr{background:var(--pink);}</style>
+
+<!-- ══ ORDER SUMMARY ════════════════════════════════════════════════════ -->
+<div class="summary-card">
+  <div class="sum-hdr">📋 Order Summary</div>
+  <div class="sum-body">
+    <div class="sum-empty" id="sum-empty">No items yet. Click any item to add it.</div>
+    <div id="sum-lines"></div>
+    <div id="sum-totals" style="display:none">
+      <hr class="sdiv"/>
+      <div class="srow"><span>Subtotal</span><span id="sub-v">$0.00</span></div>
+      <div class="srow"><span>Sales Tax (10%)</span><span id="tax-v">$0.00</span></div>
+      <div class="srow total"><span>Estimated Total</span><span id="tot-v">$0.00</span></div>
+      <div class="tax-note">Tax is an estimate · Final invoice provided upon confirmation</div>
+    </div>
+    <button class="sub-btn" id="sub-btn" onclick="submitOrder()" disabled>Submit Order Request</button>
+    <button class="clr-btn" onclick="clearAll()">Clear All Selections</button>
+  </div>
+</div>
+
+</div><!-- wrap -->
+
+<div class="modal-ov" id="modal">
+  <div class="modal">
+    <div class="modal-ic">✅</div>
+    <h2>Request Received!</h2>
+    <p id="modal-msg"></p>
+    <button class="modal-cls" onclick="document.getElementById('modal').className='modal-ov'">Done</button>
+  </div>
+</div>
+
+<script>
+const TAX = 0.10;
+const ITEMS = [{"id":"a1h","name":"Sweet & Spicy Meatballs","price":55,"desc":"Beef or turkey meatballs simmered in signature red pepper jelly gravy."},{"id":"a2h","name":"Mac & Cheese Bites","price":50,"desc":"Bite-sized cheesy baked macaroni bites."},{"id":"a3h","name":"Wingettes","price":70,"desc":"Seasoned wings fried or baked, with blue cheese or ranch dip."},{"id":"a5h","name":"Marinated Drumettes","price":85,"desc":"Seasoned leg pieces smothered in sweet & savory house glaze."},{"id":"a7h","name":"Spinach Crab Dip","price":55,"desc":"Cheesy crab and spinach dip served with baguette slices."},{"id":"a11h","name":"Sweet Potato & Black Bean Sliders ★","price":70,"desc":"Spiced sweet potato & black bean patties with avocado crema & pickled jalapeño. Vegetarian: add pepper jack cheese.","vegan":true},{"id":"a1f","name":"Sweet & Spicy Meatballs","price":100,"desc":"Beef or turkey meatballs simmered in signature red pepper jelly gravy."},{"id":"a2f","name":"Mac & Cheese Bites","price":75,"desc":"Bite-sized cheesy baked macaroni bites."},{"id":"a3f","name":"Wingettes","price":110,"desc":"Seasoned wings fried or baked, with blue cheese or ranch dip."},{"id":"a5f","name":"Marinated Drumettes","price":150,"desc":"Seasoned leg pieces smothered in sweet & savory house glaze."},{"id":"a7f","name":"Spinach Crab Dip","price":95,"desc":"Cheesy crab and spinach dip served with baguette slices."},{"id":"a11f","name":"Sweet Potato & Black Bean Sliders ★","price":115,"desc":"Spiced sweet potato & black bean patties with avocado crema & pickled jalapeño. Vegetarian: add pepper jack cheese.","vegan":true},{"id":"a4d","name":"Doughboy Delicious Brown Sliders","price":85,"desc":"Turkey or ham & gruyère on warm soft buns with shaved onion, pimentos & signature slider glaze. Per dozen.","priceLbl":"$85/dz"},{"id":"a6da","name":"Shrimp Salad Mini Sandwiches","price":90,"desc":"Creamy shrimp salad on mini croissants with shaved red onion. Per dozen.","priceLbl":"$90/dz"},{"id":"a6db","name":"Salmon Salad Mini Sandwiches","price":90,"desc":"Creamy salmon salad on mini croissants with shaved red onion. Per dozen.","priceLbl":"$90/dz"},{"id":"a8da","name":"Crab Cake Balls (1.5 oz) — 2 dz","price":50,"desc":"Bite-sized lump crab cakes, perfectly seasoned.","priceLbl":"$50/2dz"},{"id":"a8db","name":"Crab Cake Balls (1.5 oz) — 4 dz","price":90,"desc":"Bite-sized lump crab cakes, perfectly seasoned.","priceLbl":"$90/4dz"},{"id":"a9a","name":"Pastellitos — Cheese","price":25,"desc":"Crispy savory pastry shells filled with cheese, fried to golden perfection.","priceLbl":"$25/dz"},{"id":"a9b","name":"Pastellitos — Beef","price":35,"desc":"Crispy savory pastry shells filled with seasoned beef, fried to golden perfection.","priceLbl":"$35/dz"},{"id":"a10a","name":"Street Corn — 1 dozen","price":40,"desc":"Corn on the cob with creamy garlic sauce, cotija cheese & chili powder.","priceLbl":"$40/dz"},{"id":"a10b","name":"Street Corn — 2 dozen","price":75,"desc":"Corn on the cob with creamy garlic sauce, cotija cheese & chili powder.","priceLbl":"$75/2dz"},{"id":"a11d","name":"Sweet Potato & Black Bean Sliders ★ — 1 dz","price":70,"desc":"Spiced sweet potato & black bean patties with avocado crema & pickled jalapeño.","priceLbl":"$70/dz","vegan":true},{"id":"a11e","name":"Sweet Potato & Black Bean Sliders ★ — 2 dz","price":125,"desc":"Spiced sweet potato & black bean patties with avocado crema & pickled jalapeño.","priceLbl":"$125/2dz","vegan":true},{"id":"s1","name":"Avocado Chicken Salad — Serves 15–20","price":95,"desc":"Creamy chicken salad with diced avocado on sunflower bread. Available with tarragon or curried flavor."},{"id":"s1f","name":"Avocado Chicken Salad — Serves 25–35","price":155,"desc":"Creamy chicken salad with diced avocado on sunflower bread. Available with tarragon or curried flavor."},{"id":"s4","name":"Maryland Crab Soup — Serves 15–20","price":90,"desc":"Hearty Maryland crab with crab claws & lump crab meat, fresh mixed vegetables & a signature spice blend simmered in homemade stock."},{"id":"s4f","name":"Maryland Crab Soup — Serves 25–35","price":125,"desc":"Hearty Maryland crab with crab claws & lump crab meat, fresh mixed vegetables & a signature spice blend simmered in homemade stock."},{"id":"s5a","name":"Turkey Chili — Serves 15–20","price":115,"desc":"Turkey, red beans, tomatoes & southwest spices slow-cooked to perfection. Served with tortilla scoops & sour cream. Ask about Vegan Chili!","note":"Cornbread add-on available +$20"},{"id":"s5af","name":"Turkey Chili — Serves 25–35","price":150,"desc":"Turkey, red beans, tomatoes & southwest spices slow-cooked to perfection. Served with tortilla scoops & sour cream. Ask about Vegan Chili!","note":"Cornbread add-on available +$20"},{"id":"s5b","name":"Beef Chili — Serves 15–20","price":130,"desc":"Beef, red beans, tomatoes & southwest spices slow-cooked to perfection. Served with tortilla scoops & sour cream.","note":"Cornbread add-on available +$20"},{"id":"s5bf","name":"Beef Chili — Serves 25–35","price":165,"desc":"Beef, red beans, tomatoes & southwest spices slow-cooked to perfection. Served with tortilla scoops & sour cream.","note":"Cornbread add-on available +$20"},{"id":"s6","name":"Coconut Lentil Soup ★ — Serves 15–20","price":60,"desc":"Red lentils in coconut milk with garlic, ginger & warming spices. Served with warm flatbread. Vegetarian: add Greek yogurt.","vegan":true},{"id":"s6f","name":"Coconut Lentil Soup ★ — Serves 25–35","price":90,"desc":"Red lentils in coconut milk with garlic, ginger & warming spices. Served with warm flatbread. Vegetarian: add Greek yogurt.","vegan":true},{"id":"s2da","name":"Flank Steak & Spinach Sandwich — 1 dz","price":130,"desc":"Seared & slow-cooked flank steak, baby spinach & garlic mustard on a sub roll.","priceLbl":"$130/dz"},{"id":"s2db","name":"Flank Steak & Spinach Sandwich — 2 dz","price":190,"desc":"Seared & slow-cooked flank steak, baby spinach & garlic mustard on a sub roll.","priceLbl":"$190/2dz"},{"id":"s3da","name":"Roast Pork Sandwich — 1 dz","price":115,"desc":"Doughboy signature slow-roasted pork with pickled red onions & fresh cucumber.","priceLbl":"$115/dz"},{"id":"s3db","name":"Roast Pork Sandwich — 2 dz","price":160,"desc":"Doughboy signature slow-roasted pork with pickled red onions & fresh cucumber.","priceLbl":"$160/2dz"},{"id":"e1h","name":"Fried or Baked Chicken","price":95,"desc":"Marinated white & dark meat chicken fried or baked to perfection. (~40 pcs)"},{"id":"e2h","name":"Chicken Rasta Pasta","price":100,"desc":"Creamy jerk-seasoned pasta tossed with sautéed peppers & tender chicken."},{"id":"e3h","name":"Seafood Rasta Pasta","price":110,"desc":"Creamy jerk-seasoned pasta with crab, shrimp & salmon."},{"id":"e4h","name":"Stewed Chicken","price":65,"desc":"Slow-braised chicken in a rich, savory brown stew sauce."},{"id":"e5h","name":"Roast Pork Shoulder","price":80,"desc":"Marinated pork shoulder slow-roasted for a perfectly tender & juicy result."},{"id":"e6h","name":"Curry Chicken","price":90,"desc":"Caribbean-seasoned chicken with Trinidad curry powder, curried potatoes & chickpeas. Available with house pepper sauce."},{"id":"e7h","name":"Curry Beef","price":110,"desc":"Caribbean-seasoned beef with Trinidad curry, potatoes & chickpeas."},{"id":"e8h","name":"Curry Shrimp","price":120,"desc":"Caribbean-seasoned shrimp with Trinidad curry, potatoes & chickpeas."},{"id":"e9h","name":"Pepper Steak","price":95,"desc":"Tender strips of steak braised with bell peppers & onions in a savory sauce."},{"id":"e10h","name":"Stewed or BBQ Short Ribs","price":155,"desc":"Short ribs marinated 24 hours in custom spice blend, then stewed or grilled low and slow."},{"id":"e11h","name":"Fried Fish","price":75,"desc":"Seasoned & battered whiting with house-made tartar sauce. (~40 pcs)"},{"id":"e13h","name":"Caribbean Cauliflower ★","price":65,"desc":"Whole roasted cauliflower in signature jerk blend or Caribbean dry rub, charred to perfection. Served with mango salsa & coconut rice. Vegetarian: honey-lime glaze.","vegan":true},{"id":"e1f","name":"Fried or Baked Chicken","price":175,"desc":"Marinated white & dark meat chicken fried or baked to perfection. (~80 pcs)"},{"id":"e2f","name":"Chicken Rasta Pasta","price":120,"desc":"Creamy jerk-seasoned pasta tossed with sautéed peppers & tender chicken."},{"id":"e3f","name":"Seafood Rasta Pasta","price":175,"desc":"Creamy jerk-seasoned pasta with crab, shrimp & salmon."},{"id":"e4f","name":"Stewed Chicken","price":110,"desc":"Slow-braised chicken in a rich, savory brown stew sauce."},{"id":"e5f","name":"Roast Pork Shoulder","price":140,"desc":"Marinated pork shoulder slow-roasted for a perfectly tender & juicy result."},{"id":"e6f","name":"Curry Chicken","price":140,"desc":"Caribbean-seasoned chicken with Trinidad curry powder, curried potatoes & chickpeas. Available with house pepper sauce."},{"id":"e7f","name":"Curry Beef","price":160,"desc":"Caribbean-seasoned beef with Trinidad curry, potatoes & chickpeas."},{"id":"e8f","name":"Curry Shrimp","price":185,"desc":"Caribbean-seasoned shrimp with Trinidad curry, potatoes & chickpeas."},{"id":"e9f","name":"Pepper Steak","price":165,"desc":"Tender strips of steak braised with bell peppers & onions in a savory sauce."},{"id":"e10f","name":"Stewed or BBQ Short Ribs","price":245,"desc":"Short ribs marinated 24 hours in custom spice blend, then stewed or grilled low and slow."},{"id":"e11f","name":"Fried Fish","price":130,"desc":"Seasoned & battered whiting with house-made tartar sauce. (~80 pcs)"},{"id":"e12f","name":"Crab Mac & Cheese","price":140,"desc":"Lump crab, aged cheddar & a blend of cheeses baked to creamy golden perfection using a pasta of your choice.","pasta":true},{"id":"e13f","name":"Caribbean Cauliflower ★","price":110,"desc":"Whole roasted cauliflower in signature jerk blend or Caribbean dry rub, charred to perfection. Served with mango salsa & coconut rice. Vegetarian: honey-lime glaze.","vegan":true},{"id":"si1h","name":"Collard Greens","price":65,"desc":"Hand-picked greens slow-cooked in smoked turkey."},{"id":"si2h","name":"Green Beans","price":65,"desc":"Cut green beans seasoned & simmered in smoked turkey."},{"id":"si3h","name":"Succotash","price":60,"desc":"Sweet corn, lima beans & cherry tomatoes in a light seasoning and broth."},{"id":"si5h","name":"Peas & Rice","price":55,"desc":"Seasoned peas and rice, Caribbean style."},{"id":"si6h","name":"Plain Rice","price":40,"desc":"Steamed white rice."},{"id":"si7h","name":"Mac & Cheese","price":65,"desc":"Aged cheddar & a blend of cheeses baked to creamy golden perfection using a pasta of your choice.","pasta":true},{"id":"si8h","name":"Potato Salad","price":60,"desc":"Classic creamy potato salad."},{"id":"si10h","name":"Roasted Veggie & Grain Bowl ★","price":65,"desc":"Quinoa & farro with roasted seasonal vegetables, chickpeas & lemon-turmeric drizzle. Vegetarian: top with feta & creamy dressing.","vegan":true},{"id":"si11h","name":"Butternut Squash in Roasted Garlic Sauce ★","price":60,"desc":"Tender roasted butternut squash in a velvety roasted garlic sauce. Fully vegan.","vegan":true},{"id":"si1f","name":"Collard Greens","price":90,"desc":"Hand-picked greens slow-cooked in smoked turkey."},{"id":"si2f","name":"Green Beans","price":80,"desc":"Cut green beans seasoned & simmered in smoked turkey."},{"id":"si3f","name":"Succotash","price":75,"desc":"Sweet corn, lima beans & cherry tomatoes in a light seasoning and broth."},{"id":"si5f","name":"Peas & Rice","price":80,"desc":"Seasoned peas and rice, Caribbean style."},{"id":"si6f","name":"Plain Rice","price":50,"desc":"Steamed white rice."},{"id":"si7f","name":"Mac & Cheese","price":100,"desc":"Aged cheddar & a blend of cheeses baked to creamy golden perfection using a pasta of your choice.","pasta":true},{"id":"si8f","name":"Potato Salad","price":90,"desc":"Classic creamy potato salad."},{"id":"si10f","name":"Roasted Veggie & Grain Bowl ★","price":95,"desc":"Quinoa & farro with roasted seasonal vegetables, chickpeas & lemon-turmeric drizzle. Vegetarian: top with feta & creamy dressing.","vegan":true},{"id":"si11f","name":"Butternut Squash in Roasted Garlic Sauce ★","price":85,"desc":"Tender roasted butternut squash in a velvety roasted garlic sauce. Fully vegan.","vegan":true},{"id":"si9d","name":"Drop Biscuits","price":28,"desc":"Golden, fluffy drop biscuits. Served with berry jelly or butter.","priceLbl":"$28/dz"},{"id":"d1d","name":"Brownies","price":40,"desc":"Fudgy chocolate squares of utter delight.","priceLbl":"$40/dz"},{"id":"d2d","name":"Assorted Cookies","price":35,"desc":"Chocolate chip, oatmeal & toffee graham cracker cookies.","priceLbl":"$35/dz"},{"id":"d6d","name":"Cheesecake Dessert Shooters","price":40,"desc":"Layered graham cracker crust & fruit filling. Choose: cherry, strawberry, apple, or blueberry.","priceLbl":"$40/dz"},{"id":"d3o","name":"Golden Butter Pound Cake","price":50,"desc":"A delicious and moist 10-inch round cake baked to perfection.","priceLbl":"$50 (10\" round)"},{"id":"d4o","name":"5 Flavor Cake","price":65,"desc":"Hand-whipped 10-inch round cake infused with liqueur, vanilla & a special blend of spices for a flavorful, moist cake.","priceLbl":"$65 (10\" round)"},{"id":"d5a","name":"Peach Cobbler — Half Pan","price":40,"desc":"Warm peach cobbler with bourbon glaze & drop biscuit topping.","priceLbl":"$40/half pan"},{"id":"d5b","name":"Peach Cobbler — Full Pan","price":70,"desc":"Warm peach cobbler with bourbon glaze & drop biscuit topping.","priceLbl":"$70/full pan"}];
+let order = {};
+
+function chk() { return '<svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
+
+// Section key -> list of item IDs
+const SECTIONS = {
+  'app-half': ["a1h","a2h","a3h","a5h","a7h","a11h"],
+  'app-full': ["a1f","a2f","a3f","a5f","a7f","a11f"],
+  'app-doz':  ["a4d","a6da","a6db","a8da","a8db","a9a","a9b","a10a","a10b","a11d","a11e"],
+  'sss':      ["s1","s1f","s4","s4f","s5a","s5af","s5b","s5bf","s6","s6f","s2da","s2db","s3da","s3db"],
+  'ent-half': ["e1h","e2h","e3h","e4h","e5h","e6h","e7h","e8h","e9h","e10h","e11h","e13h"],
+  'ent-full': ["e1f","e2f","e3f","e4f","e5f","e6f","e7f","e8f","e9f","e10f","e11f","e12f","e13f"],
+  'sid-half': ["si1h","si2h","si3h","si5h","si6h","si7h","si8h","si10h","si11h"],
+  'sid-full': ["si1f","si2f","si3f","si5f","si6f","si7f","si8f","si10f","si11f"],
+  'sid-doz':  ["si9d"],
+  'des-doz':  ["d1d","d2d","d6d"],
+  'des-oth':  ["d3o","d4o","d5a","d5b"],
+};
+
+function toggleItem(id, secKey) {
+  const item = ITEMS.find(i => i.id === id);
+  if (!item) return;
+  const row = document.getElementById('row-'+id);
+  const pastaDiv = document.getElementById('pasta-'+id);
+  if (order[id]) {
+    delete order[id];
+    row.className = 'item';
+    if (pastaDiv) pastaDiv.style.display = 'none';
+  } else {
+    order[id] = { item, qty:1, secKey, pasta: item.pasta ? 'elbow' : null };
+    row.className = 'item sel';
+    if (pastaDiv) pastaDiv.style.display = 'flex';
+  }
+  updateBadge(secKey);
+  updateSummary();
+}
+
+function changeQty(id, delta) {
+  if (!order[id]) return;
+  const nq = order[id].qty + delta;
+  if (nq < 1) {
+    const sk = order[id].secKey;
+    delete order[id];
+    const row = document.getElementById('row-'+id);
+    if (row) row.className = 'item';
+    const pastaDiv = document.getElementById('pasta-'+id);
+    if (pastaDiv) pastaDiv.style.display = 'none';
+    updateBadge(sk);
+  } else {
+    order[id].qty = nq;
+    const qd = document.getElementById('qty-'+id);
+    if (qd) qd.textContent = nq;
+  }
+  updateSummary();
+}
+
+function updatePasta(id) {
+  if (order[id]) {
+    const sel = document.getElementById('pastatype-'+id);
+    if (sel) order[id].pasta = sel.value;
+    updateSummary();
+  }
+}
+
+function updateBadge(secKey) {
+  const badge = document.getElementById('badge-'+secKey);
+  if (!badge) return;
+  const sel = Object.values(order).filter(o => o.secKey === secKey).length;
+  badge.textContent = sel === 0 ? '0 selected' : sel + ' selected';
+}
+
+function updateSummary() {
+  const lines = Object.values(order);
+  const empty = document.getElementById('sum-empty');
+  const linesEl = document.getElementById('sum-lines');
+  const totalsEl = document.getElementById('sum-totals');
+  const subBtn = document.getElementById('sub-btn');
+
+  if (lines.length === 0) {
+    empty.style.display='block'; linesEl.innerHTML=''; totalsEl.style.display='none'; subBtn.disabled=true; return;
+  }
+  empty.style.display='none'; totalsEl.style.display='block'; subBtn.disabled=false;
+
+  linesEl.innerHTML = lines.map(o => {
+    const p = (o.item.price || 0) * o.qty;
+    const pastaNote = o.pasta ? ' (' + ({elbow:'Elbow',bowtie:'Bowtie',shells:'Shells'}[o.pasta]||o.pasta) + ')' : '';
+    return '<div class="sline">' +
+      '<div class="sline-name">' + o.item.name + pastaNote +
+        (o.qty > 1 ? '<div style="font-size:.71rem;color:var(--gray)">× '+o.qty+'</div>' : '') +
+      '</div>' +
+      '<div style="display:flex;align-items:center;gap:3px">' +
+        '<span class="sline-price">$'+p.toFixed(2)+'</span>' +
+        '<button class="rm" onclick="removeItem(\'' + o.item.id + '\')" title="Remove">✕</button>' +
+      '</div></div>';
+  }).join('');
+
+  const sub = lines.reduce((s,o) => s + (o.item.price||0)*o.qty, 0);
+  const tax = sub * TAX;
+  const tot = sub + tax;
+  document.getElementById('sub-v').textContent='$'+sub.toFixed(2);
+  document.getElementById('tax-v').textContent='$'+tax.toFixed(2);
+  document.getElementById('tot-v').textContent='$'+tot.toFixed(2);
+}
+
+function removeItem(id) {
+  if (!order[id]) return;
+  const sk = order[id].secKey;
+  delete order[id];
+  const row = document.getElementById('row-'+id);
+  if (row) row.className='item';
+  const qd = document.getElementById('qty-'+id);
+  if (qd) qd.textContent=1;
+  const pd = document.getElementById('pasta-'+id);
+  if (pd) pd.style.display='none';
+  updateBadge(sk);
+  updateSummary();
+}
+
+function clearAll() {
+  order = {};
+  document.querySelectorAll('.item.sel').forEach(r => r.className='item');
+  document.querySelectorAll('.qd').forEach(q => q.textContent=1);
+  document.querySelectorAll('.pasta-sel').forEach(p => p.style.display='none');
+  document.querySelectorAll('.pan-count').forEach(b => b.textContent='0 selected');
+  updateSummary();
+}
+
+const JOTFORM_FORM_ID = '262225152989060';
+const JOTFORM_API_KEY = '56152613d531347830f3aaccf8462e2d';
+
+async function submitToJotform(payload) {
+  const fd = new FormData();
+  fd.append('apiKey', JOTFORM_API_KEY);
+  const parts = payload.name.trim().split(' ');
+  fd.append('submission[3][first]', parts[0] || '');
+  fd.append('submission[3][last]',  parts.slice(1).join(' ') || '');
+  fd.append('submission[4][full]',  payload.phone);
+  fd.append('submission[5]',        payload.email);
+  if (payload.date) {
+    const [yr,mo,dy] = payload.date.split('-');
+    fd.append('submission[6][month]', mo);
+    fd.append('submission[6][day]',   dy);
+    fd.append('submission[6][year]',  yr);
+  }
+  if (payload.time) {
+    const [h,m] = payload.time.split(':');
+    const hr = parseInt(h);
+    fd.append('submission[7][timeInput]', (hr%12||12)+':'+m);
+    fd.append('submission[7][ampm]',      hr>=12?'PM':'AM');
+  }
+  fd.append('submission[8]',  payload.guests || '');
+  fd.append('submission[10]', payload.orderDetails);
+  fd.append('submission[11]', payload.estimatedTotal);
+  fd.append('submission[12]', payload.specialRequests || '');
+  const res  = await fetch('https://api.jotform.com/form/'+JOTFORM_FORM_ID+'/submissions', { method:'POST', body:fd });
+  const json = await res.json();
+  return (json.responseCode === 200 || json.responseCode === 201)
+    ? { success:true } : { success:false, message: json.message||'Unknown error' };
+}
+
+function buildOrderDetails() {
+  const lines = Object.values(order).map(o => {
+    const pastaNote = o.pasta ? ' ('+({elbow:'Elbow',bowtie:'Bowtie',shells:'Shells'}[o.pasta]||o.pasta)+')' : '';
+    return '• ' + o.item.name + pastaNote + (o.qty > 1 ? ' x'+o.qty : '') + ' — $'+(o.item.price*o.qty).toFixed(2);
+  });
+  return lines.length ? lines.join('\n') : 'No items selected';
+}
+
+async function submitOrder() {
+  const name  = document.getElementById('cn').value.trim();
+  const phone = document.getElementById('cp').value.trim();
+  const email = document.getElementById('ce').value.trim();
+  const date  = document.getElementById('cd').value;
+  const time  = document.getElementById('ct').value;
+  const guests= document.getElementById('cg').value;
+  const notes = document.getElementById('cn2').value.trim();
+
+  if (!name || !phone) { alert('Please enter your name and phone number before submitting.'); return; }
+
+  const btn = document.getElementById('sub-btn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  const sub    = Object.values(order).reduce((s,o)=>s+(o.item.price||0)*o.qty, 0);
+  const tax    = sub * TAX;
+  const total  = sub + tax;
+  const totStr = '$'+total.toFixed(2)+' (incl. est. 10% tax)';
+  const dateStr= date ? new Date(date+'T12:00').toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}) : 'date TBD';
+
+  try {
+    const result = await submitToJotform({
+      name, phone, email, date, time, guests,
+      orderDetails:    buildOrderDetails(),
+      estimatedTotal:  totStr,
+      specialRequests: notes,
+    });
+    if (result.success) {
+      document.getElementById('modal-msg').innerHTML =
+        'Thank you, <strong>'+name+'</strong>! Your catering request for <strong>'+dateStr+'</strong> has been received.<br><br>' +
+        'We will contact you at <strong>'+phone+'</strong> within 24 hours to confirm your order and arrange payment details.<br><br>' +
+        '<strong>DoughBoy Catering</strong><br>917-334-9038 · ctenterprises22@gmail.com';
+      document.getElementById('modal').className='modal-ov open';
+    } else {
+      alert('There was a problem submitting your order: '+result.message+'. Please call us at 917-334-9038.');
+      btn.disabled = false;
+      btn.textContent = 'Submit Order Request';
+    }
+  } catch(err) {
+    alert('Connection error. Please call us at 917-334-9038 or email ctenterprises22@gmail.com.');
+    btn.disabled = false;
+    btn.textContent = 'Submit Order Request';
+  }
+}
+</script>
+</body>
+</html>
