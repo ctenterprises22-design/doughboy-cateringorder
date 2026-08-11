@@ -303,6 +303,7 @@ input[type="radio"] { cursor: pointer; }
     <div class="fg" style="flex:.6"><label>Event Time</label><input type="time" id="ct"/></div>
     <div class="fg"><label>Guest Count</label><input type="number" id="cg" placeholder="e.g. 25" min="1"/></div>
   </div>
+
   <div class="frow">
     <div class="fg"><label>Special Requests / Dietary Needs</label><textarea id="cn2" placeholder="Allergies, vegan options, substitutions, delivery notes..."></textarea></div>
   </div>
@@ -1614,6 +1615,7 @@ async function submitOrder() {
   const guests = document.getElementById('cg').value;
   const notes  = document.getElementById('cn2').value.trim();
   if (!name||!phone) { alert('Please enter your name and phone number before submitting.'); return; }
+  if (!addr1) { alert('Please enter your street address before submitting.'); return; }
   const btn = document.getElementById('sub-btn');
   btn.disabled=true; btn.textContent='Submitting...';
   const sub   = Object.values(order).reduce((s,o)=>s+(o.item.price||0)*o.qty,0);
@@ -1635,11 +1637,20 @@ async function submitOrder() {
           '<span>' + o.item.name + pastaNote + (o.qty>1?' x'+o.qty:'') + '</span>' +
           '<span style="font-weight:700;color:#C8960C;">$' + (o.item.price*o.qty).toFixed(2) + '</span></div>';
       });
-      const payUrl = 'https://pci.jotform.com/form/262226058516052?myProducts=' + total.toFixed(2) +
-        '&name=' + encodeURIComponent(name) + '&email=' + encodeURIComponent(email);
+      // Build full address string
+
+      // Build payment page URL — passes name, phone, address & total
+      // Note: field parameter names (q3_fullName etc.) must match your Jotform payment form fields
+      const payUrl = 'https://pci.jotform.com/form/262226058516052'
+        + '?myProducts='        + encodeURIComponent(total.toFixed(2))
+        + '&q3_fullName='       + encodeURIComponent(name)
+        + '&q4_phoneNumber='    + encodeURIComponent(phone)
+        + '&q6_email='          + encodeURIComponent(email)
+        + (taxExempt ? '&taxExempt=1' : '');
       document.getElementById('modal-msg').innerHTML =
         'Thank you, <strong>'+name+'</strong>! Your order has been received.<br>' +
-        'We will confirm within 24 hours &mdash; <strong>'+dateStr+'</strong>' +
+        'We will confirm within 24 hours &mdash; <strong>'+dateStr+'</strong><br>' +
+        '<span style="font-size:.8rem;color:#666;">'+fullAddress+'</span>' +
         (taxExempt ? '<br><br><span style="background:#FFF8E1;border:1px solid #C8960C;border-radius:6px;padding:6px 10px;display:inline-block;margin-top:4px;font-size:.82rem;"><strong>&#x26A0; Tax Exempt Order:</strong> Please upload your Sales Tax Exemption Certificate with your payment. Your order cannot be finalized as tax exempt without a valid certificate on file.</span>' : '');
       document.getElementById('modal-order-summary').innerHTML =
         summaryLines.join('') || '<em>No items</em>';
