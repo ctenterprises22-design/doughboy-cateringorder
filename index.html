@@ -1642,13 +1642,7 @@ async function submitOrder() {
   const total = sub + tax;
   const dateStr = date ? new Date(date+'T12:00').toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}) : 'date TBD';
   // Store order data for Jotform submission when payment is clicked
-  const orderPayload = {
-    name, firstName, lastName, phone, email, date, time, guests,
-    orderDetails:    buildOrderDetails(),
-    estimatedTotal:  '$' + total.toFixed(2) + (taxExempt ? ' (Tax Exempt)' : ' (incl. 6% tax)'),
-    specialRequests: notes,
-    taxExempt:       taxExempt,
-  };
+  // orderPayload built below after itemized list is ready
   try {
     // Show confirmation — Jotform submission happens when Pay button is clicked
     const result = { success: true };
@@ -1679,6 +1673,15 @@ async function submitOrder() {
         + '&email=' + encodeURIComponent(email)
         + '&orderDetails=' + encodeURIComponent(orderSummaryText)
         + (taxExempt ? '&taxExempt=1' : '');
+
+      // Build Jotform payload with full itemized order details
+      const orderPayload = {
+        name, firstName, lastName, phone, email, date, time, guests,
+        orderDetails:   orderSummaryText,
+        estimatedTotal: '$' + total.toFixed(2) + (taxExempt ? ' (Tax Exempt)' : ' (incl. 6% tax)'),
+        specialRequests: notes,
+        taxExempt:      taxExempt,
+      };
       document.getElementById('modal-msg').innerHTML =
         'Thank you, <strong>' + firstName + ' ' + lastName + '</strong>! Your order has been received.<br>' +
         'We will confirm within 24 hours &mdash; <strong>' + dateStr + '</strong>' +
