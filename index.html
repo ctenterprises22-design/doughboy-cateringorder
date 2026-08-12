@@ -1686,32 +1686,57 @@ const JOTFORM_FORM_ID = '262225152989060';
 const JOTFORM_API_KEY = 'e2b34caa68bb125b3381566fc0fd9d29';
 
 async function submitToJotform(payload) {
-  // payload.firstName and payload.lastName used for name fields
+  // Use Jotform's standard submission endpoint — works from browser without CORS issues
   const fd = new FormData();
-  fd.append('apiKey', JOTFORM_API_KEY);
-  fd.append('submission[3][first]', payload.firstName || '');
-  fd.append('submission[3][last]',  payload.lastName  || '');
-  fd.append('submission[4][full]',  payload.phone);
-  fd.append('submission[5]',        payload.email);
+
+  // Name fields
+  fd.append('q3_fullName[first]', payload.firstName || '');
+  fd.append('q3_fullName[last]',  payload.lastName  || '');
+
+  // Phone
+  fd.append('q4_phoneNumber[full]', payload.phone || '');
+
+  // Email
+  fd.append('q5_email', payload.email || '');
+
+  // Event Date
   if (payload.date) {
-    const [yr,mo,dy] = payload.date.split('-');
-    fd.append('submission[6][month]', mo);
-    fd.append('submission[6][day]',   dy);
-    fd.append('submission[6][year]',  yr);
+    const [yr, mo, dy] = payload.date.split('-');
+    fd.append('q6_eventDate[month]', mo);
+    fd.append('q6_eventDate[day]',   dy);
+    fd.append('q6_eventDate[year]',  yr);
   }
-  if (payload.time) {
-    const [h,m] = payload.time.split(':');
-    const hr = parseInt(h);
-    fd.append('submission[7][timeInput]', (hr%12||12)+':'+m);
-    fd.append('submission[7][ampm]',      hr>=12?'PM':'AM');
+
+  // Delivery Time
+  fd.append('q7_deliveryTime', payload.time || '');
+
+  // Guest Count
+  fd.append('q8_guestCount', payload.guests || '');
+
+  // Order Details (field 10)
+  fd.append('q10_orderDetails', (payload.taxExempt ? '[TAX EXEMPT - Exemption certificate required]\n' : '') + payload.orderDetails);
+
+  // Estimated Total (field 11)
+  fd.append('q11_estimatedTotal', payload.estimatedTotal || '');
+
+  // Special Requests (field 12)
+  fd.append('q12_specialRequests', payload.specialRequests || '');
+
+  try {
+    const res = await fetch(
+      'https://submit.jotform.com/submit/' + JOTFORM_FORM_ID + '/',
+      {
+        method: 'POST',
+        body: fd,
+        mode: 'no-cors'  // Jotform accepts no-cors submissions
+      }
+    );
+    // no-cors returns opaque response — we assume success if no network error
+    return { success: true };
+  } catch(err) {
+    console.log('Jotform submission error:', err);
+    return { success: false, message: err.message };
   }
-  fd.append('submission[8]',  payload.guests || '');
-  fd.append('submission[10]', (payload.taxExempt ? '[TAX EXEMPT - Exemption certificate required] ' : '') + payload.orderDetails);
-  fd.append('submission[11]', payload.estimatedTotal);
-  fd.append('submission[12]', payload.specialRequests || '');
-  const res  = await fetch('https://api.jotform.com/form/' + JOTFORM_FORM_ID + '/submissions', {method:'POST', body:fd});
-  const data = await res.json();
-  return (data.responseCode===200||data.responseCode===201) ? {success:true} : {success:false, message:data.message||'Unknown error'};
 }
 
 function buildOrderDetails() {
@@ -1765,13 +1790,14 @@ async function submitOrder() {
         + '\nTotal Due: $' + total.toFixed(2)
         + (taxExempt ? '\n[TAX EXEMPT - Exemption certificate required]' : '');
 
+      // Build prefill URL for Jotform payment form
+      // Field unique names: name, phoneNumber, email, myProducts
+      const fullName = (firstName + ' ' + lastName).trim();
       const payUrl = 'https://pci.jotform.com/form/262226058516052'
-        + '?myProducts=' + total.toFixed(2)
-        + '&name[first]=' + encodeURIComponent(firstName)
-        + '&name[last]=' + encodeURIComponent(lastName)
+        + '?name=' + encodeURIComponent(fullName)
         + '&phoneNumber=' + encodeURIComponent(phone)
         + '&email=' + encodeURIComponent(email)
-        + '&orderDetails=' + encodeURIComponent(orderSummaryText)
+        + '&myProducts=' + encodeURIComponent(total.toFixed(2))
         + (taxExempt ? '&taxExempt=1' : '');
 
       // Build Jotform payload with full itemized order details
@@ -1862,35 +1888,4 @@ function applyAvailability() {
 // Apply on load
 document.addEventListener('DOMContentLoaded', applyAvailability);
 </script>
-</body></html
-<div class="iright">
-            <div class="iprice">$85</div>
-            
-          <div class="iright">
-            <div class="iprice">$120/dz</div>
-            <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('sss-burger',-1)">&#x2212;</button>
-              <div class="qd" id="qty-sss-burger">1</div>
-              <button class="qb" onclick="changeQty('sss-burger',1)">+</button>
-            </div>
-          </div>
-        </div>
-          <div class="iright">
-            <div class="iprice">$150</div>
-            <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('e-stewbeef-f',-1)">&#x2212;</button>
-              <div class="qd" id="qty-e-stewbeef-f">1</div>
-              <button class="qb" onclick="changeQty('e-stewbeef-f',1)">+</button>
-            </div>
-          </div>
-        </div>
-          <div class="iright">
-            <div class="iprice">$120/dz</div>
-            <div class="qty-ctrl" onclick="event.stopPropagation()">
-              <button class="qb" onclick="changeQty('sss-burger',-1)">&#x2212;</button>
-              <div class="qd" id="qty-sss-burger">1</div>
-              <button class="qb" onclick="changeQty('sss-burger',1)">+</button>
-            </div>
-          </div>
-        </div>
->
+</body></html>
