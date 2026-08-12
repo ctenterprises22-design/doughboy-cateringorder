@@ -1653,11 +1653,12 @@ async function submitOrder() {
           '<span>' + o.item.name + pn + (o.qty>1?' x'+o.qty:'') + '</span>' +
           '<span style="font-weight:700;color:#C8960C;">$' + (o.item.price*o.qty).toFixed(2) + '</span></div>';
       });
-      const payUrl = 'https://pci.jotform.com/form/262226058516052?' + 'myProducts=' + encodeURIComponent(total.toFixed(2)) +
-        '&q3_fullName=' + encodeURIComponent(name) +
-        '&q4_phoneNumber=' + encodeURIComponent(phone) +
-        '&q6_email=' + encodeURIComponent(email) +
-        (taxExempt ? '&taxExempt=1' : '');
+      const payUrl = 'https://pci.jotform.com/form/262226058516052'
+        + '?myProducts=' + encodeURIComponent(total.toFixed(2))
+        + '&name=' + encodeURIComponent(name)
+        + '&phoneNumber=' + encodeURIComponent(phone)
+        + '&email=' + encodeURIComponent(email)
+        + (taxExempt ? '&taxExempt=1' : '');
       document.getElementById('modal-msg').innerHTML =
         'Thank you, <strong>' + name + '</strong>! Your order has been received.<br>' +
         'We will confirm within 24 hours &mdash; <strong>' + dateStr + '</strong>' +
