@@ -1404,7 +1404,7 @@ input[type="radio"] { cursor: pointer; }
       <div style="display:flex;justify-content:space-between;font-size:.84rem;color:#666;margin-bottom:3px;"><span>Est. Tax (6%)</span><span id="modal-tax"></span></div>
       <div style="display:flex;justify-content:space-between;font-size:1rem;font-weight:700;color:#2D5016;border-top:2px solid #C8E6C9;padding-top:6px;margin-top:4px;"><span>Total Due</span><span id="modal-total"></span></div>
     </div>
-    <a id="pay-btn" href="#" target="_blank" style="display:block;width:100%;padding:13px;background:#2D5016;color:#fff;border:none;border-radius:8px;font-size:.95rem;font-weight:700;text-align:center;text-decoration:none;margin-bottom:10px;font-family:inherit;box-sizing:border-box;">Proceed to Secure Payment</a>
+    <a id="pay-btn" href="#" target="_blank" rel="noopener noreferrer" style="display:block;width:100%;padding:13px;background:#2D5016;color:#fff;border:none;border-radius:8px;font-size:.95rem;font-weight:700;text-align:center;text-decoration:none;margin-bottom:10px;font-family:inherit;box-sizing:border-box;">Proceed to Secure Payment</a>
     <p style="font-size:.72rem;color:#999;margin-top:10px;">Secure payment powered by Square. Questions? Call 917-334-9038</p>
   </div>
 </div>
@@ -1659,8 +1659,8 @@ async function submitOrder() {
           '<span>' + o.item.name + pn + (o.qty>1?' x'+o.qty:'') + '</span>' +
           '<span style="font-weight:700;color:#C8960C;">$' + (o.item.price*o.qty).toFixed(2) + '</span></div>';
       });
-      const payUrl = 'https://pci.jotform.com/form/262226058516052'
-        + '?myProducts=' + encodeURIComponent(total.toFixed(2))
+      const payUrl = 'https://form.jotform.com/262226058516052'
+        + '?myProducts=' + total.toFixed(2)
         + '&name[first]=' + encodeURIComponent(firstName)
         + '&name[last]=' + encodeURIComponent(lastName)
         + '&phoneNumber=' + encodeURIComponent(phone)
@@ -1686,7 +1686,7 @@ async function submitOrder() {
         } catch(err) {
           console.log('Jotform submission error:', err);
         }
-        window.open(window._pendingPayUrl, '_blank');
+        window.open(window._pendingPayUrl, '_blank', 'noopener,noreferrer');
       };
       document.getElementById('modal').className = 'modal-ov open';
       window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
