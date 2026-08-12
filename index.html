@@ -297,13 +297,25 @@ input[type="radio"] { cursor: pointer; }
   <div class="frow">
     <div class="fg"><label>First Name *</label><input type="text" id="cn-first" placeholder="First name"/></div>
     <div class="fg"><label>Last Name *</label><input type="text" id="cn-last" placeholder="Last name"/></div>
-    <div class="fg"><label>Phone *</label><input type="tel" id="cp" placeholder="(000) 000-0000"/></div>
+  </div>
+  <div class="frow">
     <div class="fg"><label>Email</label><input type="email" id="ce" placeholder="your@email.com"/></div>
+    <div class="fg"><label>Phone *</label><input type="tel" id="cp" placeholder="(000) 000-0000"/></div>
   </div>
   <div class="frow">
     <div class="fg"><label>Event Date *</label><input type="date" id="cd"/></div>
-    <div class="fg" style="flex:.6"><label>Event Time</label><input type="time" id="ct"/></div>
     <div class="fg"><label>Guest Count</label><input type="number" id="cg" placeholder="e.g. 25" min="1"/></div>
+  </div>
+  <div class="frow">
+    <div class="fg">
+      <label>Delivery Set Up Time</label>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px;">
+        <input type="time" id="ct-start" style="flex:1;min-width:110px;"/>
+        <span style="color:var(--gray);font-size:.85rem;font-weight:600;">to</span>
+        <input type="time" id="ct-end" style="flex:1;min-width:110px;"/>
+      </div>
+      <div style="font-size:.72rem;font-style:italic;color:var(--gray);margin-top:4px;">Select the time frame for catering setup</div>
+    </div>
   </div>
   <div class="frow" style="margin-top:4px;">
     <div class="fg">
@@ -531,6 +543,9 @@ input[type="radio"] { cursor: pointer; }
             </div>
           </div>
         </div>
+<div class="iright">
+            <div class="iprice">$150</div>
+            
 </div>
 <div class="pan-section">
   <div class="pan-hdr doz-hdr">
@@ -639,8 +654,8 @@ input[type="radio"] { cursor: pointer; }
     <div class="pan-hdr-left">
       <div class="pan-icon">Soups</div>
       <div>
-        <div class="pan-title">SOUPS &amp; SALADS</div>
-        <div class="pan-serves">Priced per serving size</div>
+        <div class="pan-title">SOUPS, SALADS &amp; SANDWICHES</div>
+        <div class="pan-serves">Soups &amp; salads priced per serving size &middot; Sandwiches priced per dozen</div>
       </div>
     </div>
     <div class="pan-count" id="badge-sss">0 selected</div>
@@ -705,6 +720,59 @@ input[type="radio"] { cursor: pointer; }
             </div>
           </div>
         </div>
+
+        <div class="item" id="row-sss-spbb1" onclick="toggleItem('sss-spbb1','sss')">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Sweet Potato &amp; Black Bean Sliders &mdash; 1 Dozen</div>
+            <div class="idesc">Spiced sweet potato and black bean patties served on soft slider buns with avocado crema and pickled jalape&ntilde;o.</div>
+            
+            <div class="ivegan">&#x2605; Vegan / Vegetarian option</div>
+          </div>
+          <div class="iright">
+            <div class="iprice">$70/dz</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('sss-spbb1',-1)">&#x2212;</button>
+              <div class="qd" id="qty-sss-spbb1">1</div>
+              <button class="qb" onclick="changeQty('sss-spbb1',1)">+</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="item" id="row-sss-flank1" onclick="toggleItem('sss-flank1','sss')">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Flank Steak &amp; Spinach Sandwich &mdash; 1 Dozen</div>
+            <div class="idesc">Seared and slow-cooked flank steak, fresh baby spinach, and garlic mustard on a sub roll.</div>
+            
+            
+          </div>
+          <div class="iright">
+            <div class="iprice">$130/dz</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('sss-flank1',-1)">&#x2212;</button>
+              <div class="qd" id="qty-sss-flank1">1</div>
+              <button class="qb" onclick="changeQty('sss-flank1',1)">+</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item" id="row-sss-burger" onclick="toggleItem('sss-burger','sss')">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Beef Burger &mdash; 1 Dozen</div>
+            <div class="idesc">Chuck &amp; brisket blend beef ground in house and hand pressed; served on a challah roll.</div>
+          </div>
+          <div class="iright">
+            <div class="iprice">$120/dz</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('sss-burger',-1)">&#x2212;</button>
+              <div class="qd" id="qty-sss-burger">1</div>
+              <button class="qb" onclick="changeQty('sss-burger',1)">+</button>
+            </div>
+          </div>
+        </div>
+        
 </div>
 <style>.teal-hdr{background:var(--teal);}</style>
 <div class="pan-section">
@@ -713,7 +781,7 @@ input[type="radio"] { cursor: pointer; }
       <div class="pan-icon">Entrees</div>
       <div>
         <div class="pan-title">ENTREES - Half Pan</div>
-        <div class="pan-serves">Serves 15-20</div>
+        <div class="pan-serves">Serves 15&ndash;20</div>
       </div>
     </div>
     <div class="pan-count" id="badge-ent-half">0 selected</div>
@@ -839,8 +907,22 @@ input[type="radio"] { cursor: pointer; }
             </div>
           </div>
         </div>
+        <div class="item" id="row-e-stewbeef-h" onclick="toggleItem('e-stewbeef-h','ent-half')">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Stewed Beef</div>
+            <div class="idesc">Slow roasted beef in a savory gravy, butter beans, and a blend of Caribbean seasoning.</div>
+          </div>
+          <div class="iright">
+            <div class="iprice">$80</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('e-stewbeef-h',-1)">&#x2212;</button>
+              <div class="qd" id="qty-e-stewbeef-h">1</div>
+              <button class="qb" onclick="changeQty('e-stewbeef-h',1)">+</button>
+            </div>
+          </div>
+        </div>
 </div>
-<div class="section-note">Crab Mac &amp; Cheese available in Full Pan only.</div>
 <div class="pan-section">
   <div class="pan-hdr full-hdr">
     <div class="pan-hdr-left">
@@ -993,6 +1075,22 @@ input[type="radio"] { cursor: pointer; }
               <button class="qb" onclick="changeQty('e13f',-1)">&#x2212;</button>
               <div class="qd" id="qty-e13f">1</div>
               <button class="qb" onclick="changeQty('e13f',1)">+</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item" id="row-e-stewbeef-f" onclick="toggleItem('e-stewbeef-f','ent-full')">
+          <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="iinfo">
+            <div class="iname">Stewed Beef</div>
+            <div class="idesc">Slow roasted beef in a savory gravy, butter beans, and a blend of Caribbean seasoning.</div>
+          </div>
+          <div class="iright">
+            <div class="iprice">$150</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('e-stewbeef-f',-1)">&#x2212;</button>
+              <div class="qd" id="qty-e-stewbeef-f">1</div>
+              <button class="qb" onclick="changeQty('e-stewbeef-f',1)">+</button>
             </div>
           </div>
         </div>
@@ -1410,8 +1508,8 @@ input[type="radio"] { cursor: pointer; }
 </div>
 <script>
 const TAX = 0.06;
-const ITEMS = [{"id": "rum1", "name": "Rum Punch - 1 Gallon", "price": 50, "desc": "House-made rum punch, serves approximately 10-12 guests.", "priceLbl": "$50/gal", "maxQty": 4}, {"id": "rum5", "name": "Rum Punch - 5 Gallons", "price": 200, "desc": "House-made rum punch, serves approximately 50-60 guests.", "priceLbl": "$200/5gal", "maxQty": 3}, {"id": "rum10", "name": "Rum Punch - 10 Gallons", "price": 350, "desc": "House-made rum punch, serves approximately 100-120 guests.", "priceLbl": "$350/10gal", "maxQty": 3}, {"id": "a1h", "name": "Sweet & Spicy Meatballs", "price": 55, "desc": "Beef or turkey meatballs simmered in signature red pepper jelly gravy."}, {"id": "a2h", "name": "Mac & Cheese Bites", "price": 50, "desc": "Bite-sized cheesy baked macaroni bites."}, {"id": "a3h", "name": "Wingettes", "price": 70, "desc": "Seasoned wings fried or baked, with blue cheese or ranch dip."}, {"id": "a5h", "name": "Marinated Drumettes", "price": 85, "desc": "Seasoned leg pieces smothered in sweet & savory house glaze."}, {"id": "a1f", "name": "Sweet & Spicy Meatballs", "price": 100, "desc": "Beef or turkey meatballs simmered in signature red pepper jelly gravy."}, {"id": "a2f", "name": "Mac & Cheese Bites", "price": 75, "desc": "Bite-sized cheesy baked macaroni bites."}, {"id": "a3f", "name": "Wingettes", "price": 110, "desc": "Seasoned wings fried or baked, with blue cheese or ranch dip."}, {"id": "a5f", "name": "Marinated Drumettes", "price": 150, "desc": "Seasoned leg pieces smothered in sweet & savory house glaze."}, {"id": "a6da", "name": "Shrimp Salad Mini Sandwiches", "price": 90, "desc": "Creamy shrimp salad on mini croissants with shaved red onion.", "priceLbl": "$90/dz"}, {"id": "a6db", "name": "Salmon Salad Mini Sandwiches", "price": 90, "desc": "Creamy salmon salad on mini croissants with shaved red onion.", "priceLbl": "$90/dz"}, {"id": "a9a", "name": "Pastellitos - Cheese", "price": 25, "desc": "Crispy savory pastry shells filled with cheese, fried golden.", "priceLbl": "$25/dz"}, {"id": "a9b", "name": "Pastellitos - Beef", "price": 35, "desc": "Crispy savory pastry shells filled with seasoned beef, fried golden.", "priceLbl": "$35/dz"}, {"id": "a10a", "name": "Cajun Corn - Off the Cob (Half Pan)", "price": 60, "desc": "Creamy cajun-seasoned corn served off the cob in a rich, velvety sauce.", "priceLbl": "$60 (half pan)"}, {"id": "a10b", "name": "Cajun Corn - Off the Cob (Full Pan)", "price": 95, "desc": "Creamy cajun-seasoned corn served off the cob in a rich, velvety sauce.", "priceLbl": "$95 (full pan)"}, {"id": "s1", "name": "Avocado Chicken Salad - Serves 15-20", "price": 95, "desc": "Creamy chicken salad with diced avocado on sunflower bread. Available with tarragon or curried flavor."}, {"id": "s1f", "name": "Avocado Chicken Salad - Serves 25-35", "price": 155, "desc": "Creamy chicken salad with diced avocado on sunflower bread. Available with tarragon or curried flavor."}, {"id": "s4", "name": "Maryland Crab Soup - Serves 15-20", "price": 90, "desc": "Hearty Maryland crab with crab claws & lump crab meat, fresh mixed vegetables & a signature spice blend simmered in homemade stock."}, {"id": "s4f", "name": "Maryland Crab Soup - Serves 25-35", "price": 125, "desc": "Hearty Maryland crab with crab claws & lump crab meat, fresh mixed vegetables & a signature spice blend simmered in homemade stock."}, {"id": "e1h", "name": "Fried or Baked Chicken", "price": 95, "desc": "Marinated white & dark meat chicken fried or baked to perfection. (~40 pcs)"}, {"id": "e2h", "name": "Chicken Rasta Pasta", "price": 100, "desc": "Creamy jerk-seasoned pasta tossed with sauteed peppers & tender chicken."}, {"id": "e3h", "name": "Seafood Rasta Pasta", "price": 110, "desc": "Creamy jerk-seasoned pasta with crab, shrimp & salmon."}, {"id": "e4h", "name": "Stewed Chicken", "price": 65, "desc": "Slow-braised chicken in a rich, savory brown stew sauce."}, {"id": "e5h", "name": "Roast Pork Shoulder", "price": 80, "desc": "Marinated pork shoulder slow-roasted for a perfectly tender & juicy result."}, {"id": "e6h", "name": "Curry Chicken", "price": 90, "desc": "Caribbean-seasoned chicken with Trinidad curry powder, curried potatoes & chickpeas."}, {"id": "e8h", "name": "Curry Shrimp", "price": 120, "desc": "Caribbean-seasoned shrimp with Trinidad curry, potatoes & chickpeas."}, {"id": "e13h", "name": "Caribbean Cauliflower", "price": 65, "desc": "Whole roasted cauliflower in signature jerk blend or Caribbean dry rub, served with mango salsa & coconut rice.", "vegan": true}, {"id": "e1f", "name": "Fried or Baked Chicken", "price": 175, "desc": "Marinated white & dark meat chicken fried or baked to perfection. (~80 pcs)"}, {"id": "e2f", "name": "Chicken Rasta Pasta", "price": 120, "desc": "Creamy jerk-seasoned pasta tossed with sauteed peppers & tender chicken."}, {"id": "e3f", "name": "Seafood Rasta Pasta", "price": 175, "desc": "Creamy jerk-seasoned pasta with crab, shrimp & salmon."}, {"id": "e4f", "name": "Stewed Chicken", "price": 110, "desc": "Slow-braised chicken in a rich, savory brown stew sauce."}, {"id": "e5f", "name": "Roast Pork Shoulder", "price": 140, "desc": "Marinated pork shoulder slow-roasted for a perfectly tender & juicy result."}, {"id": "e6f", "name": "Curry Chicken", "price": 140, "desc": "Caribbean-seasoned chicken with Trinidad curry powder, curried potatoes & chickpeas."}, {"id": "e8f", "name": "Curry Shrimp", "price": 185, "desc": "Caribbean-seasoned shrimp with Trinidad curry, potatoes & chickpeas."}, {"id": "e12f", "name": "Crab Mac & Cheese", "price": 140, "desc": "Lump crab, aged cheddar & a blend of cheeses baked to creamy golden perfection using a pasta of your choice.", "pasta": true}, {"id": "e13f", "name": "Caribbean Cauliflower", "price": 110, "desc": "Whole roasted cauliflower in signature jerk blend or Caribbean dry rub, served with mango salsa & coconut rice.", "vegan": true}, {"id": "si1h", "name": "Collard Greens", "price": 65, "desc": "Hand-picked greens slow-cooked in smoked turkey."}, {"id": "si2h", "name": "Green Beans", "price": 65, "desc": "Cut green beans seasoned & simmered in smoked turkey."}, {"id": "si5h", "name": "Peas & Rice", "price": 55, "desc": "Seasoned peas and rice, Caribbean style."}, {"id": "si6h", "name": "Plain Rice", "price": 40, "desc": "Steamed white rice."}, {"id": "si7h", "name": "Mac & Cheese", "price": 65, "desc": "Aged cheddar & a blend of cheeses baked to creamy golden perfection using a pasta of your choice.", "pasta": true}, {"id": "si11h", "name": "Butternut Squash in Roasted Garlic Sauce", "price": 60, "desc": "Tender roasted butternut squash in a velvety roasted garlic sauce. Fully vegan.", "vegan": true}, {"id": "si1f", "name": "Collard Greens", "price": 90, "desc": "Hand-picked greens slow-cooked in smoked turkey."}, {"id": "si2f", "name": "Green Beans", "price": 80, "desc": "Cut green beans seasoned & simmered in smoked turkey."}, {"id": "si5f", "name": "Peas & Rice", "price": 80, "desc": "Seasoned peas and rice, Caribbean style."}, {"id": "si6f", "name": "Plain Rice", "price": 50, "desc": "Steamed white rice."}, {"id": "si7f", "name": "Mac & Cheese", "price": 100, "desc": "Aged cheddar & a blend of cheeses baked to creamy golden perfection using a pasta of your choice.", "pasta": true}, {"id": "si11f", "name": "Butternut Squash in Roasted Garlic Sauce", "price": 85, "desc": "Tender roasted butternut squash in a velvety roasted garlic sauce. Fully vegan.", "vegan": true}, {"id": "si9d", "name": "Drop Biscuits", "price": 28, "desc": "Golden, fluffy drop biscuits. Served with berry jelly or butter.", "priceLbl": "$28/dz"}, {"id": "d1d", "name": "Brownies", "price": 40, "desc": "Fudgy chocolate squares.", "priceLbl": "$40/dz"}, {"id": "d2d", "name": "Assorted Cookies", "price": 35, "desc": "Chocolate chip, oatmeal & toffee graham cracker cookies.", "priceLbl": "$35/dz"}, {"id": "d6d", "name": "Cheesecake Dessert Shooters", "price": 40, "desc": "Layered graham cracker crust & fruit filling. Choose: cherry, strawberry, apple, or blueberry.", "priceLbl": "$40/dz"}, {"id": "d3o", "name": "Golden Butter Pound Cake", "price": 50, "desc": "A delicious and moist 10-inch round cake baked to perfection.", "priceLbl": "$50 (10 inch round)"}, {"id": "d4o", "name": "5 Flavor Cake", "price": 65, "desc": "Hand-whipped 10-inch round cake infused with liqueur, vanilla & a special blend of spices.", "priceLbl": "$65 (10 inch round)"}, {"id": "d5a", "name": "Peach Cobbler - Half Pan", "price": 40, "desc": "Warm peach cobbler with bourbon glaze & drop biscuit topping.", "priceLbl": "$40/half pan"}, {"id": "d5b", "name": "Peach Cobbler - Full Pan", "price": 70, "desc": "Warm peach cobbler with bourbon glaze & drop biscuit topping.", "priceLbl": "$70/full pan"}];
-const SECTIONS = {"bevs": ["rum1", "rum5", "rum10"], "app-half": ["a1h", "a2h", "a3h", "a5h"], "app-full": ["a1f", "a2f", "a3f", "a5f"], "app-doz": ["a6da", "a6db", "a9a", "a9b", "a10a", "a10b"], "sss": ["s1", "s1f", "s4", "s4f"], "ent-half": ["e1h", "e2h", "e3h", "e4h", "e5h", "e6h", "e8h", "e13h"], "ent-full": ["e1f", "e2f", "e3f", "e4f", "e5f", "e6f", "e8f", "e12f", "e13f"], "sid-half": ["si1h", "si2h", "si5h", "si6h", "si7h", "si11h"], "sid-full": ["si1f", "si2f", "si5f", "si6f", "si7f", "si11f"], "sid-doz": ["si9d"], "des-doz": ["d1d", "d2d", "d6d"], "des-oth": ["d3o", "d4o", "d5a", "d5b"]};
+const ITEMS = [{"id": "rum1", "name": "Rum Punch - 1 Gallon", "price": 50, "desc": "House-made rum punch, serves approximately 10-12 guests.", "priceLbl": "$50/gal", "maxQty": 4}, {"id": "rum5", "name": "Rum Punch - 5 Gallons", "price": 200, "desc": "House-made rum punch, serves approximately 50-60 guests.", "priceLbl": "$200/5gal", "maxQty": 3}, {"id": "rum10", "name": "Rum Punch - 10 Gallons", "price": 350, "desc": "House-made rum punch, serves approximately 100-120 guests.", "priceLbl": "$350/10gal", "maxQty": 3}, {"id": "a1h", "name": "Sweet & Spicy Meatballs", "price": 55, "desc": "Beef or turkey meatballs simmered in signature red pepper jelly gravy."}, {"id": "a2h", "name": "Mac & Cheese Bites", "price": 50, "desc": "Bite-sized cheesy baked macaroni bites."}, {"id": "a3h", "name": "Wingettes", "price": 70, "desc": "Seasoned wings fried or baked, with blue cheese or ranch dip."}, {"id": "a5h", "name": "Marinated Drumettes", "price": 85, "desc": "Seasoned leg pieces smothered in sweet & savory house glaze."}, {"id": "a1f", "name": "Sweet & Spicy Meatballs", "price": 100, "desc": "Beef or turkey meatballs simmered in signature red pepper jelly gravy."}, {"id": "a2f", "name": "Mac & Cheese Bites", "price": 75, "desc": "Bite-sized cheesy baked macaroni bites."}, {"id": "a3f", "name": "Wingettes", "price": 110, "desc": "Seasoned wings fried or baked, with blue cheese or ranch dip."}, {"id": "a5f", "name": "Marinated Drumettes", "price": 150, "desc": "Seasoned leg pieces smothered in sweet & savory house glaze."}, {"id": "a6da", "name": "Shrimp Salad Mini Sandwiches", "price": 90, "desc": "Creamy shrimp salad on mini croissants with shaved red onion.", "priceLbl": "$90/dz"}, {"id": "a6db", "name": "Salmon Salad Mini Sandwiches", "price": 90, "desc": "Creamy salmon salad on mini croissants with shaved red onion.", "priceLbl": "$90/dz"}, {"id": "a9a", "name": "Pastellitos - Cheese", "price": 25, "desc": "Crispy savory pastry shells filled with cheese, fried golden.", "priceLbl": "$25/dz"}, {"id": "a9b", "name": "Pastellitos - Beef", "price": 35, "desc": "Crispy savory pastry shells filled with seasoned beef, fried golden.", "priceLbl": "$35/dz"}, {"id": "a10a", "name": "Cajun Corn - Off the Cob (Half Pan)", "price": 60, "desc": "Creamy cajun-seasoned corn served off the cob in a rich, velvety sauce.", "priceLbl": "$60 (half pan)"}, {"id": "a10b", "name": "Cajun Corn - Off the Cob (Full Pan)", "price": 95, "desc": "Creamy cajun-seasoned corn served off the cob in a rich, velvety sauce.", "priceLbl": "$95 (full pan)"}, {"id": "s1", "name": "Avocado Chicken Salad - Serves 15-20", "price": 95, "desc": "Creamy chicken salad with diced avocado on sunflower bread. Available with tarragon or curried flavor."}, {"id": "s1f", "name": "Avocado Chicken Salad - Serves 25-35", "price": 155, "desc": "Creamy chicken salad with diced avocado on sunflower bread. Available with tarragon or curried flavor."}, {"id": "s4", "name": "Maryland Crab Soup - Serves 15-20", "price": 90, "desc": "Hearty Maryland crab with crab claws & lump crab meat, fresh mixed vegetables & a signature spice blend simmered in homemade stock."}, {"id": "s4f", "name": "Maryland Crab Soup - Serves 25-35", "price": 125, "desc": "Hearty Maryland crab with crab claws & lump crab meat, fresh mixed vegetables & a signature spice blend simmered in homemade stock."}, {"id": "e1h", "name": "Fried or Baked Chicken", "price": 95, "desc": "Marinated white & dark meat chicken fried or baked to perfection. (~40 pcs)"}, {"id": "e2h", "name": "Chicken Rasta Pasta", "price": 100, "desc": "Creamy jerk-seasoned pasta tossed with sauteed peppers & tender chicken."}, {"id": "e3h", "name": "Seafood Rasta Pasta", "price": 110, "desc": "Creamy jerk-seasoned pasta with crab, shrimp & salmon."}, {"id": "e4h", "name": "Stewed Chicken", "price": 65, "desc": "Slow-braised chicken in a rich, savory brown stew sauce."}, {"id": "e5h", "name": "Roast Pork Shoulder", "price": 80, "desc": "Marinated pork shoulder slow-roasted for a perfectly tender & juicy result."}, {"id": "e6h", "name": "Curry Chicken", "price": 90, "desc": "Caribbean-seasoned chicken with Trinidad curry powder, curried potatoes & chickpeas."}, {"id": "e8h", "name": "Curry Shrimp", "price": 120, "desc": "Caribbean-seasoned shrimp with Trinidad curry, potatoes & chickpeas."}, {"id": "e13h", "name": "Caribbean Cauliflower", "price": 65, "desc": "Whole roasted cauliflower in signature jerk blend or Caribbean dry rub, served with mango salsa & coconut rice.", "vegan": true}, {"id": "e1f", "name": "Fried or Baked Chicken", "price": 175, "desc": "Marinated white & dark meat chicken fried or baked to perfection. (~80 pcs)"}, {"id": "e2f", "name": "Chicken Rasta Pasta", "price": 120, "desc": "Creamy jerk-seasoned pasta tossed with sauteed peppers & tender chicken."}, {"id": "e3f", "name": "Seafood Rasta Pasta", "price": 175, "desc": "Creamy jerk-seasoned pasta with crab, shrimp & salmon."}, {"id": "e4f", "name": "Stewed Chicken", "price": 110, "desc": "Slow-braised chicken in a rich, savory brown stew sauce."}, {"id": "e5f", "name": "Roast Pork Shoulder", "price": 140, "desc": "Marinated pork shoulder slow-roasted for a perfectly tender & juicy result."}, {"id": "e6f", "name": "Curry Chicken", "price": 140, "desc": "Caribbean-seasoned chicken with Trinidad curry powder, curried potatoes & chickpeas."}, {"id": "e8f", "name": "Curry Shrimp", "price": 185, "desc": "Caribbean-seasoned shrimp with Trinidad curry, potatoes & chickpeas."}, {"id": "e12f", "name": "Crab Mac & Cheese", "price": 140, "desc": "Lump crab, aged cheddar & a blend of cheeses baked to creamy golden perfection using a pasta of your choice.", "pasta": true}, {"id": "e13f", "name": "Caribbean Cauliflower", "price": 110, "desc": "Whole roasted cauliflower in signature jerk blend or Caribbean dry rub, served with mango salsa & coconut rice.", "vegan": true}, {"id": "si1h", "name": "Collard Greens", "price": 65, "desc": "Hand-picked greens slow-cooked in smoked turkey."}, {"id": "si2h", "name": "Green Beans", "price": 65, "desc": "Cut green beans seasoned & simmered in smoked turkey."}, {"id": "si5h", "name": "Peas & Rice", "price": 55, "desc": "Seasoned peas and rice, Caribbean style."}, {"id": "si6h", "name": "Plain Rice", "price": 40, "desc": "Steamed white rice."}, {"id": "si7h", "name": "Mac & Cheese", "price": 65, "desc": "Aged cheddar & a blend of cheeses baked to creamy golden perfection using a pasta of your choice.", "pasta": true}, {"id": "si11h", "name": "Butternut Squash in Roasted Garlic Sauce", "price": 60, "desc": "Tender roasted butternut squash in a velvety roasted garlic sauce. Fully vegan.", "vegan": true}, {"id": "si1f", "name": "Collard Greens", "price": 90, "desc": "Hand-picked greens slow-cooked in smoked turkey."}, {"id": "si2f", "name": "Green Beans", "price": 80, "desc": "Cut green beans seasoned & simmered in smoked turkey."}, {"id": "si5f", "name": "Peas & Rice", "price": 80, "desc": "Seasoned peas and rice, Caribbean style."}, {"id": "si6f", "name": "Plain Rice", "price": 50, "desc": "Steamed white rice."}, {"id": "si7f", "name": "Mac & Cheese", "price": 100, "desc": "Aged cheddar & a blend of cheeses baked to creamy golden perfection using a pasta of your choice.", "pasta": true}, {"id": "si11f", "name": "Butternut Squash in Roasted Garlic Sauce", "price": 85, "desc": "Tender roasted butternut squash in a velvety roasted garlic sauce. Fully vegan.", "vegan": true}, {"id": "si9d", "name": "Drop Biscuits", "price": 28, "desc": "Golden, fluffy drop biscuits. Served with berry jelly or butter.", "priceLbl": "$28/dz"}, {"id": "d1d", "name": "Brownies", "price": 40, "desc": "Fudgy chocolate squares.", "priceLbl": "$40/dz"}, {"id": "d2d", "name": "Assorted Cookies", "price": 35, "desc": "Chocolate chip, oatmeal & toffee graham cracker cookies.", "priceLbl": "$35/dz"}, {"id": "d6d", "name": "Cheesecake Dessert Shooters", "price": 40, "desc": "Layered graham cracker crust & fruit filling. Choose: cherry, strawberry, apple, or blueberry.", "priceLbl": "$40/dz"}, {"id": "d3o", "name": "Golden Butter Pound Cake", "price": 50, "desc": "A delicious and moist 10-inch round cake baked to perfection.", "priceLbl": "$50 (10 inch round)"}, {"id": "d4o", "name": "5 Flavor Cake", "price": 65, "desc": "Hand-whipped 10-inch round cake infused with liqueur, vanilla & a special blend of spices.", "priceLbl": "$65 (10 inch round)"}, {"id": "d5a", "name": "Peach Cobbler - Half Pan", "price": 40, "desc": "Warm peach cobbler with bourbon glaze & drop biscuit topping.", "priceLbl": "$40/half pan"}, {"id": "d5b", "name": "Peach Cobbler - Full Pan", "price": 70, "desc": "Warm peach cobbler with bourbon glaze & drop biscuit topping.", "priceLbl": "$70/full pan"}, {"id": "sss-spbb1", "name": "Sweet Potato & Black Bean Sliders - 1 Dozen", "price": 70, "desc": "Spiced sweet potato and black bean patties served on soft slider buns with avocado crema and pickled jalapeno.", "priceLbl": "$70/dz", "vegan": true}, {"id": "sss-flank1", "name": "Flank Steak & Spinach Sandwich - 1 Dozen", "price": 130, "desc": "Seared and slow-cooked flank steak, fresh baby spinach, and garlic mustard on a sub roll.", "priceLbl": "$130/dz"}, {"id": "sss-burger", "name": "Beef Burger - 1 Dozen", "price": 120, "desc": "Chuck & brisket blend beef ground in house and hand pressed; served on a challah roll.", "priceLbl": "$120/dz"}, {"id": "e-stewbeef-h", "name": "Stewed Beef", "price": 80, "desc": "Slow roasted beef in a savory gravy, butter beans, and a blend of Caribbean seasoning."}, {"id": "e-stewbeef-f", "name": "Stewed Beef", "price": 150, "desc": "Slow roasted beef in a savory gravy, butter beans, and a blend of Caribbean seasoning."}];
+const SECTIONS = {"bevs": ["rum1", "rum5", "rum10"], "app-half": ["a1h", "a2h", "a3h", "a5h"], "app-full": ["a1f", "a2f", "a3f", "a5f"], "app-doz": ["a6da", "a6db", "a9a", "a9b", "a10a", "a10b"], "sss": ["s1", "s1f", "s4", "s4f", "sss-spbb1", "sss-flank1", "sss-burger"], "ent-half": ["e1h", "e2h", "e3h", "e4h", "e5h", "e6h", "e8h", "e13h", "e-stewbeef-h"], "ent-full": ["e1f", "e2f", "e3f", "e4f", "e5f", "e6f", "e8f", "e12f", "e13f", "e-stewbeef-f"], "sid-half": ["si1h", "si2h", "si5h", "si6h", "si7h", "si11h"], "sid-full": ["si1f", "si2f", "si5f", "si6f", "si7f", "si11f"], "sid-doz": ["si9d"], "des-doz": ["d1d", "d2d", "d6d"], "des-oth": ["d3o", "d4o", "d5a", "d5b"]};
 let order = {};
 
 function toggleItem(id, secKey) {
@@ -1630,7 +1728,9 @@ async function submitOrder() {
   const phone  = document.getElementById('cp').value.trim();
   const email  = document.getElementById('ce').value.trim();
   const date   = document.getElementById('cd').value;
-  const time   = document.getElementById('ct').value;
+  const timeStart = document.getElementById('ct-start')?.value || '';
+  const timeEnd   = document.getElementById('ct-end')?.value || '';
+  const time      = timeStart && timeEnd ? timeStart + ' - ' + timeEnd : timeStart || timeEnd || '';
   const guests = document.getElementById('cg').value;
   const notes  = document.getElementById('cn2').value.trim();
   if (!firstName || !lastName || !phone) { alert('Please enter your first name, last name, and phone number before submitting.'); return; }
@@ -1665,7 +1765,7 @@ async function submitOrder() {
         + '\nTotal Due: $' + total.toFixed(2)
         + (taxExempt ? '\n[TAX EXEMPT - Exemption certificate required]' : '');
 
-      const payUrl = 'https://form.jotform.com/262226058516052'
+      const payUrl = 'https://pci.jotform.com/form/262226058516052'
         + '?myProducts=' + total.toFixed(2)
         + '&name[first]=' + encodeURIComponent(firstName)
         + '&name[last]=' + encodeURIComponent(lastName)
@@ -1702,7 +1802,7 @@ async function submitOrder() {
         } catch(err) {
           console.log('Jotform submission error:', err);
         }
-        window.open(window._pendingPayUrl, '_blank', 'noopener,noreferrer');
+        window.open(window._pendingPayUrl, '_blank', 'noopener,noreferrer', 'noopener,noreferrer');
       };
       document.getElementById('modal').className = 'modal-ov open';
       window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
@@ -1762,4 +1862,35 @@ function applyAvailability() {
 // Apply on load
 document.addEventListener('DOMContentLoaded', applyAvailability);
 </script>
-</body></html>
+</body></html
+<div class="iright">
+            <div class="iprice">$85</div>
+            
+          <div class="iright">
+            <div class="iprice">$120/dz</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('sss-burger',-1)">&#x2212;</button>
+              <div class="qd" id="qty-sss-burger">1</div>
+              <button class="qb" onclick="changeQty('sss-burger',1)">+</button>
+            </div>
+          </div>
+        </div>
+          <div class="iright">
+            <div class="iprice">$150</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('e-stewbeef-f',-1)">&#x2212;</button>
+              <div class="qd" id="qty-e-stewbeef-f">1</div>
+              <button class="qb" onclick="changeQty('e-stewbeef-f',1)">+</button>
+            </div>
+          </div>
+        </div>
+          <div class="iright">
+            <div class="iprice">$120/dz</div>
+            <div class="qty-ctrl" onclick="event.stopPropagation()">
+              <button class="qb" onclick="changeQty('sss-burger',-1)">&#x2212;</button>
+              <div class="qd" id="qty-sss-burger">1</div>
+              <button class="qb" onclick="changeQty('sss-burger',1)">+</button>
+            </div>
+          </div>
+        </div>
+>
