@@ -370,7 +370,7 @@ input[type="radio"] { cursor: pointer; }
             </div>
           </div>
         </div>
-        <div class="item" id="row-rum10" onclick="toggleItem('rum10','bevs')">
+                <div class="item" id="row-rum10" onclick="toggleItem('rum10','bevs')">
           <div class="chk"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <div class="iinfo">
             <div class="iname">Rum Punch - 10 Gallons</div>
@@ -1536,113 +1536,11 @@ function updateSummary() {
   document.getElementById('tot-v').textContent = '$'+tot.toFixed(2);
 }
 
-const JOTFORM_FORM_ID = '262225152989060';
-const JOTFORM_API_KEY = 'e2b34caa68bb125b3381566fc0fd9d29';
-
-async function submitToJotform(payload) {
-  const fd = new FormData();
-  fd.append('apiKey', JOTFORM_API_KEY);
-  const parts = payload.name.trim().split(' ');
-  fd.append('submission[3][first]', parts[0] || '');
-  fd.append('submission[3][last]',  parts.slice(1).join(' ') || '');
-  fd.append('submission[4][full]',  payload.phone);
-  fd.append('submission[5]',        payload.email);
-  if (payload.date) {
-    const [yr,mo,dy] = payload.date.split('-');
-    fd.append('submission[6][month]', mo);
-    fd.append('submission[6][day]',   dy);
-    fd.append('submission[6][year]',  yr);
-  }
-  if (payload.time) {
-    const [h,m] = payload.time.split(':');
-    const hr = parseInt(h);
-    fd.append('submission[7][timeInput]', (hr%12||12)+':'+m);
-    fd.append('submission[7][ampm]',      hr>=12?'PM':'AM');
-  }
-  fd.append('submission[8]',  payload.guests || '');
-  fd.append('submission[10]', payload.orderDetails);
-  fd.append('submission[11]', payload.estimatedTotal);
-  fd.append('submission[12]', payload.specialRequests || '');
-  fd.append('submission[10]', (payload.taxExempt ? '[TAX EXEMPT — Exemption certificate required] ' : '') + payload.orderDetails);
-  const res  = await fetch('https://api.jotform.com/form/'+JOTFORM_FORM_ID+'/submissions', {method:'POST',body:fd});
-  const json = await res.json();
-  return (json.responseCode===200||json.responseCode===201) ? {success:true} : {success:false,message:json.message||'Unknown error'};
-}
-
-function buildOrderDetails() {
-  return Object.values(order).map(o => {
-    const pastaNote = o.pasta ? ' (' + ({elbow:'Elbow',bowtie:'Bowtie',shells:'Shells'}[o.pasta]||o.pasta) + ')' : '';
-    return '- ' + o.item.name + pastaNote + (o.qty>1?' x'+o.qty:'') + ' — $'+(o.item.price*o.qty).toFixed(2);
-  }).join('\n') || 'No items selected';
-}
-
-async function submitOrder() {
-  const name   = document.getElementById('cn').value.trim();
-  const phone  = document.getElementById('cp').value.trim();
-  const email  = document.getElementById('ce').value.trim();
-  const date   = document.getElementById('cd').value;
-  const time   = document.getElementById('ct').value;
-  const guests = document.getElementById('cg').value;
-  const notes  = document.getElementById('cn2').value.trim();
-  if (!name||!phone) { alert('Please enter your name and phone number before submitting.'); return; }
-  if (!addr1) { alert('Please enter your street address before submitting.'); return; }
-  const btn = document.getElementById('sub-btn');
-  btn.disabled=true; btn.textContent='Submitting...';
-  const sub   = Object.values(order).reduce((s,o)=>s+(o.item.price||0)*o.qty,0);
-  const tax   = sub*TAX;
-  const total = sub+tax;
-  const dateStr = date?new Date(date+'T12:00').toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}):'date TBD';
-  try {
-    const result = await submitToJotform({
-      name,phone,email,date,time,guests,
-      orderDetails: buildOrderDetails(),
-      taxExempt: taxExempt,
-      estimatedTotal: '$'+total.toFixed(2)+' (incl. est. 6% tax)',
-      specialRequests: notes,
-    });
-    if (result.success) {
-      const summaryLines = Object.values(order).map(o => {
-        const pastaNote = o.pasta ? ' (' + ({elbow:'Elbow',bowtie:'Bowtie',shells:'Shells'}[o.pasta]||o.pasta) + ')' : '';
-        return '<div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #eee;">' +
-          '<span>' + o.item.name + pastaNote + (o.qty>1?' x'+o.qty:'') + '</span>' +
-          '<span style="font-weight:700;color:#C8960C;">$' + (o.item.price*o.qty).toFixed(2) + '</span></div>';
-      });
-      // Build full address string
-
-      // Build payment page URL — passes name, phone, address & total
-      // Note: field parameter names (q3_fullName etc.) must match your Jotform payment form fields
-      const payUrl = 'https://pci.jotform.com/form/262226058516052'
-        + '?myProducts='        + encodeURIComponent(total.toFixed(2))
-        + '&q3_fullName='       + encodeURIComponent(name)
-        + '&q4_phoneNumber='    + encodeURIComponent(phone)
-        + '&q6_email='          + encodeURIComponent(email)
-        + (taxExempt ? '&taxExempt=1' : '');
-      document.getElementById('modal-msg').innerHTML =
-        'Thank you, <strong>'+name+'</strong>! Your order has been received.<br>' +
-        'We will confirm within 24 hours &mdash; <strong>'+dateStr+'</strong><br>' +
-        '<span style="font-size:.8rem;color:#666;">'+fullAddress+'</span>' +
-        (taxExempt ? '<br><br><span style="background:#FFF8E1;border:1px solid #C8960C;border-radius:6px;padding:6px 10px;display:inline-block;margin-top:4px;font-size:.82rem;"><strong>&#x26A0; Tax Exempt Order:</strong> Please upload your Sales Tax Exemption Certificate with your payment. Your order cannot be finalized as tax exempt without a valid certificate on file.</span>' : '');
-      document.getElementById('modal-order-summary').innerHTML =
-        summaryLines.join('') || '<em>No items</em>';
-      document.getElementById('modal-sub').textContent   = '$'+sub.toFixed(2);
-      document.getElementById('modal-tax').textContent   = taxExempt ? 'EXEMPT' : '$'+tax.toFixed(2);
-      document.getElementById('modal-total').textContent = '$'+total.toFixed(2);
-      document.getElementById('pay-btn').href = payUrl;
-      document.getElementById('modal').className = 'modal-ov open';
-    } else {
-      alert('Problem submitting: '+result.message+'. Please call 917-334-9038.');
-      btn.disabled=false; btn.textContent='Submit Order Request';
-    }
-  } catch(err) {
-    alert('Connection error. Please call 917-334-9038 or email ctenterprises22@gmail.com.');
-    btn.disabled=false; btn.textContent='Submit Order Request';
-  }
-}
-
 // ── Availability System ────────────────────────────────────────────────
 // Items marked unavailable are greyed out with "Unavailable" badge
 // Managed via admin panel (admin.html)
-let unavailableItems = JSON.parse(localStorage.getItem('db_unavailable') || '[]');
+let unavailableItems = [];
+try { unavailableItems = JSON.parse(localStorage.getItem('db_unavailable') || '[]'); } catch(e) { unavailableItems = []; }
 
 function applyAvailability() {
   ITEMS.forEach(item => {
@@ -1684,5 +1582,146 @@ function applyAvailability() {
 // Apply on load
 document.addEventListener('DOMContentLoaded', applyAvailability);
 
+
+const JOTFORM_FORM_ID = '262225152989060';
+const JOTFORM_API_KEY = 'e2b34caa68bb125b3381566fc0fd9d29';
+
+async function submitToJotform(payload) {
+  const fd = new FormData();
+  fd.append('apiKey', JOTFORM_API_KEY);
+  const parts = payload.name.trim().split(' ');
+  fd.append('submission[3][first]', parts[0] || '');
+  fd.append('submission[3][last]',  parts.slice(1).join(' ') || '');
+  fd.append('submission[4][full]',  payload.phone);
+  fd.append('submission[5]',        payload.email);
+  if (payload.date) {
+    const [yr,mo,dy] = payload.date.split('-');
+    fd.append('submission[6][month]', mo);
+    fd.append('submission[6][day]',   dy);
+    fd.append('submission[6][year]',  yr);
+  }
+  if (payload.time) {
+    const [h,m] = payload.time.split(':');
+    const hr = parseInt(h);
+    fd.append('submission[7][timeInput]', (hr%12||12)+':'+m);
+    fd.append('submission[7][ampm]',      hr>=12?'PM':'AM');
+  }
+  fd.append('submission[8]',  payload.guests || '');
+  fd.append('submission[10]', (payload.taxExempt ? '[TAX EXEMPT - Exemption certificate required] ' : '') + payload.orderDetails);
+  fd.append('submission[11]', payload.estimatedTotal);
+  fd.append('submission[12]', payload.specialRequests || '');
+  const res  = await fetch('https://api.jotform.com/form/' + JOTFORM_FORM_ID + '/submissions', {method:'POST', body:fd});
+  const data = await res.json();
+  return (data.responseCode===200||data.responseCode===201) ? {success:true} : {success:false, message:data.message||'Unknown error'};
+}
+
+function buildOrderDetails() {
+  return Object.values(order).map(o => {
+    const pn = o.pasta ? ' (' + ({elbow:'Elbow',bowtie:'Bowtie',shells:'Shells'}[o.pasta]||o.pasta) + ')' : '';
+    return '- ' + o.item.name + pn + (o.qty>1?' x'+o.qty:'') + ' - $'+(o.item.price*o.qty).toFixed(2);
+  }).join('\n') || 'No items selected';
+}
+
+async function submitOrder() {
+  const name   = document.getElementById('cn').value.trim();
+  const phone  = document.getElementById('cp').value.trim();
+  const email  = document.getElementById('ce').value.trim();
+  const date   = document.getElementById('cd').value;
+  const time   = document.getElementById('ct').value;
+  const guests = document.getElementById('cg').value;
+  const notes  = document.getElementById('cn2').value.trim();
+  if (!name || !phone) { alert('Please enter your name and phone number before submitting.'); return; }
+  const btn = document.getElementById('sub-btn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+  const sub   = Object.values(order).reduce((s,o) => s + (o.item.price||0)*o.qty, 0);
+  const tax   = taxExempt ? 0 : sub * TAX;
+  const total = sub + tax;
+  const dateStr = date ? new Date(date+'T12:00').toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}) : 'date TBD';
+  try {
+    const result = await submitToJotform({
+      name, phone, email, date, time, guests,
+      orderDetails:    buildOrderDetails(),
+      estimatedTotal:  '$' + total.toFixed(2) + (taxExempt ? ' (Tax Exempt)' : ' (incl. 6% tax)'),
+      specialRequests: notes,
+      taxExempt:       taxExempt,
+    });
+    if (result.success) {
+      const summaryLines = Object.values(order).map(o => {
+        const pn = o.pasta ? ' (' + ({elbow:'Elbow',bowtie:'Bowtie',shells:'Shells'}[o.pasta]||o.pasta) + ')' : '';
+        return '<div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #eee;">' +
+          '<span>' + o.item.name + pn + (o.qty>1?' x'+o.qty:'') + '</span>' +
+          '<span style="font-weight:700;color:#C8960C;">$' + (o.item.price*o.qty).toFixed(2) + '</span></div>';
+      });
+      const payUrl = 'https://pci.jotform.com/form/262226058516052?' + 'myProducts=' + encodeURIComponent(total.toFixed(2)) +
+        '&q3_fullName=' + encodeURIComponent(name) +
+        '&q4_phoneNumber=' + encodeURIComponent(phone) +
+        '&q6_email=' + encodeURIComponent(email) +
+        (taxExempt ? '&taxExempt=1' : '');
+      document.getElementById('modal-msg').innerHTML =
+        'Thank you, <strong>' + name + '</strong>! Your order has been received.<br>' +
+        'We will confirm within 24 hours &mdash; <strong>' + dateStr + '</strong>' +
+        (taxExempt ? '<br><br><span style="background:#FFF8E1;border:1px solid #C8960C;border-radius:6px;padding:6px 10px;display:inline-block;margin-top:4px;font-size:.82rem;"><strong>Tax Exempt Order:</strong> Please upload your Sales Tax Exemption Certificate with your payment.</span>' : '');
+      document.getElementById('modal-order-summary').innerHTML = summaryLines.join('') || '<em>No items</em>';
+      document.getElementById('modal-sub').textContent   = '$' + sub.toFixed(2);
+      document.getElementById('modal-tax').textContent   = taxExempt ? 'EXEMPT' : '$' + tax.toFixed(2);
+      document.getElementById('modal-total').textContent = '$' + total.toFixed(2);
+      document.getElementById('pay-btn').href = payUrl;
+      document.getElementById('modal').className = 'modal-ov open';
+    } else {
+      alert('Problem submitting order: ' + result.message + '. Please call 917-334-9038.');
+      btn.disabled = false; btn.textContent = 'Submit Order Request';
+    }
+  } catch(err) {
+    alert('Connection error. Please call 917-334-9038 or email ctenterprises22@gmail.com.');
+    btn.disabled = false; btn.textContent = 'Submit Order Request';
+  }
+}
+
+
+// ── Availability System ────────────────────────────────────────────────
+// Items marked unavailable are greyed out with "Unavailable" badge
+// Managed via admin panel (admin.html)
+
+
+function applyAvailability() {
+  ITEMS.forEach(item => {
+    const row = document.getElementById('row-'+item.id);
+    if (!row) return;
+    const isUnavail = unavailableItems.includes(item.id);
+    if (isUnavail) {
+      row.style.opacity = '0.45';
+      row.style.cursor  = 'not-allowed';
+      row.onclick = () => alert('Sorry, this item is currently unavailable.');
+      // Add unavailable badge if not already there
+      if (!row.querySelector('.unavail-badge')) {
+        const badge = document.createElement('div');
+        badge.className = 'unavail-badge';
+        badge.textContent = 'Unavailable';
+        badge.style.cssText = 'font-size:.7rem;font-weight:700;color:#fff;background:#C0392B;border-radius:10px;padding:2px 8px;margin-top:3px;display:inline-block;';
+        const iinfo = row.querySelector('.iinfo');
+        if (iinfo) iinfo.appendChild(badge);
+      }
+      // Remove from order if previously selected
+      if (order[item.id]) {
+        delete order[item.id];
+        row.className = 'item';
+        updateBadge(Object.values(SECTIONS).find(s => s.includes(item.id)) ? Object.keys(SECTIONS).find(k => SECTIONS[k].includes(item.id)) : '');
+        updateSummary();
+      }
+    } else {
+      row.style.opacity = '';
+      row.style.cursor  = '';
+      // Restore click handler
+      row.onclick = () => toggleItem(item.id, Object.keys(SECTIONS).find(k => SECTIONS[k].includes(item.id)));
+      // Remove unavailable badge
+      const badge = row.querySelector('.unavail-badge');
+      if (badge) badge.remove();
+    }
+  });
+}
+
+// Apply on load
+document.addEventListener('DOMContentLoaded', applyAvailability);
 </script>
 </body></html>
