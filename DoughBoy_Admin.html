@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>DoughBoy Admin - Menu Manager</title>
+<title>DoughBoy — Menu Admin</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
@@ -13,11 +13,11 @@
 }
 body{font-family:'Segoe UI',Arial,sans-serif;background:var(--cream);min-height:100vh;}
 
-/* Login */
+/* Login screen */
 .login{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
 .login-card{background:var(--white);border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.12);padding:36px 32px;max-width:380px;width:100%;text-align:center;}
 .login-card h1{font-family:Georgia,serif;color:var(--dg);font-size:1.4rem;margin-bottom:6px;}
-.login-card p{color:var(--gray);font-size:.85rem;margin-bottom:24px;line-height:1.5;}
+.login-card p{color:var(--gray);font-size:.85rem;margin-bottom:24px;}
 .login-card input{width:100%;border:1.5px solid var(--lgray);border-radius:8px;padding:11px 14px;font-size:1rem;font-family:inherit;margin-bottom:14px;}
 .login-card input:focus{outline:none;border-color:var(--mg);}
 .login-btn{width:100%;padding:12px;background:var(--dg);color:var(--white);border:none;border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer;font-family:inherit;}
@@ -26,74 +26,74 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--cream);min-height:
 
 /* Admin panel */
 .admin{display:none;max-width:860px;margin:0 auto;padding:20px 16px 60px;}
-.admin-hdr{background:var(--dg);border-radius:10px;padding:18px 22px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
-.admin-hdr h1{font-family:Georgia,serif;color:var(--white);font-size:1.2rem;}
+.admin-hdr{background:var(--dg);border-radius:10px;padding:18px 22px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;}
+.admin-hdr h1{font-family:Georgia,serif;color:var(--white);font-size:1.3rem;}
 .admin-hdr .logout{background:rgba(255,255,255,.15);color:var(--white);border:1px solid rgba(255,255,255,.3);border-radius:6px;padding:6px 14px;font-size:.8rem;cursor:pointer;font-family:inherit;}
 .admin-hdr .logout:hover{background:rgba(255,255,255,.25);}
 
-.info-bar{background:#E8F5E9;border:1px solid var(--mg);border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:.83rem;color:var(--dg);line-height:1.5;}
-.info-bar strong{color:var(--mg);}
+.save-bar{background:var(--gold);border-radius:8px;padding:12px 18px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;}
+.save-bar span{color:var(--white);font-size:.88rem;font-weight:600;}
+.save-btn{background:var(--white);color:var(--gold);border:none;border-radius:6px;padding:8px 20px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:inherit;}
+.save-btn:hover{background:#FFF8E1;}
 
-.stats{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;}
-.stat{background:var(--white);border-radius:8px;padding:12px 16px;flex:1;min-width:100px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,.07);}
-.stat .num{font-size:1.6rem;font-weight:700;color:var(--dg);}
-.stat .lbl{font-size:.73rem;color:var(--gray);margin-top:2px;}
+.sec-card{background:var(--white);border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-bottom:16px;overflow:hidden;}
+.sec-hdr{background:var(--dg);padding:10px 16px;font-weight:700;font-size:.9rem;color:var(--white);display:flex;align-items:center;justify-content:space-between;}
+.sec-hdr .toggle-all{font-size:.75rem;font-weight:600;background:rgba(255,255,255,.2);border:none;color:var(--white);border-radius:4px;padding:3px 10px;cursor:pointer;font-family:inherit;}
 
-.sec-card{background:var(--white);border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-bottom:14px;overflow:hidden;}
-.sec-hdr{background:var(--dg);padding:10px 16px;font-weight:700;font-size:.88rem;color:var(--white);display:flex;align-items:center;justify-content:space-between;}
-.sec-hdr .toggle-all-btn{font-size:.73rem;font-weight:600;background:rgba(255,255,255,.2);border:none;color:var(--white);border-radius:4px;padding:3px 10px;cursor:pointer;font-family:inherit;}
-.sec-hdr .toggle-all-btn:hover{background:rgba(255,255,255,.35);}
-
-.admin-item{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-bottom:1px solid var(--lgray);gap:10px;}
+.admin-item{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-bottom:1px solid var(--lgray);transition:background .12s;}
 .admin-item:last-child{border-bottom:none;}
 .admin-item.unavail{background:var(--red-bg);}
 .admin-item.avail{background:var(--white);}
-.item-info .iname{font-weight:600;font-size:.87rem;color:var(--ch);}
-.item-info .iprice{font-size:.77rem;color:var(--gray);margin-top:2px;}
-.item-controls{display:flex;align-items:center;gap:10px;flex-shrink:0;}
-.status-badge{font-size:.71rem;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap;}
+.item-info .iname{font-weight:600;font-size:.88rem;color:var(--ch);}
+.item-info .iprice{font-size:.78rem;color:var(--gray);margin-top:2px;}
+.item-controls{display:flex;align-items:center;gap:10px;}
+.status-badge{font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:10px;}
 .status-badge.avail{background:var(--green-bg);color:var(--mg);}
 .status-badge.unavail{background:var(--red-bg);color:var(--red);}
 
 /* Toggle switch */
-.toggle{position:relative;width:44px;height:24px;flex-shrink:0;}
+.toggle-wrap{display:flex;align-items:center;gap:8px;}
+.toggle-label{font-size:.78rem;color:var(--gray);}
+.toggle{position:relative;width:44px;height:24px;}
 .toggle input{opacity:0;width:0;height:0;}
 .toggle-slider{position:absolute;inset:0;background:#ccc;border-radius:24px;cursor:pointer;transition:.2s;}
 .toggle-slider:before{content:'';position:absolute;height:18px;width:18px;left:3px;bottom:3px;background:var(--white);border-radius:50%;transition:.2s;}
 input:checked + .toggle-slider{background:var(--mg);}
 input:checked + .toggle-slider:before{transform:translateX(20px);}
 
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--dg);color:var(--white);padding:10px 24px;border-radius:8px;font-size:.88rem;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;white-space:nowrap;}
-.toast.show{opacity:1;}
+.stats{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;}
+.stat{background:var(--white);border-radius:8px;padding:12px 16px;flex:1;min-width:120px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,.07);}
+.stat .num{font-size:1.6rem;font-weight:700;color:var(--dg);}
+.stat .lbl{font-size:.75rem;color:var(--gray);margin-top:2px;}
 
-@media(max-width:480px){
-  .admin-item{flex-wrap:wrap;}
-  .item-controls{width:100%;justify-content:flex-end;}
-  .stats{gap:8px;}
-  .stat .num{font-size:1.3rem;}
-}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--dg);color:var(--white);padding:10px 24px;border-radius:8px;font-size:.88rem;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;}
+.toast.show{opacity:1;}
 </style>
 </head>
 <body>
 
+<!-- Login Screen -->
 <div class="login" id="login-screen">
   <div class="login-card">
     <h1>DoughBoy Admin</h1>
-    <p>Menu availability manager<br>Sign in to mark items available or unavailable</p>
-    <input type="password" id="pw-input" placeholder="Enter password" onkeydown="if(event.key==='Enter') doLogin()"/>
+    <p>Menu availability manager<br>Enter your password to continue</p>
+    <input type="password" id="pw-input" placeholder="Enter password"
+      onkeydown="if(event.key==='Enter') doLogin()"/>
     <button class="login-btn" onclick="doLogin()">Sign In</button>
     <div class="login-error" id="login-error">Incorrect password. Please try again.</div>
   </div>
 </div>
 
+<!-- Admin Panel -->
 <div class="admin" id="admin-panel">
   <div class="admin-hdr">
-    <h1>Menu Availability Manager</h1>
+    <h1>&#x2699;&#xFE0F; Menu Availability Manager</h1>
     <button class="logout" onclick="doLogout()">Sign Out</button>
   </div>
 
-  <div class="info-bar">
-    <strong>How it works:</strong> Toggle any item off to mark it as unavailable. Customers will see it greyed out with an "Unavailable" label on the order form. Changes take effect immediately on the live form — no re-uploading needed.
+  <div class="save-bar">
+    <span>&#x1F4BE; Changes save automatically and update the live order form instantly.</span>
+    <button class="save-btn" onclick="saveAndNotify()">Save Changes</button>
   </div>
 
   <div class="stats">
@@ -109,37 +109,16 @@ input:checked + .toggle-slider:before{transform:translateX(20px);}
 
 <script>
 const ADMIN_PASSWORD = 'DoughBoy2026!';
-const ITEMS    = [{"id": "rum1", "name": "Rum Punch - 1 Gallon", "price": 50, "desc": "House-made rum punch, serves approximately 10-12 guests.", "priceLbl": "$50/gal", "maxQty": 4}, {"id": "rum5", "name": "Rum Punch - 5 Gallons", "price": 200, "desc": "House-made rum punch, serves approximately 50-60 guests.", "priceLbl": "$200/5gal", "maxQty": 3}, {"id": "rum10", "name": "Rum Punch - 10 Gallons", "price": 350, "desc": "House-made rum punch, serves approximately 100-120 guests.", "priceLbl": "$350/10gal", "maxQty": 3}, {"id": "a1h", "name": "Sweet & Spicy Meatballs", "price": 55, "desc": "Beef or turkey meatballs simmered in signature red pepper jelly gravy."}, {"id": "a2h", "name": "Mac & Cheese Bites", "price": 50, "desc": "Bite-sized cheesy baked macaroni bites."}, {"id": "a3h", "name": "Wingettes", "price": 70, "desc": "Seasoned wings fried or baked, with blue cheese or ranch dip."}, {"id": "a5h", "name": "Marinated Drumettes", "price": 85, "desc": "Seasoned leg pieces smothered in sweet & savory house glaze."}, {"id": "a1f", "name": "Sweet & Spicy Meatballs", "price": 100, "desc": "Beef or turkey meatballs simmered in signature red pepper jelly gravy."}, {"id": "a2f", "name": "Mac & Cheese Bites", "price": 75, "desc": "Bite-sized cheesy baked macaroni bites."}, {"id": "a3f", "name": "Wingettes", "price": 110, "desc": "Seasoned wings fried or baked, with blue cheese or ranch dip."}, {"id": "a5f", "name": "Marinated Drumettes", "price": 150, "desc": "Seasoned leg pieces smothered in sweet & savory house glaze."}, {"id": "a6da", "name": "Shrimp Salad Mini Sandwiches", "price": 90, "desc": "Creamy shrimp salad on mini croissants with shaved red onion.", "priceLbl": "$90/dz"}, {"id": "a6db", "name": "Salmon Salad Mini Sandwiches", "price": 90, "desc": "Creamy salmon salad on mini croissants with shaved red onion.", "priceLbl": "$90/dz"}, {"id": "a9a", "name": "Pastellitos - Cheese", "price": 25, "desc": "Crispy savory pastry shells filled with cheese, fried golden.", "priceLbl": "$25/dz"}, {"id": "a9b", "name": "Pastellitos - Beef", "price": 35, "desc": "Crispy savory pastry shells filled with seasoned beef, fried golden.", "priceLbl": "$35/dz"}, {"id": "a10a", "name": "Cajun Corn - Off the Cob (Half Pan)", "price": 60, "desc": "Creamy cajun-seasoned corn served off the cob in a rich, velvety sauce.", "priceLbl": "$60 (half pan)"}, {"id": "a10b", "name": "Cajun Corn - Off the Cob (Full Pan)", "price": 95, "desc": "Creamy cajun-seasoned corn served off the cob in a rich, velvety sauce.", "priceLbl": "$95 (full pan)"}, {"id": "s1", "name": "Avocado Chicken Salad - Serves 15-20", "price": 95, "desc": "Creamy chicken salad with diced avocado on sunflower bread. Available with tarragon or curried flavor."}, {"id": "s1f", "name": "Avocado Chicken Salad - Serves 25-35", "price": 155, "desc": "Creamy chicken salad with diced avocado on sunflower bread. Available with tarragon or curried flavor."}, {"id": "s4", "name": "Maryland Crab Soup - Serves 15-20", "price": 90, "desc": "Hearty Maryland crab with crab claws & lump crab meat, fresh mixed vegetables & a signature spice blend simmered in homemade stock."}, {"id": "s4f", "name": "Maryland Crab Soup - Serves 25-35", "price": 125, "desc": "Hearty Maryland crab with crab claws & lump crab meat, fresh mixed vegetables & a signature spice blend simmered in homemade stock."}, {"id": "e1h", "name": "Fried or Baked Chicken", "price": 95, "desc": "Marinated white & dark meat chicken fried or baked to perfection. (~40 pcs)"}, {"id": "e2h", "name": "Chicken Rasta Pasta", "price": 100, "desc": "Creamy jerk-seasoned pasta tossed with sauteed peppers & tender chicken."}, {"id": "e3h", "name": "Seafood Rasta Pasta", "price": 110, "desc": "Creamy jerk-seasoned pasta with crab, shrimp & salmon."}, {"id": "e4h", "name": "Stewed Chicken", "price": 65, "desc": "Slow-braised chicken in a rich, savory brown stew sauce."}, {"id": "e5h", "name": "Roast Pork Shoulder", "price": 80, "desc": "Marinated pork shoulder slow-roasted for a perfectly tender & juicy result."}, {"id": "e6h", "name": "Curry Chicken", "price": 90, "desc": "Caribbean-seasoned chicken with Trinidad curry powder, curried potatoes & chickpeas."}, {"id": "e8h", "name": "Curry Shrimp", "price": 120, "desc": "Caribbean-seasoned shrimp with Trinidad curry, potatoes & chickpeas."}, {"id": "e13h", "name": "Caribbean Cauliflower", "price": 65, "desc": "Whole roasted cauliflower in signature jerk blend or Caribbean dry rub, served with mango salsa & coconut rice.", "vegan": true}, {"id": "e1f", "name": "Fried or Baked Chicken", "price": 175, "desc": "Marinated white & dark meat chicken fried or baked to perfection. (~80 pcs)"}, {"id": "e2f", "name": "Chicken Rasta Pasta", "price": 120, "desc": "Creamy jerk-seasoned pasta tossed with sauteed peppers & tender chicken."}, {"id": "e3f", "name": "Seafood Rasta Pasta", "price": 175, "desc": "Creamy jerk-seasoned pasta with crab, shrimp & salmon."}, {"id": "e4f", "name": "Stewed Chicken", "price": 110, "desc": "Slow-braised chicken in a rich, savory brown stew sauce."}, {"id": "e5f", "name": "Roast Pork Shoulder", "price": 140, "desc": "Marinated pork shoulder slow-roasted for a perfectly tender & juicy result."}, {"id": "e6f", "name": "Curry Chicken", "price": 140, "desc": "Caribbean-seasoned chicken with Trinidad curry powder, curried potatoes & chickpeas."}, {"id": "e8f", "name": "Curry Shrimp", "price": 185, "desc": "Caribbean-seasoned shrimp with Trinidad curry, potatoes & chickpeas."}, {"id": "e12f", "name": "Crab Mac & Cheese", "price": 140, "desc": "Lump crab, aged cheddar & a blend of cheeses baked to creamy golden perfection using a pasta of your choice.", "pasta": true}, {"id": "e13f", "name": "Caribbean Cauliflower", "price": 110, "desc": "Whole roasted cauliflower in signature jerk blend or Caribbean dry rub, served with mango salsa & coconut rice.", "vegan": true}, {"id": "si1h", "name": "Collard Greens", "price": 65, "desc": "Hand-picked greens slow-cooked in smoked turkey."}, {"id": "si2h", "name": "Green Beans", "price": 65, "desc": "Cut green beans seasoned & simmered in smoked turkey."}, {"id": "si5h", "name": "Peas & Rice", "price": 55, "desc": "Seasoned peas and rice, Caribbean style."}, {"id": "si6h", "name": "Plain Rice", "price": 40, "desc": "Steamed white rice."}, {"id": "si7h", "name": "Mac & Cheese", "price": 65, "desc": "Aged cheddar & a blend of cheeses baked to creamy golden perfection using a pasta of your choice.", "pasta": true}, {"id": "si11h", "name": "Butternut Squash in Roasted Garlic Sauce", "price": 60, "desc": "Tender roasted butternut squash in a velvety roasted garlic sauce. Fully vegan.", "vegan": true}, {"id": "si1f", "name": "Collard Greens", "price": 90, "desc": "Hand-picked greens slow-cooked in smoked turkey."}, {"id": "si2f", "name": "Green Beans", "price": 80, "desc": "Cut green beans seasoned & simmered in smoked turkey."}, {"id": "si5f", "name": "Peas & Rice", "price": 80, "desc": "Seasoned peas and rice, Caribbean style."}, {"id": "si6f", "name": "Plain Rice", "price": 50, "desc": "Steamed white rice."}, {"id": "si7f", "name": "Mac & Cheese", "price": 100, "desc": "Aged cheddar & a blend of cheeses baked to creamy golden perfection using a pasta of your choice.", "pasta": true}, {"id": "si11f", "name": "Butternut Squash in Roasted Garlic Sauce", "price": 85, "desc": "Tender roasted butternut squash in a velvety roasted garlic sauce. Fully vegan.", "vegan": true}, {"id": "si9d", "name": "Drop Biscuits", "price": 28, "desc": "Golden, fluffy drop biscuits. Served with berry jelly or butter.", "priceLbl": "$28/dz"}, {"id": "d1d", "name": "Brownies", "price": 40, "desc": "Fudgy chocolate squares.", "priceLbl": "$40/dz"}, {"id": "d2d", "name": "Assorted Cookies", "price": 35, "desc": "Chocolate chip, oatmeal & toffee graham cracker cookies.", "priceLbl": "$35/dz"}, {"id": "d6d", "name": "Cheesecake Dessert Shooters", "price": 40, "desc": "Layered graham cracker crust & fruit filling. Choose: cherry, strawberry, apple, or blueberry.", "priceLbl": "$40/dz"}, {"id": "d3o", "name": "Golden Butter Pound Cake", "price": 50, "desc": "A delicious and moist 10-inch round cake baked to perfection.", "priceLbl": "$50 (10 inch round)"}, {"id": "d4o", "name": "5 Flavor Cake", "price": 65, "desc": "Hand-whipped 10-inch round cake infused with liqueur, vanilla & a special blend of spices.", "priceLbl": "$65 (10 inch round)"}, {"id": "d5a", "name": "Peach Cobbler - Half Pan", "price": 40, "desc": "Warm peach cobbler with bourbon glaze & drop biscuit topping.", "priceLbl": "$40/half pan"}, {"id": "d5b", "name": "Peach Cobbler - Full Pan", "price": 70, "desc": "Warm peach cobbler with bourbon glaze & drop biscuit topping.", "priceLbl": "$70/full pan"}];
+const ITEMS = [{"id": "rum1", "name": "Rum Punch - 1 Gallon", "price": 50, "desc": "House-made rum punch, serves approximately 10-12 guests.", "priceLbl": "$50/gal", "maxQty": 4}, {"id": "rum5", "name": "Rum Punch - 5 Gallons", "price": 200, "desc": "House-made rum punch, serves approximately 50-60 guests.", "priceLbl": "$200/5gal", "maxQty": 3}, {"id": "rum10", "name": "Rum Punch - 10 Gallons", "price": 350, "desc": "House-made rum punch, serves approximately 100-120 guests.", "priceLbl": "$350/10gal", "maxQty": 3}, {"id": "a1h", "name": "Sweet & Spicy Meatballs", "price": 55, "desc": "Beef or turkey meatballs simmered in signature red pepper jelly gravy."}, {"id": "a2h", "name": "Mac & Cheese Bites", "price": 50, "desc": "Bite-sized cheesy baked macaroni bites."}, {"id": "a3h", "name": "Wingettes", "price": 70, "desc": "Seasoned wings fried or baked, with blue cheese or ranch dip."}, {"id": "a5h", "name": "Marinated Drumettes", "price": 85, "desc": "Seasoned leg pieces smothered in sweet & savory house glaze."}, {"id": "a1f", "name": "Sweet & Spicy Meatballs", "price": 100, "desc": "Beef or turkey meatballs simmered in signature red pepper jelly gravy."}, {"id": "a2f", "name": "Mac & Cheese Bites", "price": 75, "desc": "Bite-sized cheesy baked macaroni bites."}, {"id": "a3f", "name": "Wingettes", "price": 110, "desc": "Seasoned wings fried or baked, with blue cheese or ranch dip."}, {"id": "a5f", "name": "Marinated Drumettes", "price": 150, "desc": "Seasoned leg pieces smothered in sweet & savory house glaze."}, {"id": "a6da", "name": "Shrimp Salad Mini Sandwiches", "price": 90, "desc": "Creamy shrimp salad on mini croissants with shaved red onion.", "priceLbl": "$90/dz"}, {"id": "a6db", "name": "Salmon Salad Mini Sandwiches", "price": 90, "desc": "Creamy salmon salad on mini croissants with shaved red onion.", "priceLbl": "$90/dz"}, {"id": "a9a", "name": "Pastellitos - Cheese", "price": 25, "desc": "Crispy savory pastry shells filled with cheese, fried golden.", "priceLbl": "$25/dz"}, {"id": "a9b", "name": "Pastellitos - Beef", "price": 35, "desc": "Crispy savory pastry shells filled with seasoned beef, fried golden.", "priceLbl": "$35/dz"}, {"id": "a10a", "name": "Cajun Corn - Off the Cob (Half Pan)", "price": 60, "desc": "Creamy cajun-seasoned corn served off the cob in a rich, velvety sauce.", "priceLbl": "$60 (half pan)"}, {"id": "a10b", "name": "Cajun Corn - Off the Cob (Full Pan)", "price": 95, "desc": "Creamy cajun-seasoned corn served off the cob in a rich, velvety sauce.", "priceLbl": "$95 (full pan)"}, {"id": "s1", "name": "Avocado Chicken Salad - Serves 15-20", "price": 95, "desc": "Creamy chicken salad with diced avocado on sunflower bread. Available with tarragon or curried flavor."}, {"id": "s1f", "name": "Avocado Chicken Salad - Serves 25-35", "price": 155, "desc": "Creamy chicken salad with diced avocado on sunflower bread. Available with tarragon or curried flavor."}, {"id": "s4", "name": "Maryland Crab Soup - Serves 15-20", "price": 90, "desc": "Hearty Maryland crab with crab claws & lump crab meat, fresh mixed vegetables & a signature spice blend simmered in homemade stock."}, {"id": "s4f", "name": "Maryland Crab Soup - Serves 25-35", "price": 125, "desc": "Hearty Maryland crab with crab claws & lump crab meat, fresh mixed vegetables & a signature spice blend simmered in homemade stock."}, {"id": "e1h", "name": "Fried or Baked Chicken", "price": 95, "desc": "Marinated white & dark meat chicken fried or baked to perfection. (~40 pcs)"}, {"id": "e2h", "name": "Chicken Rasta Pasta", "price": 100, "desc": "Creamy jerk-seasoned pasta tossed with sauteed peppers & tender chicken."}, {"id": "e3h", "name": "Seafood Rasta Pasta", "price": 110, "desc": "Creamy jerk-seasoned pasta with crab, shrimp & salmon."}, {"id": "e4h", "name": "Stewed Chicken", "price": 65, "desc": "Slow-braised chicken in a rich, savory brown stew sauce."}, {"id": "e5h", "name": "Roast Pork Shoulder", "price": 80, "desc": "Marinated pork shoulder slow-roasted for a perfectly tender & juicy result."}, {"id": "e6h", "name": "Curry Chicken", "price": 90, "desc": "Caribbean-seasoned chicken with Trinidad curry powder, curried potatoes & chickpeas."}, {"id": "e8h", "name": "Curry Shrimp", "price": 120, "desc": "Caribbean-seasoned shrimp with Trinidad curry, potatoes & chickpeas."}, {"id": "e13h", "name": "Caribbean Cauliflower", "price": 65, "desc": "Whole roasted cauliflower in signature jerk blend or Caribbean dry rub, served with mango salsa & coconut rice.", "vegan": true}, {"id": "e1f", "name": "Fried or Baked Chicken", "price": 175, "desc": "Marinated white & dark meat chicken fried or baked to perfection. (~80 pcs)"}, {"id": "e2f", "name": "Chicken Rasta Pasta", "price": 120, "desc": "Creamy jerk-seasoned pasta tossed with sauteed peppers & tender chicken."}, {"id": "e3f", "name": "Seafood Rasta Pasta", "price": 175, "desc": "Creamy jerk-seasoned pasta with crab, shrimp & salmon."}, {"id": "e4f", "name": "Stewed Chicken", "price": 110, "desc": "Slow-braised chicken in a rich, savory brown stew sauce."}, {"id": "e5f", "name": "Roast Pork Shoulder", "price": 140, "desc": "Marinated pork shoulder slow-roasted for a perfectly tender & juicy result."}, {"id": "e6f", "name": "Curry Chicken", "price": 140, "desc": "Caribbean-seasoned chicken with Trinidad curry powder, curried potatoes & chickpeas."}, {"id": "e8f", "name": "Curry Shrimp", "price": 185, "desc": "Caribbean-seasoned shrimp with Trinidad curry, potatoes & chickpeas."}, {"id": "e12f", "name": "Crab Mac & Cheese", "price": 140, "desc": "Lump crab, aged cheddar & a blend of cheeses baked to creamy golden perfection using a pasta of your choice.", "pasta": true}, {"id": "e13f", "name": "Caribbean Cauliflower", "price": 110, "desc": "Whole roasted cauliflower in signature jerk blend or Caribbean dry rub, served with mango salsa & coconut rice.", "vegan": true}, {"id": "si1h", "name": "Collard Greens", "price": 65, "desc": "Hand-picked greens slow-cooked in smoked turkey."}, {"id": "si2h", "name": "Green Beans", "price": 65, "desc": "Cut green beans seasoned & simmered in smoked turkey."}, {"id": "si5h", "name": "Peas & Rice", "price": 55, "desc": "Seasoned peas and rice, Caribbean style."}, {"id": "si6h", "name": "Plain Rice", "price": 40, "desc": "Steamed white rice."}, {"id": "si7h", "name": "Mac & Cheese", "price": 65, "desc": "Aged cheddar & a blend of cheeses baked to creamy golden perfection using a pasta of your choice.", "pasta": true}, {"id": "si11h", "name": "Butternut Squash in Roasted Garlic Sauce", "price": 60, "desc": "Tender roasted butternut squash in a velvety roasted garlic sauce. Fully vegan.", "vegan": true}, {"id": "si1f", "name": "Collard Greens", "price": 90, "desc": "Hand-picked greens slow-cooked in smoked turkey."}, {"id": "si2f", "name": "Green Beans", "price": 80, "desc": "Cut green beans seasoned & simmered in smoked turkey."}, {"id": "si5f", "name": "Peas & Rice", "price": 80, "desc": "Seasoned peas and rice, Caribbean style."}, {"id": "si6f", "name": "Plain Rice", "price": 50, "desc": "Steamed white rice."}, {"id": "si7f", "name": "Mac & Cheese", "price": 100, "desc": "Aged cheddar & a blend of cheeses baked to creamy golden perfection using a pasta of your choice.", "pasta": true}, {"id": "si11f", "name": "Butternut Squash in Roasted Garlic Sauce", "price": 85, "desc": "Tender roasted butternut squash in a velvety roasted garlic sauce. Fully vegan.", "vegan": true}, {"id": "si9d", "name": "Drop Biscuits", "price": 28, "desc": "Golden, fluffy drop biscuits. Served with berry jelly or butter.", "priceLbl": "$28/dz"}, {"id": "d1d", "name": "Brownies", "price": 40, "desc": "Fudgy chocolate squares.", "priceLbl": "$40/dz"}, {"id": "d2d", "name": "Assorted Cookies", "price": 35, "desc": "Chocolate chip, oatmeal & toffee graham cracker cookies.", "priceLbl": "$35/dz"}, {"id": "d6d", "name": "Cheesecake Dessert Shooters", "price": 40, "desc": "Layered graham cracker crust & fruit filling. Choose: cherry, strawberry, apple, or blueberry.", "priceLbl": "$40/dz"}, {"id": "d3o", "name": "Golden Butter Pound Cake", "price": 50, "desc": "A delicious and moist 10-inch round cake baked to perfection.", "priceLbl": "$50 (10 inch round)"}, {"id": "d4o", "name": "5 Flavor Cake", "price": 65, "desc": "Hand-whipped 10-inch round cake infused with liqueur, vanilla & a special blend of spices.", "priceLbl": "$65 (10 inch round)"}, {"id": "d5a", "name": "Peach Cobbler - Half Pan", "price": 40, "desc": "Warm peach cobbler with bourbon glaze & drop biscuit topping.", "priceLbl": "$40/half pan"}, {"id": "d5b", "name": "Peach Cobbler - Full Pan", "price": 70, "desc": "Warm peach cobbler with bourbon glaze & drop biscuit topping.", "priceLbl": "$70/full pan"}];
 const SECTIONS = {"bevs": ["rum1", "rum5", "rum10"], "app-half": ["a1h", "a2h", "a3h", "a5h"], "app-full": ["a1f", "a2f", "a3f", "a5f"], "app-doz": ["a6da", "a6db", "a9a", "a9b", "a10a", "a10b"], "sss": ["s1", "s1f", "s4", "s4f"], "ent-half": ["e1h", "e2h", "e3h", "e4h", "e5h", "e6h", "e8h", "e13h"], "ent-full": ["e1f", "e2f", "e3f", "e4f", "e5f", "e6f", "e8f", "e12f", "e13f"], "sid-half": ["si1h", "si2h", "si5h", "si6h", "si7h", "si11h"], "sid-full": ["si1f", "si2f", "si5f", "si6f", "si7f", "si11f"], "sid-doz": ["si9d"], "des-doz": ["d1d", "d2d", "d6d"], "des-oth": ["d3o", "d4o", "d5a", "d5b"]};
-const SECTION_LABELS = {"bevs": "Beverages", "app-half": "Appetizers - Half Pan (Serves 15-20)", "app-full": "Appetizers - Full Pan (Serves 25-35)", "app-doz": "Appetizers - By the Dozen", "sss": "Soups & Salads", "ent-half": "Entrees - Half Pan (Serves 15-20)", "ent-full": "Entrees - Full Pan (Serves 25-35)", "sid-half": "Sides - Half Pan (Serves 15-20)", "sid-full": "Sides - Full Pan (Serves 25-35)", "sid-doz": "Sides - By the Dozen", "des-doz": "Desserts - By the Dozen", "des-oth": "Desserts - Cakes & Cobblers"};
+const SECTION_LABELS = {"app-half": "\ud83c\udf62 Appetizers \u2014 Half Pan", "app-full": "\ud83c\udf62 Appetizers \u2014 Full Pan", "app-doz": "\ud83c\udf62 Appetizers \u2014 By the Dozen", "sss": "\ud83e\udd57 Soups & Salads", "ent-half": "\ud83c\udf7d Entr\u00e9es \u2014 Half Pan", "ent-full": "\ud83c\udf7d Entr\u00e9es \u2014 Full Pan", "sid-half": "\ud83c\udf3d Sides \u2014 Half Pan", "sid-full": "\ud83c\udf3d Sides \u2014 Full Pan", "sid-doz": "\ud83c\udf3d Sides \u2014 By the Dozen", "bevs": "\ud83c\udf79 Beverages", "des-doz": "\ud83c\udf70 Desserts \u2014 By the Dozen", "des-oth": "\ud83c\udf70 Desserts \u2014 Cakes & Cobblers"};
 
-let unavailableItems = [];
+let unavailableItems = JSON.parse(localStorage.getItem('db_unavailable') || '[]');
 
-function loadSaved() {
-  try {
-    unavailableItems = JSON.parse(localStorage.getItem('db_unavailable') || '[]');
-  } catch(e) {
-    unavailableItems = [];
-  }
-}
-
-function saveChanges() {
-  localStorage.setItem('db_unavailable', JSON.stringify(unavailableItems));
-  showToast('Changes saved!');
-  updateStats();
-}
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast show';
-  setTimeout(() => t.className = 'toast', 2500);
-}
-
+// ── Auth ──────────────────────────────────────────────────────────────────
 function doLogin() {
   const pw = document.getElementById('pw-input').value;
   if (pw === ADMIN_PASSWORD) {
-    loadSaved();
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('admin-panel').style.display  = 'block';
     renderAdmin();
@@ -155,40 +134,49 @@ function doLogout() {
   document.getElementById('pw-input').value = '';
 }
 
+// ── Render ────────────────────────────────────────────────────────────────
 function renderAdmin() {
   const container = document.getElementById('sections-container');
   container.innerHTML = '';
+
   Object.entries(SECTIONS).forEach(([secKey, itemIds]) => {
     const label = SECTION_LABELS[secKey] || secKey;
     const sectionItems = ITEMS.filter(i => itemIds.includes(i.id));
     if (!sectionItems.length) return;
+
     const card = document.createElement('div');
     card.className = 'sec-card';
-    let rows = '';
-    sectionItems.forEach(item => {
-      const isUnavail = unavailableItems.includes(item.id);
-      const pl = item.priceLbl || ('$' + item.price);
-      rows += '<div class="admin-item ' + (isUnavail ? 'unavail' : 'avail') + '" id="admin-row-' + item.id + '">';
-      rows += '  <div class="item-info">';
-      rows += '    <div class="iname">' + item.name + '</div>';
-      rows += '    <div class="iprice">' + pl + '</div>';
-      rows += '  </div>';
-      rows += '  <div class="item-controls">';
-      rows += '    <span class="status-badge ' + (isUnavail ? 'unavail' : 'avail') + '" id="badge-' + item.id + '">' + (isUnavail ? 'Unavailable' : 'Available') + '</span>';
-      rows += '    <label class="toggle">';
-      rows += '      <input type="checkbox" ' + (isUnavail ? '' : 'checked') + ' onchange="toggleItem('' + item.id + '', this.checked)" id="toggle-' + item.id + '"/>';
-      rows += '      <span class="toggle-slider"></span>';
-      rows += '    </label>';
-      rows += '  </div>';
-      rows += '</div>';
-    });
-    card.innerHTML =
-      '<div class="sec-hdr">' +
-        '<span>' + label + '</span>' +
-        '<button class="toggle-all-btn" onclick="toggleSection('' + secKey + '')">Toggle All</button>' +
-      '</div>' + rows;
+    card.innerHTML = `
+      <div class="sec-hdr">
+        <span>${label}</span>
+        <button class="toggle-all" onclick="toggleSection('${secKey}')">Toggle All</button>
+      </div>
+      ${sectionItems.map(item => {
+        const isUnavail = unavailableItems.includes(item.id);
+        const priceLbl = item.priceLbl || '$'+item.price;
+        return `
+          <div class="admin-item ${isUnavail ? 'unavail' : 'avail'}" id="admin-row-${item.id}">
+            <div class="item-info">
+              <div class="iname">${item.name}</div>
+              <div class="iprice">${priceLbl}</div>
+            </div>
+            <div class="item-controls">
+              <span class="status-badge ${isUnavail ? 'unavail' : 'avail'}" id="badge-${item.id}">
+                ${isUnavail ? 'Unavailable' : 'Available'}
+              </span>
+              <label class="toggle">
+                <input type="checkbox" ${isUnavail ? '' : 'checked'}
+                  onchange="toggleItem('${item.id}', this.checked)"
+                  id="toggle-${item.id}"/>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>`;
+      }).join('')}
+    `;
     container.appendChild(card);
   });
+
   updateStats();
 }
 
@@ -198,20 +186,33 @@ function toggleItem(id, available) {
   } else {
     if (!unavailableItems.includes(id)) unavailableItems.push(id);
   }
-  const row   = document.getElementById('admin-row-' + id);
-  const badge = document.getElementById('badge-' + id);
-  if (row)   row.className   = 'admin-item ' + (available ? 'avail' : 'unavail');
+  // Update row styling
+  const row = document.getElementById('admin-row-'+id);
+  const badge = document.getElementById('badge-'+id);
+  if (row)  row.className  = 'admin-item ' + (available ? 'avail' : 'unavail');
   if (badge) { badge.className = 'status-badge ' + (available ? 'avail' : 'unavail'); badge.textContent = available ? 'Available' : 'Unavailable'; }
   saveChanges();
+  updateStats();
 }
 
 function toggleSection(secKey) {
-  const ids = SECTIONS[secKey] || [];
-  const allUnavail = ids.every(id => unavailableItems.includes(id));
-  ids.forEach(id => {
-    const toggle = document.getElementById('toggle-' + id);
+  const itemIds = SECTIONS[secKey] || [];
+  const allUnavail = itemIds.every(id => unavailableItems.includes(id));
+  itemIds.forEach(id => {
+    const toggle = document.getElementById('toggle-'+id);
     if (toggle) { toggle.checked = allUnavail; toggleItem(id, allUnavail); }
   });
+}
+
+function saveChanges() {
+  localStorage.setItem('db_unavailable', JSON.stringify(unavailableItems));
+}
+
+function saveAndNotify() {
+  saveChanges();
+  const toast = document.getElementById('toast');
+  toast.className = 'toast show';
+  setTimeout(() => toast.className = 'toast', 2500);
 }
 
 function updateStats() {

@@ -106,9 +106,9 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--cream);color:var(-
 .sub-btn:disabled{background:#bbb;cursor:not-allowed;}
 .clr-btn{width:100%;margin-top:7px;padding:7px;background:transparent;color:var(--gray);border:1.5px solid var(--lgray);border-radius:8px;font-size:.79rem;font-family:inherit;cursor:pointer;transition:all .15s;}
 .clr-btn:hover{border-color:var(--red);color:var(--red);}
-.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:center;justify-content:center;}
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:flex-end;justify-content:center;}
 .modal-ov.open{display:flex;}
-.modal{background:#fff;border-radius:14px;padding:26px 22px;max-width:400px;width:90%;text-align:center;box-shadow:0 8px 40px rgba(0,0,0,.2);}
+.modal{background:#fff;border-radius:14px 14px 0 0 14px 0 0;padding:26px 22px 32px;max-width:860px;width:100%;text-align:center;box-shadow:0 -4px 24px rgba(0,0,0,.15);max-height:90vh;overflow-y:auto;max-height:90vh;overflow-y:auto;}
 .modal-ic{font-size:2.6rem;margin-bottom:8px;}
 .modal h2{font-family:Georgia,serif;color:var(--dg);margin-bottom:7px;}
 .modal p{color:var(--gray);font-size:.86rem;margin-bottom:16px;line-height:1.6;}
@@ -287,7 +287,7 @@ input[type="radio"] { cursor: pointer; }
   <h1>DoughBoy Catering</h1>
   <div class="tag">Deliciousness Done Right</div>
   <div class="yr">2026 CATERING MENU - ORDER FORM</div>
-  <div class="cb"><span><strong>Phone:</strong> 917-334-9038</span><span><strong>Email:</strong> ctenterprises22@gmail.com</span></div>
+  <div class="cb"><span><strong>Phone:</strong> 917-334-9038</span><span><strong>Email:</strong> doughboydinners@gmail.com</span></div>
 </header>
 <div class="incl">INCLUDED WITH EVERY ORDER: Serving utensils &amp; setup of up to 5 platters at no additional charge</div>
 <div class="vn">Items marked with a star are fully vegan. Vegetarian swaps available upon request.</div>
@@ -295,7 +295,8 @@ input[type="radio"] { cursor: pointer; }
 <div class="cust">
   <div class="sec-title">Your Information</div>
   <div class="frow">
-    <div class="fg"><label>Name *</label><input type="text" id="cn" placeholder="Full name"/></div>
+    <div class="fg"><label>First Name *</label><input type="text" id="cn-first" placeholder="First name"/></div>
+    <div class="fg"><label>Last Name *</label><input type="text" id="cn-last" placeholder="Last name"/></div>
     <div class="fg"><label>Phone *</label><input type="tel" id="cp" placeholder="(000) 000-0000"/></div>
     <div class="fg"><label>Email</label><input type="email" id="ce" placeholder="your@email.com"/></div>
   </div>
@@ -1587,11 +1588,11 @@ const JOTFORM_FORM_ID = '262225152989060';
 const JOTFORM_API_KEY = 'e2b34caa68bb125b3381566fc0fd9d29';
 
 async function submitToJotform(payload) {
+  // payload.firstName and payload.lastName used for name fields
   const fd = new FormData();
   fd.append('apiKey', JOTFORM_API_KEY);
-  const parts = payload.name.trim().split(' ');
-  fd.append('submission[3][first]', parts[0] || '');
-  fd.append('submission[3][last]',  parts.slice(1).join(' ') || '');
+  fd.append('submission[3][first]', payload.firstName || '');
+  fd.append('submission[3][last]',  payload.lastName  || '');
   fd.append('submission[4][full]',  payload.phone);
   fd.append('submission[5]',        payload.email);
   if (payload.date) {
@@ -1623,14 +1624,16 @@ function buildOrderDetails() {
 }
 
 async function submitOrder() {
-  const name   = document.getElementById('cn').value.trim();
+  const firstName = document.getElementById('cn-first').value.trim();
+  const lastName  = document.getElementById('cn-last').value.trim();
+  const name      = (firstName + ' ' + lastName).trim();
   const phone  = document.getElementById('cp').value.trim();
   const email  = document.getElementById('ce').value.trim();
   const date   = document.getElementById('cd').value;
   const time   = document.getElementById('ct').value;
   const guests = document.getElementById('cg').value;
   const notes  = document.getElementById('cn2').value.trim();
-  if (!name || !phone) { alert('Please enter your name and phone number before submitting.'); return; }
+  if (!firstName || !lastName || !phone) { alert('Please enter your first name, last name, and phone number before submitting.'); return; }
   const btn = document.getElementById('sub-btn');
   btn.disabled = true;
   btn.textContent = 'Submitting...';
@@ -1638,14 +1641,17 @@ async function submitOrder() {
   const tax   = taxExempt ? 0 : sub * TAX;
   const total = sub + tax;
   const dateStr = date ? new Date(date+'T12:00').toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}) : 'date TBD';
+  // Store order data for Jotform submission when payment is clicked
+  const orderPayload = {
+    name, firstName, lastName, phone, email, date, time, guests,
+    orderDetails:    buildOrderDetails(),
+    estimatedTotal:  '$' + total.toFixed(2) + (taxExempt ? ' (Tax Exempt)' : ' (incl. 6% tax)'),
+    specialRequests: notes,
+    taxExempt:       taxExempt,
+  };
   try {
-    const result = await submitToJotform({
-      name, phone, email, date, time, guests,
-      orderDetails:    buildOrderDetails(),
-      estimatedTotal:  '$' + total.toFixed(2) + (taxExempt ? ' (Tax Exempt)' : ' (incl. 6% tax)'),
-      specialRequests: notes,
-      taxExempt:       taxExempt,
-    });
+    // Show confirmation — Jotform submission happens when Pay button is clicked
+    const result = { success: true };
     if (result.success) {
       const summaryLines = Object.values(order).map(o => {
         const pn = o.pasta ? ' (' + ({elbow:'Elbow',bowtie:'Bowtie',shells:'Shells'}[o.pasta]||o.pasta) + ')' : '';
@@ -1655,26 +1661,41 @@ async function submitOrder() {
       });
       const payUrl = 'https://pci.jotform.com/form/262226058516052'
         + '?myProducts=' + encodeURIComponent(total.toFixed(2))
-        + '&name=' + encodeURIComponent(name)
+        + '&name[first]=' + encodeURIComponent(firstName)
+        + '&name[last]=' + encodeURIComponent(lastName)
         + '&phoneNumber=' + encodeURIComponent(phone)
         + '&email=' + encodeURIComponent(email)
         + (taxExempt ? '&taxExempt=1' : '');
       document.getElementById('modal-msg').innerHTML =
-        'Thank you, <strong>' + name + '</strong>! Your order has been received.<br>' +
+        'Thank you, <strong>' + firstName + ' ' + lastName + '</strong>! Your order has been received.<br>' +
         'We will confirm within 24 hours &mdash; <strong>' + dateStr + '</strong>' +
         (taxExempt ? '<br><br><span style="background:#FFF8E1;border:1px solid #C8960C;border-radius:6px;padding:6px 10px;display:inline-block;margin-top:4px;font-size:.82rem;"><strong>Tax Exempt Order:</strong> Please upload your Sales Tax Exemption Certificate with your payment.</span>' : '');
       document.getElementById('modal-order-summary').innerHTML = summaryLines.join('') || '<em>No items</em>';
       document.getElementById('modal-sub').textContent   = '$' + sub.toFixed(2);
       document.getElementById('modal-tax').textContent   = taxExempt ? 'EXEMPT' : '$' + tax.toFixed(2);
       document.getElementById('modal-total').textContent = '$' + total.toFixed(2);
-      document.getElementById('pay-btn').href = payUrl;
+      window._pendingOrderPayload = orderPayload;
+      window._pendingPayUrl = payUrl;
+      document.getElementById('pay-btn').href = '#';
+      document.getElementById('pay-btn').onclick = async function(e) {
+        e.preventDefault();
+        this.textContent = 'Processing...';
+        this.style.opacity = '0.7';
+        try {
+          await submitToJotform(window._pendingOrderPayload);
+        } catch(err) {
+          console.log('Jotform submission error:', err);
+        }
+        window.open(window._pendingPayUrl, '_blank');
+      };
       document.getElementById('modal').className = 'modal-ov open';
+      window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
     } else {
       alert('Problem submitting order: ' + result.message + '. Please call 917-334-9038.');
       btn.disabled = false; btn.textContent = 'Submit Order Request';
     }
   } catch(err) {
-    alert('Connection error. Please call 917-334-9038 or email ctenterprises22@gmail.com.');
+    alert('Connection error. Please call 917-334-9038 or email doughboydinners@gmail.com.');
     btn.disabled = false; btn.textContent = 'Submit Order Request';
   }
 }
