@@ -1382,8 +1382,8 @@ input[type="radio"] { cursor: pointer; }
     <div id="sum-lines"></div>
     <div id="sum-totals" style="display:none">
       <hr class="sdiv"/>
-      <div class="srow"><span>Subtotal</span><span id="sub-v">$0.00</span></div>
-      <div class="srow"><span>Sales Tax (6%)</span><span id="tax-v">$0.00</span></div>
+      <div class="srow"><span id="subtotal-label">Sub-Total</span><span id="sub-v">$0.00</span></div>
+      <div class="srow"><span id="tax-label">Sales Tax (6%)</span><span id="tax-v">$0.00</span></div>
       <div class="srow total"><span>Estimated Total</span><span id="tot-v">$0.00</span></div>
       <div class="tax-note">Tax is an estimate. Final invoice provided upon confirmation.</div>
     </div>
@@ -1532,7 +1532,7 @@ function updateSummary() {
   const tot = sub + tax;
   document.getElementById('sub-v').textContent = '$'+sub.toFixed(2);
   document.getElementById('tax-v').textContent = taxExempt ? 'EXEMPT' : '$'+tax.toFixed(2);
-  document.querySelector('.srow:nth-child(2) span:first-child').textContent = taxExempt ? 'Sales Tax (Exempt)' : 'Sales Tax (6%)';
+  document.getElementById('tax-label').textContent = taxExempt ? 'Sales Tax (Exempt)' : 'Sales Tax (6%)';
   document.getElementById('tot-v').textContent = '$'+tot.toFixed(2);
 }
 
